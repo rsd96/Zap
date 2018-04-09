@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="25dp">
+
+        <!--Make-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout20"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddCarMake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Make" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Model-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout30"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddCarModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Model" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Desc-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddCarDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:minLines="2" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Color-->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/viewAddColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewAddColor" />
+
+        <View
+            android:id="@+id/viewAddColor"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout14"
+            android:layout_marginRight="8dp" />
+
+        <!--Transmission-->
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Transmission"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/rgTransmission"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rgTransmission"
+            android:layout_marginLeft="16dp" />
+
+        <RadioGroup
+            android:id="@+id/rgTransmission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewAddColor">
+
+            <RadioButton
+                android:id="@+id/rbAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auto" />
+
+            <RadioButton
+                android:id="@+id/rbManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Manual" />
+        </RadioGroup>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rgTransmission">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddMileage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mileage"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout17"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout16">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddBond"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bond"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout18"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout17"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout16">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/etAddRent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Rent"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+        <com.dx.dxloadingbutton.lib.LoadingButton
+            android:id="@+id/loadingBtnAddCar"
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddLocation"
+            app:lb_btnDisabledColor="#cccccc"
+            app:lb_btnRippleColor="#000000"
+            app:lb_btnText="Add Car"
+            app:lb_disabledTextColor="#999999"
+            app:lb_resetAfterFailed="true" />
+
+        <TextView
+            android:id="@+id/tvAddLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Add Location"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout17"
+            android:layout_marginLeft="8dp" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

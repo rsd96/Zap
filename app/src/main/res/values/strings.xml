@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Zap</string>
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">433877157082557</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb433877157082557</string>
+    <string name="user_tab_1">Profile</string>
+    <string name="user_tab_2">My Cars</string>
+    <string name="user_tab_3">Rented</string>
 </resources>
