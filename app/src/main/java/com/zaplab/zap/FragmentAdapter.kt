@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 /**
  * Created by Ramshad on 4/8/18.
  */
-class ProfileTabsAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class FragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     private val FragmentList = mutableListOf<Fragment>()
     private val FragmentTitles = mutableListOf<String>()

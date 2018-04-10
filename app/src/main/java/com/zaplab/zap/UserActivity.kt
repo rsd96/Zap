@@ -76,7 +76,7 @@ class UserActivity: AppCompatActivity() {
 
         // setup tabs and viewpager
 
-//        var tabsAdapter = ProfileTabsAdapter(supportFragmentManager)
+//        var tabsAdapter = FragmentAdapter(supportFragmentManager)
 //        tabsAdapter.addFragment(ProfileFragment())
 //        tabsAdapter.addFragment(MyCarFragment())
 //        tabsAdapter.addFragment(RentedCarsFragment())
