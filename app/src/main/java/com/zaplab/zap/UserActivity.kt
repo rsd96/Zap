@@ -74,12 +74,6 @@ class UserActivity: AppCompatActivity() {
 
         tvProfileName.text = name
 
-        // setup tabs and viewpager
-
-//        var tabsAdapter = FragmentAdapter(supportFragmentManager)
-//        tabsAdapter.addFragment(ProfileFragment())
-//        tabsAdapter.addFragment(MyCarFragment())
-//        tabsAdapter.addFragment(RentedCarsFragment())
 
         var profileFragment = ProfileFragment()
         var myCarsFragment = MyCarFragment()
@@ -115,32 +109,6 @@ class UserActivity: AppCompatActivity() {
             }
 
         })
-
-//        btnAddCar.setOnClickListener({
-//            var user = FirebaseAuth.getInstance().currentUser
-//            if(user == null) {
-//                val providers = Arrays.asList(
-//                        AuthUI.IdpConfig.EmailBuilder().build(),
-//                        AuthUI.IdpConfig.GoogleBuilder().build(),
-//                        AuthUI.IdpConfig.FacebookBuilder().build())
-//
-//                // Create and launch sign-in intent
-//                startActivityForResult(
-//                        AuthUI.getInstance()
-//                                .createSignInIntentBuilder()
-//                                .setAvailableProviders(providers)
-//                                .setTheme(R.style.AppTheme_NoActionBar)
-//                                .build(),
-//                        RC_SIGN_IN)
-//            } else {
-//                //TODO START ACTIVITY TO GET VEHICLE INFO
-//                //startActivity(Intent(this, AddCarActivity::class.java))
-//                var car = Vehicle(ownerId = FirebaseAuth.getInstance().currentUser?.uid!!, name = "Tesla", desc = "good stuff",
-//                        color = "red", transmission = "auto", odometer = 500, availability = AvailableDates(), lat = "sdf",
-//                        long = "efds", city = "wollongong", country = "Australia", rent = 50, bond = 25, rating = 2.5, imageUrl = "asdf")
-//                FirebaseDatabase.getInstance().reference.child("Vehicles").push().setValue(car)
-//            }
-//        })
     }
 
 

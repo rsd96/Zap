@@ -45,8 +45,10 @@ dependencies {
     compile 'com.github.mukeshsolanki:country-picker-android:1.2.2'
     compile 'com.github.varunest:sparkbutton:1.0.5'
     compile 'com.github.StevenDXC:DxLoadingButton:2.0'
-    compile 'com.opalox.rangebarvertical:rangebarvertical:1.1'
     compile 'com.github.badoualy:stepper-indicator:1.0.7'
+    compile 'com.opalox.rangebarvertical:rangebarvertical:1.1'
+    compile 'com.github.florent37:diagonallayout:1.0.7'
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
 }
 
 

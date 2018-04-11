@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,12 +22,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     var dbRef = FirebaseDatabase.getInstance().reference
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
 
+        auth = FirebaseAuth.getInstance()
+        var user = auth.currentUser
+        if (user == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
         /* ANONYMOUS SIGN IN
         auth = FirebaseAuth.getInstance()
         auth.signInAnonymously()
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
-                **/
+              **/
 
         var vehicleList = mutableListOf<Vehicle>()
         dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{
@@ -73,13 +79,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun updateUI(user: FirebaseUser?) {
-        if(user != null) {
-            // TODO LOAD VEHICLE LISTING
-        } else {
-
-        }
-    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -92,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.menu_layout)
         var tvProfile: TextView = dialog.findViewById(R.id.tvMenuProfile)
         tvProfile.setOnClickListener({
+            dialog.dismiss()
             startActivity(Intent(this, UserActivity::class.java))
         })
 
