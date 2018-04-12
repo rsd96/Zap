@@ -49,6 +49,7 @@ dependencies {
     compile 'com.opalox.rangebarvertical:rangebarvertical:1.1'
     compile 'com.github.florent37:diagonallayout:1.0.7'
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
+    compile 'com.github.sharish:CreditCardView:v1.0.4'
 }
 
 

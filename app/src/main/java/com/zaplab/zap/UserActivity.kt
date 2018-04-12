@@ -1,18 +1,12 @@
 package com.zaplab.zap
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.squareup.picasso.Callback
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user.*
 
 
@@ -34,53 +28,26 @@ class UserActivity: AppCompatActivity() {
         val item1 = AHBottomNavigationItem(R.string.user_tab_1, R.drawable.ic_profile, android.R.color.black)
         val item2 = AHBottomNavigationItem(R.string.user_tab_2, R.drawable.ic_chat, android.R.color.black)
         val item3 = AHBottomNavigationItem(R.string.user_tab_3, R.drawable.ic_menu, android.R.color.black)
+        val item4 = AHBottomNavigationItem(R.string.user_tab_4, R.drawable.ic_credit_card, android.R.color.black)
 
         // Add items
         bottomNavUser.addItem(item1)
         bottomNavUser.addItem(item2)
         bottomNavUser.addItem(item3)
+        bottomNavUser.addItem(item4)
 
         bottomNavUser.defaultBackgroundColor = ContextCompat.getColor(this, R.color.colorAccent)
         bottomNavUser.accentColor = ContextCompat.getColor(this, android.R.color.white)
 
 
-        var name = user?.displayName
-        var imageUrl = user?.photoUrl
-
-        // Load user profile image
-        Picasso.with(applicationContext)
-                .load(imageUrl)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(ivProfileImage, object : Callback {
-                    override fun onSuccess() {
-
-                    }
-
-                    override fun onError() {
-                        // Try again online if cache failed
-                        Picasso.with(applicationContext)
-                                .load(imageUrl)
-                                .into(ivProfileImage, object : Callback {
-                                    override fun onSuccess() {
-
-                                    }
-
-                                    override fun onError() {
-
-                                    }
-                                })
-                    }
-                })
-
-        tvProfileName.text = name
-
 
         var profileFragment = ProfileFragment()
         var myCarsFragment = MyCarFragment()
         var rentedCarsFragment = RentedCarsFragment()
+        var creditCardFragment = CreditCardsFragment()
 
         var transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentProfile, profileFragment)
+        transaction.replace(R.id.fragmentContainer, profileFragment)
         transaction.commit()
 
 
@@ -90,17 +57,22 @@ class UserActivity: AppCompatActivity() {
                 transaction = supportFragmentManager.beginTransaction()
                 when (position) {
                     0 -> {
-                        transaction.replace(R.id.fragmentProfile, profileFragment)
+                        transaction.replace(R.id.fragmentContainer, profileFragment)
                         transaction.commit()
                     }
 
                     1 -> {
-                        transaction.replace(R.id.fragmentProfile, myCarsFragment)
+                        transaction.replace(R.id.fragmentContainer, myCarsFragment)
                         transaction.commit()
                     }
 
                     2 -> {
-                        transaction.replace(R.id.fragmentProfile, rentedCarsFragment)
+                        transaction.replace(R.id.fragmentContainer, rentedCarsFragment)
+                        transaction.commit()
+                    }
+
+                    3 -> {
+                        transaction.replace(R.id.fragmentContainer, creditCardFragment)
                         transaction.commit()
                     }
                 }
@@ -109,25 +81,5 @@ class UserActivity: AppCompatActivity() {
             }
 
         })
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                if (user != null) {
-                    finish()
-                }
-            } else {
-                // Sign in failed, check response for error code
-                // ...
-            }
-        }
     }
 }

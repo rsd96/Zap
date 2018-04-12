@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.fragment_my_car.*
 class MyCarFragment: Fragment() {
 
     private val RES_OK = 69
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_my_car, null)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_my_car, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

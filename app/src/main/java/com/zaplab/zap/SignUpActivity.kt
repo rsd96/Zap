@@ -8,8 +8,6 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.zaplab.zap.R
-import com.zaplab.zap.ResetPassActivity
 import kotlinx.android.synthetic.main.activity_signup.*
 
 /**
@@ -60,8 +58,6 @@ class SignUpActivity: AppCompatActivity() {
                             if (task.isSuccessful) {
                                 var ref = FirebaseDatabase.getInstance().getReference()
                                 ref.child("users").child(auth.currentUser?.uid).child("user_name").setValue(userName)
-                                var rep = 0
-                                ref.child("users").child(auth.currentUser?.uid).child("rep").setValue(rep)
                                 startActivity(Intent(this, MainActivity::class.java))
                                 finish()
                             } else {

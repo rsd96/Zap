@@ -6,6 +6,7 @@
     <string name="user_tab_1">Profile</string>
     <string name="user_tab_2">My Cars</string>
     <string name="user_tab_3">Rented</string>
+    <string name="user_tab_4">Cards</string>
     <string name="user_name">Username</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
