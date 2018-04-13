@@ -7,6 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_my_car.*
 
 
@@ -35,6 +39,19 @@ class MyCarFragment: Fragment() {
         if (extras != null) {
             var position: Vehicle = extras!!.getSerializable("car_object") as Vehicle
             Log.d("MyCar", position.toString())
+
+            FirebaseDatabase.getInstance().reference.child("Vehicle").addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snap: DataSnapshot?) {
+                    for (x in snap?.children!!) {
+
+                    }
+                }
+
+            })
         }
 
 

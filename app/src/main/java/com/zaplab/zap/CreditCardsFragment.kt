@@ -12,7 +12,10 @@ import android.widget.Button
 import android.widget.EditText
 import com.cooltechworks.creditcarddesign.CreditCardView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_credit_card.*
 
 
@@ -23,11 +26,32 @@ import kotlinx.android.synthetic.main.fragment_credit_card.*
 class CreditCardsFragment: Fragment() {
 
     var dbRef = FirebaseDatabase.getInstance().reference
+    var listOfCards = mutableListOf<CreditCard>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_credit_card, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        dbRef.child("Cards").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if (snap != null) {
+                    for (x in snap.children) {
+                        var creditCard = x.getValue(CreditCard::class.java)
+                        creditCard?.let { listOfCards.add(it) }
+                        var adapter = CreditCardListAdapter(activity?.applicationContext!!, listOfCards)
+                        viewPagerCreditCard.adapter = adapter
+                        creditCardPagerIndicator.setViewPager(viewPagerCreditCard)
+                    }
+                }
+            }
+
+        })
+
 
         var isBack = false
         fabAddCreditCard.setOnClickListener({

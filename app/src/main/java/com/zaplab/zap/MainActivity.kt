@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+
+
         /* ANONYMOUS SIGN IN
         auth = FirebaseAuth.getInstance()
         auth.signInAnonymously()
