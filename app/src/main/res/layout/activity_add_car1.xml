@@ -236,7 +236,7 @@
 
         <include
             android:id="@+id/avail"
-            layout="@layout/available_dates"
+            layout="@layout/fragment_add_car_avail"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toTopOf="@id/loadingBtnInfo"

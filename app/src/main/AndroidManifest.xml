@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,9 +18,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".UserActivity"/>
+        <activity android:name=".UserActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".AddCarActivity"/>
+        <activity android:name=".AddCarActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".LoginActivity"

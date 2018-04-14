@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvAddCarAvailDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/rgAddCarAvail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
+
+    <com.appyvet.materialrangebar.RangeBar
+        android:id="@+id/rangeAddCarAvail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:mrb_tickStart="0"
+        app:mrb_tickEnd="24"
+        app:mrb_pinRadius="0dp"
+        app:mrb_selectorSize="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvAddCarAvailTo"
+        app:layout_constraintStart_toEndOf="@+id/tvAddCarAvailFrom"
+        app:layout_constraintTop_toBottomOf="@id/tvAddCarAvailDay" />
+
+    <RadioGroup
+        android:id="@+id/rgAddCarAvail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rangeAddCarAvail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp">
+
+        <RadioButton
+            android:id="@+id/rbAddCarAvailAllDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="All Day"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <RadioButton
+            android:id="@+id/rbAddCarAvailNot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Not Available"
+            android:textColor="@color/red" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvAddCarAvailFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="10:30"
+        app:layout_constraintBottom_toBottomOf="@+id/rangeAddCarAvail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rangeAddCarAvail"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/tvAddCarAvailTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="17:00"
+        app:layout_constraintBottom_toBottomOf="@+id/rangeAddCarAvail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rangeAddCarAvail" />
+
+</android.support.constraint.ConstraintLayout>

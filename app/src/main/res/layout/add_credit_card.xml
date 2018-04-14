@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_gradient">
 
     <com.cooltechworks.creditcarddesign.CreditCardView
         android:id="@+id/creditCardAdd"
@@ -90,13 +91,12 @@
         android:id="@+id/dateCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/cvvCard"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameCard">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/nameCard"
+        app:layout_constraintTop_toBottomOf="@+id/nameCard"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -127,14 +127,14 @@
         android:id="@+id/cvvCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAddCard"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dateCard"
-        app:layout_constraintTop_toBottomOf="@+id/nameCard">
+        app:layout_constraintTop_toBottomOf="@+id/nameCard"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="8dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -155,8 +155,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:ems="3"
-                android:maxEms="3"
-                android:inputType="text" />
+                android:inputType="number"
+                android:maxEms="3" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
@@ -167,16 +167,15 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Add"
-        android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cvvCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cvvCard"
-        app:layout_constraintTop_toTopOf="@+id/cvvCard" />
+        app:layout_constraintEnd_toEndOf="@+id/nameCard"
+        app:layout_constraintTop_toTopOf="@+id/cvvCard"
+        android:layout_marginRight="8dp" />
 
 
 </android.support.constraint.ConstraintLayout>

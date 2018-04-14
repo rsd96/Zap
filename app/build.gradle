@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.shobhitpuri.custombuttons:google-signin:1.0.0'
     compile 'com.github.sharish:CreditCardView:v1.0.4'
     compile 'me.relex:circleindicator:1.2.2@aar'
+    compile 'com.appyvet:materialrangebar:1.4.1'
 }
 
 

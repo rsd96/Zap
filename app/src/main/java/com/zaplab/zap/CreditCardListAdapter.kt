@@ -2,7 +2,6 @@ package com.zaplab.zap
 
 import android.content.Context
 import android.support.v4.view.PagerAdapter
-import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
 import com.cooltechworks.creditcarddesign.CreditCardView
@@ -33,6 +32,6 @@ class CreditCardListAdapter(_context: Context, _listOfCards: MutableList<CreditC
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as CardView)
+        container.removeView(`object` as CreditCardView)
     }
 }

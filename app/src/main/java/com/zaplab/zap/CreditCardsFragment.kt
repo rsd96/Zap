@@ -40,11 +40,14 @@ class CreditCardsFragment: Fragment() {
 
             override fun onDataChange(snap: DataSnapshot?) {
                 if (snap != null) {
+                    listOfCards.clear()
                     for (x in snap.children) {
                         var creditCard = x.getValue(CreditCard::class.java)
                         creditCard?.let { listOfCards.add(it) }
                         var adapter = CreditCardListAdapter(activity?.applicationContext!!, listOfCards)
                         viewPagerCreditCard.adapter = adapter
+                        viewPagerCreditCard.clipToPadding = false
+                        viewPagerCreditCard.setPadding(100, 0, 100, 0)
                         creditCardPagerIndicator.setViewPager(viewPagerCreditCard)
                     }
                 }
