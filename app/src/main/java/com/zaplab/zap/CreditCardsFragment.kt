@@ -76,7 +76,7 @@ class CreditCardsFragment: Fragment() {
                 }
 
                 override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cardNumber = t.toString()
+                    creditCard.cardNumber = t.toString().trim()
                 }
 
             })
@@ -89,7 +89,7 @@ class CreditCardsFragment: Fragment() {
                 }
 
                 override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cardHolderName = t.toString()
+                    creditCard.cardHolderName = t.toString().trim()
                 }
 
             })
@@ -102,7 +102,7 @@ class CreditCardsFragment: Fragment() {
                 }
 
                 override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.setCardExpiry(t.toString())
+                    creditCard.setCardExpiry(t.toString().trim())
                 }
 
             })
@@ -115,7 +115,7 @@ class CreditCardsFragment: Fragment() {
                 }
 
                 override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cvv = t.toString()
+                    creditCard.cvv = t.toString().trim()
                 }
 
             })

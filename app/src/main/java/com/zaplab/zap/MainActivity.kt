@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     var dbRef = FirebaseDatabase.getInstance().reference
 
+    companion object {
+        var currentUser = User()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,19 @@ class MainActivity : AppCompatActivity() {
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        } else {
+            currentUser.email = user.email.toString()
+            currentUser.uid = user.uid.toString()
+            currentUser.photoUrl = user.photoUrl.toString()
         }
+
+        if (!currentUser.isVerified()) {
+            startActivity(Intent(this, VerificationActivity::class.java))
+            finish()
+        }
+
+
+
 
 
         /* ANONYMOUS SIGN IN

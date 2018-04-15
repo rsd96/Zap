@@ -1,10 +1,14 @@
 package com.zaplab.zap
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
+import com.nguyenhoanglam.imagepicker.model.Image
 import kotlinx.android.synthetic.main.activity_add_car.*
+
+
 
 
 /**
@@ -15,9 +19,11 @@ class AddCarActivity: AppCompatActivity() {
     companion object {
         var infoCheck = false
         var vehicle = Vehicle()
+        var images: ArrayList<Image> = ArrayList()
     }
 
 
+    var fragmentAdapter = FragmentAdapter(supportFragmentManager)
     private var vehicle: Vehicle = Vehicle()
     var titleList = arrayListOf("INFO", "PICTURES", "AVAILABILITY", "LOCATION", "PAYMENT")
 
@@ -26,10 +32,12 @@ class AddCarActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
 
-        var fragmentAdapter = FragmentAdapter(supportFragmentManager)
+
         fragmentAdapter.addFragment(AddCarInfoFragment())
-        fragmentAdapter.addFragment(MyCarFragment())
+        fragmentAdapter.addFragment(AddCarPicsFragment())
         fragmentAdapter.addFragment(AddCarAvailFragment())
+        fragmentAdapter.addFragment(AddCarLocationFragment())
+        fragmentAdapter.addFragment(AddCarPayFragment())
 
         pagerAddCar.adapter = fragmentAdapter
         indicatorAddCar.setViewPager(pagerAddCar)
@@ -50,6 +58,11 @@ class AddCarActivity: AppCompatActivity() {
 
     fun nextPager(pos: Int) {
         pagerAddCar.currentItem = pos
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //fragmentAdapter.getItem(1).onActivityResult(requestCode, resultCode, data)
     }
 
 
