@@ -7,6 +7,9 @@
 
 
     <!--Make-->
+
+
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout20"
         android:layout_width="0dp"
@@ -45,7 +48,28 @@
             android:hint="Model" />
     </android.support.design.widget.TextInputLayout>
 
+
+    <!--Plate-->
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/etAddCarPlate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Plate Number" />
+    </android.support.design.widget.TextInputLayout>
     <!--Desc-->
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout14"
         android:layout_width="0dp"
@@ -55,7 +79,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout20">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/etAddCarDesc"

@@ -10,8 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
-import com.zaplab.zap.AddCarActivity.Companion.infoCheck
-import com.zaplab.zap.AddCarActivity.Companion.vehicle
 import kotlinx.android.synthetic.main.fragment_add_car_info.*
 import org.xdty.preference.colorpicker.ColorPickerDialog
 
@@ -34,6 +32,7 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
         tvList.add(etAddCarModel)
         tvList.add(etAddCarDesc)
         tvList.add(etAddMileage)
+        tvList.add(etAddCarPlate)
 
 
         rbAuto.setOnClickListener(this)
@@ -53,13 +52,13 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
 
             // check if all fields are not empty
             if (hasAllData) {
-                vehicle.make = etAddCarMake.text.toString()
-                vehicle.model = etAddCarModel.text.toString()
-                vehicle.desc = etAddCarDesc.text.toString()
-                vehicle.odometer = Integer.parseInt(etAddMileage.text.toString())
-
-                vehicle.color = selectedColor
-                infoCheck = true
+                (activity as AddCarActivity).vehicle.make = etAddCarMake.text.toString()
+                (activity as AddCarActivity).vehicle.model = etAddCarModel.text.toString()
+                (activity as AddCarActivity).vehicle.desc = etAddCarDesc.text.toString()
+                (activity as AddCarActivity).vehicle.odometer = Integer.parseInt(etAddMileage.text.toString())
+                (activity as AddCarActivity).vehicle.plate = etAddCarPlate.text.toString()
+                (activity as AddCarActivity).vehicle.color = selectedColor
+                (activity as AddCarActivity).infoCheck = true
                 loadingBtnInfo.loadingSuccessful()
                 (activity as AddCarActivity).nextPager(1)
 
@@ -101,12 +100,12 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
         when (view.getId()) {
             R.id.rbAuto -> {
                 if (checked) {
-                    vehicle.transmission = Transmission.Auto
+                    (activity as AddCarActivity).vehicle.transmission = Transmission.Auto
                 }
             }
             R.id.rbManual -> {
                 if (checked) {
-                    vehicle.transmission = Transmission.Manual
+                    (activity as AddCarActivity).vehicle.transmission = Transmission.Manual
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.zaplab.zap
 
 import android.content.Context
+import android.content.Intent
 import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -38,7 +39,7 @@ class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Veh
         val rating: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRating)
         val bond: TextView = vehicleCard.findViewById(R.id.tvVehicleCardBond)
         val rent: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRent)
-        var imageUri = listOfVehicle[position].imageUrl
+        var imageUri = listOfVehicle[position].imageList[0]
 
 //        photoView.setScaleType(ImageView.ScaleType.CENTER);
 //        photoView.setAdjustViewBounds(true);
@@ -66,6 +67,10 @@ class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Veh
                                 })
                     }
                 })
+
+        vehicleImage.setOnClickListener({
+            context.startActivity(Intent(context, VehicleDetailActivity::class.java))
+        })
 
         title.text = "${listOfVehicle.get(position).make} - ${listOfVehicle.get(position).model}"
         desc.text = listOfVehicle.get(position).desc

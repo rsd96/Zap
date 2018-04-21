@@ -38,17 +38,48 @@ class MainActivity : AppCompatActivity() {
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+            return
         } else {
             currentUser.email = user.email.toString()
-            currentUser.uid = user.uid.toString()
+            currentUser.uid = user.uid
             currentUser.photoUrl = user.photoUrl.toString()
+            if (user.displayName?.isNotBlank()!!) {
+                currentUser.userName = user.displayName!!
+            }
+
+            dbRef.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {}
+
+                override fun onDataChange(snap: DataSnapshot?) {
+                    if ( snap != null && !snap.exists()) {
+                        currentUser.addUserToDB()
+                    }
+                }
+
+            })
         }
 
-        if (!currentUser.isVerified()) {
-            startActivity(Intent(this, VerificationActivity::class.java))
-            finish()
-        }
 
+        var isCool = false
+        FirebaseDatabase.getInstance().reference.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {}
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                for ( x in snap?.children!!) {
+                    if ( x.key == "verified") {
+                        isCool = x.value as Boolean
+                    }
+                }
+
+                if (!isCool) {
+                    startActivity(Intent(applicationContext, VerificationActivity::class.java))
+                    finish()
+                    return
+                }
+
+            }
+
+        })
 
 
 

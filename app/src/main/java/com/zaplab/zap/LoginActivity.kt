@@ -25,7 +25,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -151,8 +150,8 @@ class LoginActivity: AppCompatActivity() {
                             // Sign in success, update UI with the signed-in user's information
                             var user = auth.currentUser
                             if (user != null) {
-                                var ref = FirebaseDatabase.getInstance().getReference()
-                                ref.child("users").child(auth.currentUser?.uid).child("user_name").setValue(user.displayName)
+//                                var ref = FirebaseDatabase.getInstance().getReference()
+//                                ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(user.displayName)
                                 startActivity(Intent(applicationContext, MainActivity::class.java))
                             }
                         } else {
@@ -194,8 +193,8 @@ class LoginActivity: AppCompatActivity() {
                 val user = auth.currentUser
                 if(user!= null) {
 
-                    var ref = FirebaseDatabase.getInstance().getReference()
-                    ref.child("users").child(auth.currentUser?.uid).child("user_name").setValue(user.displayName)
+//                    var ref = FirebaseDatabase.getInstance().getReference()
+//                    ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(user.displayName)
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                 }
             } else {

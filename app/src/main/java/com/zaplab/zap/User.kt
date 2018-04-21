@@ -11,26 +11,22 @@ import com.google.firebase.database.ValueEventListener
 data class User (var uid: String = "", var userName: String = "", var email: String = "", var photoUrl: String = "",
                  var verified:Boolean = false, var verificationId: String = "") {
 
-    fun isVerified(): Boolean {
-        var verified = false
-        FirebaseDatabase.getInstance().reference.child("Users").addValueEventListener(object :ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
+    fun isChecked(): Boolean {
 
-            }
+        var isCool = false
+        FirebaseDatabase.getInstance().reference.child("Users").child(uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {}
 
             override fun onDataChange(snap: DataSnapshot?) {
-                if (snap != null) {
-                    for ( x in snap.children) {
-                        if(x.child("uid").value == uid && x.child("verified").value == 1) {
-                            verified = true
-                            break
-                        }
+                for ( x in snap?.children!!) {
+                    if ( x.key == "verified") {
+                        isCool = x.value as Boolean
                     }
                 }
             }
 
         })
-        return verified
+        return isCool
     }
 
     fun isBlacklisted(): Boolean {
@@ -44,8 +40,7 @@ data class User (var uid: String = "", var userName: String = "", var email: Str
                         if (verificationId.equals(x.value)) {
                             blackListed = true
                             break
-                        } else
-                            blackListed = false
+                        }
                     }
                 }
             }
@@ -54,18 +49,32 @@ data class User (var uid: String = "", var userName: String = "", var email: Str
     }
 
     fun verify() {
-        FirebaseDatabase.getInstance().reference.child("Users").addValueEventListener(object :ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
+        FirebaseDatabase.getInstance().reference.child("Users").child(uid).child("verified").setValue(true)
+    }
 
+    fun addUserToDB() {
+        var userExists = false
+        var map = hashMapOf<String, Any>()
+        map.put("userName", userName)
+        map.put("email", email)
+        map.put("photoUrl", photoUrl)
+        map.put("verified", verified)
+        map.put("verificationId", verificationId)
+        var ref = FirebaseDatabase.getInstance().reference
+        ref.child("Users").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
             }
 
             override fun onDataChange(snap: DataSnapshot?) {
                 if (snap != null) {
                     for ( x in snap.children) {
-                        if(x.child("uid").value == uid) {
-                            FirebaseDatabase.getInstance().reference.child("Users").child("verified").setValue(true)
+                        if(x.value == uid) {
+                            userExists = true
                             break
                         }
+                    }
+                    if (!userExists) {
+                        FirebaseDatabase.getInstance().reference.child("Users").child(uid).setValue(map)
                     }
                 }
             }

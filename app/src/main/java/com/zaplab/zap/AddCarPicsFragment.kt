@@ -67,7 +67,7 @@ class AddCarPicsFragment: Fragment() {
                         .setPositiveButton("Okay", null)
                 dialog.create().show()
             } else {
-                AddCarActivity.images.addAll(images)
+                (activity as AddCarActivity).images.addAll(images)
                 (activity as AddCarActivity).nextPager(2)
             }
         })
