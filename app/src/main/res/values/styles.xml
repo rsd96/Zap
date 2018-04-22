@@ -9,6 +9,10 @@
     </style>
 
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>

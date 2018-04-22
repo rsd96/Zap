@@ -17,6 +17,7 @@
 
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarVehicleDetail"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:fitsSystemWindows="true"
@@ -24,23 +25,23 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewPagerVehicleDetail"
                     android:layout_width="match_parent"
-                    android:layout_height="275dp"
+                    android:layout_height="300dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax" />
 
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/indicatorVehicleDetail"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp" />
-            </LinearLayout>
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"/>
+            </FrameLayout>
 
 
             <android.support.v7.widget.Toolbar
@@ -49,7 +50,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:titleTextColor="@color/white"
-                app:popupTheme="@style/AppTheme" />
+                app:popupTheme="@style/AppTheme.AppBarOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -95,6 +96,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:text="asdfasdfasdfasdfasdfasdfasdfasdf"
+                android:textStyle="italic"
                 app:layout_constraintLeft_toRightOf="@id/ivVehicleDetailProfile"
                 app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailUserName" />
 
@@ -102,17 +104,17 @@
                 android:id="@+id/tvVehicleDetailRent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text="$25"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/textView12"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
-                app:layout_constraintStart_toStartOf="@+id/textView12"
-                app:layout_constraintTop_toTopOf="@+id/guideline12" />
+                app:layout_constraintStart_toStartOf="@+id/textView12" />
 
             <TextView
                 android:id="@+id/tvVehicleDetailMileage"
@@ -134,17 +136,16 @@
                 android:id="@+id/tvVehicleDetailBond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:text="$40"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/textView11"
                 app:layout_constraintEnd_toEndOf="@+id/textView11"
-                app:layout_constraintStart_toStartOf="@+id/textView11"
-                app:layout_constraintTop_toTopOf="@+id/guideline12" />
+                app:layout_constraintStart_toStartOf="@+id/textView11" />
 
             <TextView
                 android:id="@+id/tvVehicleDetailTrans"
@@ -157,39 +158,39 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/textView9"
                 app:layout_constraintStart_toStartOf="@+id/textView9"
-                app:layout_constraintTop_toTopOf="@+id/guideline12"
-                android:textStyle="bold" />
+                app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="80dp" />
+                app:layout_constraintGuide_begin="96dp" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Transmission"
                 app:layout_constraintEnd_toStartOf="@+id/textView10"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Mileage"
-                app:layout_constraintEnd_toStartOf="@+id/textView11"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView9"
                 app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailMileage" />
 
@@ -197,62 +198,32 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:text="Bond"
-                app:layout_constraintEnd_toStartOf="@+id/textView12"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailBond" />
+                app:layout_constraintBottom_toTopOf="@+id/guideline14"
+                app:layout_constraintEnd_toEndOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/textView9" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Rent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView11"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailRent"
-                android:layout_marginRight="8dp" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvVehicleDetailLocation"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@id/guideline15"
-                app:layout_constraintEnd_toStartOf="@+id/cvVehicleDetailAvail"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline14"
-                android:layout_marginLeft="8dp">
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvVehicleDetailAvail"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@id/guideline15"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/cvVehicleDetailLocation"
-                app:layout_constraintTop_toTopOf="@+id/guideline14"
-                android:layout_marginRight="8dp" />
+                android:text="Rent"
+                app:layout_constraintBottom_toTopOf="@+id/guideline14"
+                app:layout_constraintEnd_toEndOf="@+id/textView10"
+                app:layout_constraintStart_toStartOf="@+id/textView10" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="153dp" />
+                app:layout_constraintGuide_begin="246dp" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline15"
@@ -265,21 +236,20 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Reviews"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline15"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvVehicleDetailReviews"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/btnVehicleDetailRent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView13" />
@@ -290,6 +260,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/round_rating"
                 android:gravity="center"
                 android:text="2.5"
@@ -297,8 +268,50 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/textView13"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView13"
-                android:layout_marginRight="16dp" />
+                app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+            <Button
+                android:id="@+id/btnVehicleDetailLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="  View Location  "
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/guideline15"
+                app:layout_constraintEnd_toStartOf="@+id/btnVehicleDetailAvail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline14" />
+
+            <Button
+                android:id="@+id/btnVehicleDetailAvail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="  Availability  "
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/guideline15"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnVehicleDetailLocation"
+                app:layout_constraintTop_toTopOf="@+id/guideline14" />
+
+            <Button
+                android:id="@+id/btnVehicleDetailRent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:text="Rent!"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvVehicleDetailReviews" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
@@ -309,6 +322,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="6dp"
+        android:layout_marginRight="8dp"
         android:src="@drawable/ic_chat"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"

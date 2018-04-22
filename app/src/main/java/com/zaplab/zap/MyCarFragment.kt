@@ -3,6 +3,7 @@ package com.zaplab.zap
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.fragment_my_car.*
 class MyCarFragment: Fragment() {
 
     private val RES_OK = 69
+    var vehicleList = mutableListOf<Vehicle>()
+    var dbRef = FirebaseDatabase.getInstance().reference
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -27,6 +30,44 @@ class MyCarFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snap: DataSnapshot?) {
+                snap?.let {
+                    vehicleList.clear()
+                    for (x in snap.children) {
+                        if (x.child("ownerId").value.toString() == MainActivity.currentUser.uid)
+                            vehicleList.add(x.getValue(Vehicle::class.java)!!)
+                    }
+
+                    if (vehicleList.isNotEmpty()) {
+                        var pagerAdapter = VehicleListPagerAdapter(activity!!, vehicleList)
+                        var myCarsPagerAdapter = MyCarsPagerAdapter(activity!!, vehicleList)
+                        viewPagerMyCars.adapter = myCarsPagerAdapter
+                        viewPagerMyCars.clipToPadding = false
+                        viewPagerMyCars.setPadding(50, 0, 50, 0)
+                    }
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {}
+
+        })
+
+        viewPagerMyCars.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+
+        })
+
 
         btnAddCar.setOnClickListener({
            startActivityForResult(Intent(activity, AddCarActivity::class.java ), RES_OK)
@@ -42,7 +83,6 @@ class MyCarFragment: Fragment() {
 
             FirebaseDatabase.getInstance().reference.child("Vehicle").addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 
                 override fun onDataChange(snap: DataSnapshot?) {

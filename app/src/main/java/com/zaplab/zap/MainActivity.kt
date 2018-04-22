@@ -112,7 +112,8 @@ class MainActivity : AppCompatActivity() {
                 snap?.let {
                     vehicleList.clear()
                     for (x in snap.children) {
-                        vehicleList.add(x.getValue(Vehicle::class.java)!!)
+                        if (x.child("ownerId").value.toString() != MainActivity.currentUser.uid)
+                            vehicleList.add(x.getValue(Vehicle::class.java)!!)
                     }
 
                     if (vehicleList.isNotEmpty()) {

@@ -22,7 +22,14 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".VehicleDetailActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ChatActivity"
+            android:parentActivityName=".VehicleDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity android:name=".AddCarActivity"
             android:screenOrientation="portrait"/>

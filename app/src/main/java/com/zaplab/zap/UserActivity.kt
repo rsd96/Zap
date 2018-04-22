@@ -26,7 +26,7 @@ class UserActivity: AppCompatActivity() {
 
         // Create items
         val item1 = AHBottomNavigationItem(R.string.user_tab_1, R.drawable.ic_profile, android.R.color.black)
-        val item2 = AHBottomNavigationItem(R.string.user_tab_2, R.drawable.ic_chat, android.R.color.black)
+        val item2 = AHBottomNavigationItem(R.string.user_tab_2, R.drawable.ic_car, android.R.color.black)
         val item3 = AHBottomNavigationItem(R.string.user_tab_3, R.drawable.ic_menu, android.R.color.black)
         val item4 = AHBottomNavigationItem(R.string.user_tab_4, R.drawable.ic_credit_card, android.R.color.black)
 

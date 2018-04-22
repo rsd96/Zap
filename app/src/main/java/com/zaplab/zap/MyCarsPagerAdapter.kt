@@ -1,7 +1,6 @@
 package com.zaplab.zap
 
 import android.content.Context
-import android.content.Intent
 import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
@@ -13,13 +12,12 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.varunest.sparkbutton.SparkButton
-import java.io.Serializable
 
 /**
  * Created by Ramshad on 4/6/18.
  */
 
-class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>): PagerAdapter() {
+class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>): PagerAdapter() {
     val context = _context
     val listOfVehicle = _listOfVehicle
     override fun isViewFromObject(view: View, `object`: Any): Boolean { return view == `object` }
@@ -42,38 +40,26 @@ class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Veh
         val rent: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRent)
         var imageUri = listOfVehicle[position].imageList[0]
 
-        vehicleImage.scaleType = ImageView.ScaleType.CENTER
+        vehicleImage.setScaleType(ImageView.ScaleType.CENTER);
 //        photoView.setAdjustViewBounds(true);
 
         Picasso.with(context)
                 .load(imageUri)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(vehicleImage, object : Callback {
-                    override fun onSuccess() {
-
-                    }
+                    override fun onSuccess() {}
 
                     override fun onError() {
                         // Try again online if cache failed
                         Picasso.with(context)
                                 .load(imageUri)
                                 .into(vehicleImage, object : Callback {
-                                    override fun onSuccess() {
+                                    override fun onSuccess() {}
 
-                                    }
-
-                                    override fun onError() {
-
-                                    }
+                                    override fun onError() {}
                                 })
                     }
                 })
-
-        vehicleImage.setOnClickListener({
-            var intent = Intent(context, VehicleDetailActivity::class.java)
-            intent.putExtra("vehicle", listOfVehicle[position] as Serializable)
-            context.startActivity(intent)
-        })
 
         title.text = "${listOfVehicle.get(position).make} - ${listOfVehicle.get(position).model}"
         desc.text = listOfVehicle.get(position).desc
