@@ -70,7 +70,7 @@ class AddCarActivity: AppCompatActivity() {
     }
 
     fun finishAdding() {
-        vehicle.ownerId = MainActivity.currentUser.uid
+        vehicle.ownerId = (this.application as Global).currentUser.uid
 
         // Push vehicle to DB, get Unique id, create folder in storage and upload pics of car to it
         // update vehicle image url list

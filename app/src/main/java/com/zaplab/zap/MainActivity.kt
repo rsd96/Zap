@@ -24,9 +24,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     var dbRef = FirebaseDatabase.getInstance().reference
 
-    companion object {
-        var currentUser = User()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,25 +36,25 @@ class MainActivity : AppCompatActivity() {
         var user = auth.currentUser
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
-            //finish()
+            finish()
             return
         } else {
-            currentUser.email = user.email.toString()
-            currentUser.uid = user.uid
-            currentUser.photoUrl = user.photoUrl.toString()
-            if (currentUser.userName.isBlank()) {
+            (this.application as Global).currentUser.email = user.email.toString()
+            (this.application as Global).currentUser.uid = user.uid
+            (this.application as Global).currentUser.photoUrl = user.photoUrl.toString()
+            if ((this.application as Global).currentUser.userName.isBlank()) {
                 if (!user.displayName.isNullOrBlank()) {
-                    currentUser.userName = user.displayName.toString()
+                    (this.application as Global).currentUser.userName = user.displayName.toString()
                 }
             }
 
-            Log.d(TAG, currentUser.userName)
-            dbRef.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            Log.d(TAG, (this.application as Global).currentUser.userName)
+            dbRef.child("Users").child((this.application as Global).currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {}
 
                 override fun onDataChange(snap: DataSnapshot?) {
                     if ( snap != null && !snap.exists()) {
-                        currentUser.addUserToDB()
+                        (application as Global).currentUser.addUserToDB()
                     }
                 }
 
@@ -66,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 
 
         var isCool = false
-        FirebaseDatabase.getInstance().reference.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+        FirebaseDatabase.getInstance().reference.child("Users").child((this.application as Global).currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
 
             override fun onDataChange(snap: DataSnapshot?) {
@@ -95,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 snap?.let {
                     vehicleList.clear()
                     for (x in snap.children) {
-                        if (x.child("ownerId").value.toString() != MainActivity.currentUser.uid)
+                        if (x.child("ownerId").value.toString() != (application as Global).currentUser.uid)
                             vehicleList.add(x.getValue(Vehicle::class.java)!!)
                     }
 
@@ -127,6 +124,12 @@ class MainActivity : AppCompatActivity() {
         tvProfile.setOnClickListener({
             dialog.dismiss()
             startActivity(Intent(this, UserActivity::class.java))
+        })
+
+        var tvMessages: TextView = dialog.findViewById(R.id.tvMenuMessages)
+        tvMessages.setOnClickListener({
+            dialog.dismiss()
+            startActivity(Intent(this, MessageListActivity::class.java))
         })
 
         val lp = WindowManager.LayoutParams()

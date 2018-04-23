@@ -38,7 +38,7 @@ class ChatActivity: AppCompatActivity() {
         // Get all data passed
         var data = intent.extras
         toUserId = data.getString("TO_USER")
-        currentUserId = MainActivity.currentUser.uid
+        currentUserId = (this.application as Global).currentUser.uid
 
         // Get channel id
         dbRef.child("Channels").addValueEventListener(object : ValueEventListener {
@@ -52,7 +52,7 @@ class ChatActivity: AppCompatActivity() {
                         var user2 = x.child("user2").value.toString()
                         if ((user1 == toUserId || user1 == currentUserId) &&
                                 (user2 == toUserId || user2 == currentUserId)) {
-                            channelId = x.value.toString()
+                            channelId = x.key.toString()
                             Log.d(TAG, channelId)
                             break
                         }
@@ -70,13 +70,12 @@ class ChatActivity: AppCompatActivity() {
 
                             override fun onDataChange(snap: DataSnapshot?) {
                                 if (snap != null) {
+                                    messageList.clear()
                                     for (x in snap.children) {
                                         messageList.add(x.getValue(Message::class.java)!!)
                                         rvChatMessageBoard.scrollToPosition(messageList.size - 1)
                                         mAdapter?.notifyItemInserted(messageList.size - 1)
                                         mAdapter?.refreshData(messageList)
-                                        dbRef.child("Channels").child(channelId).child("lastMessage")
-                                                .setValue(messageList[messageList.size - 1].message)
                                     }
                                 }
                             }
@@ -134,6 +133,8 @@ class ChatActivity: AppCompatActivity() {
                 m.from = currentUserId
 
                 dbRef.child("Messages").child(channelId).push().setValue(m)
+                dbRef.child("Channels").child(channelId).child("lastMessage")
+                        .setValue(message)
                 etChat.text.clear()
             }
         })

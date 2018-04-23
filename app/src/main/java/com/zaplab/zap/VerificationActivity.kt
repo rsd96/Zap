@@ -46,9 +46,10 @@ class VerificationActivity: AppCompatActivity() {
                         var updateVerif = hashMapOf<String, Any>()
                         updateVerif.put("verified", true)
                         updateVerif.put("verificationId", licence)
-                        FirebaseDatabase.getInstance().reference.child("Users").child(MainActivity.currentUser.uid)
+                        FirebaseDatabase.getInstance().reference.child("Users").child((application as Global).currentUser.uid)
                                 .updateChildren(updateVerif).addOnCompleteListener {
                                     startActivity(Intent(applicationContext, MainActivity::class.java))
+                                    finish()
                                 }
                     }
 

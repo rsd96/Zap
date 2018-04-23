@@ -31,8 +31,8 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        var name = MainActivity.currentUser.userName
-        var imageUrl = MainActivity.currentUser.photoUrl
+        var name = (activity?.application as Global).currentUser.userName
+        var imageUrl = (activity?.application as Global).currentUser.photoUrl
         Log.d("Profile Fragment", name)
 
 

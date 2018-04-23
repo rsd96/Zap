@@ -37,7 +37,7 @@ class MyCarFragment: Fragment() {
                 snap?.let {
                     vehicleList.clear()
                     for (x in snap.children) {
-                        if (x.child("ownerId").value.toString() == MainActivity.currentUser.uid)
+                        if (x.child("ownerId").value.toString() == (activity?.application as Global).currentUser.uid)
                             vehicleList.add(x.getValue(Vehicle::class.java)!!)
                     }
 
