@@ -88,4 +88,6 @@ class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Veh
         container.removeView(`object` as CardView)
     }
 
+
+
 }

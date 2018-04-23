@@ -57,7 +57,8 @@ class SignUpActivity: AppCompatActivity() {
                             // signed in user can be handled in the listener.
                             if (task.isSuccessful) {
                                 var ref = FirebaseDatabase.getInstance().getReference()
-                                ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(userName)
+                                //ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(userName)
+                                MainActivity.currentUser.userName = userName
                                 startActivity(Intent(this, MainActivity::class.java))
                                 finish()
                             } else {

@@ -42,12 +42,14 @@ class VehicleDetailActivity: AppCompatActivity() {
         collapsingToolbarVehicleDetail.setExpandedTitleTextColor(ColorStateList.valueOf(0xffffff))
 
         fabVehicleDetailMessage.setOnClickListener({
-            startActivity(Intent(this, ChatActivity::class.java))
+            var intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("TO_USER", vehicle.ownerId)
+            startActivity(intent)
         })
 
 
         // set user name
-        var query = dbRef.child("Users").child(vehicle.ownerId).addListenerForSingleValueEvent(object: ValueEventListener{
+        dbRef.child("Users").child(vehicle.ownerId).addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
 
             override fun onDataChange(snap: DataSnapshot?) {
@@ -73,7 +75,6 @@ class VehicleDetailActivity: AppCompatActivity() {
                             }
                         })
             }
-
         })
 
 

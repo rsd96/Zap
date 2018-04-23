@@ -135,10 +135,12 @@ class AddCarActivity: AppCompatActivity() {
                     imageUrlList.add(downloadUrl.toString())
                     vehicle.imageList.clear()
                     vehicle.imageList.addAll(imageUrlList)
-                    dbRef.child("Vehicles").child(key).setValue(vehicle).addOnSuccessListener {
-                        btnAddCarPayFinish.loadingSuccessful()
-                        Toast.makeText(this, "Vehicle successfully added !", Toast.LENGTH_SHORT).show()
-                        finish()
+                    if (imageUrlList.size == images.size) {
+                        dbRef.child("Vehicles").child(key).setValue(vehicle).addOnSuccessListener {
+                            btnAddCarPayFinish.loadingSuccessful()
+                            Toast.makeText(this, "Vehicle successfully added !", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
                     }
                 })
             }

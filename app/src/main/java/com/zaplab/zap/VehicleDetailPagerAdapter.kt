@@ -28,7 +28,7 @@ class VehicleDetailPagerAdapter(_context: Context, _listOfImages: ArrayList<Stri
         var image = ImageView(context)
         var imageUri = listOfImages[position]
 
-        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.scaleType = ImageView.ScaleType.FIT_XY;
         //image.setAdjustViewBounds(true);
 
         Picasso.with(context)

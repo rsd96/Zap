@@ -3,6 +3,7 @@ package com.zaplab.zap
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,34 +31,37 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        var name = user?.displayName
-        var imageUrl = user?.photoUrl
+        var name = MainActivity.currentUser.userName
+        var imageUrl = MainActivity.currentUser.photoUrl
+        Log.d("Profile Fragment", name)
 
 
-        // Load user profile image
-        Picasso.with(activity)
-                .load(imageUrl)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(ivProfileImage, object : Callback {
-                    override fun onSuccess() {
+        if (imageUrl.isNotBlank()) {
+            // Load user profile image
+            Picasso.with(activity)
+                    .load(imageUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(ivProfileImage, object : Callback {
+                        override fun onSuccess() {
 
-                    }
+                        }
 
-                    override fun onError() {
-                        // Try again online if cache failed
-                        Picasso.with(activity)
-                                .load(imageUrl)
-                                .into(ivProfileImage, object : Callback {
-                                    override fun onSuccess() {
+                        override fun onError() {
+                            // Try again online if cache failed
+                            Picasso.with(activity)
+                                    .load(imageUrl)
+                                    .into(ivProfileImage, object : Callback {
+                                        override fun onSuccess() {
 
-                                    }
+                                        }
 
-                                    override fun onError() {
+                                        override fun onError() {
 
-                                    }
-                                })
-                    }
-                })
+                                        }
+                                    })
+                        }
+                    })
+        }
 
         tvProfileName.text = name
 

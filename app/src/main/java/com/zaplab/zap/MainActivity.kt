@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -37,16 +39,19 @@ class MainActivity : AppCompatActivity() {
         var user = auth.currentUser
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            //finish()
             return
         } else {
             currentUser.email = user.email.toString()
             currentUser.uid = user.uid
             currentUser.photoUrl = user.photoUrl.toString()
-            if (user.displayName?.isNotBlank()!!) {
-                currentUser.userName = user.displayName!!
+            if (currentUser.userName.isBlank()) {
+                if (!user.displayName.isNullOrBlank()) {
+                    currentUser.userName = user.displayName.toString()
+                }
             }
 
+            Log.d(TAG, currentUser.userName)
             dbRef.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {}
 
@@ -82,31 +87,9 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-
-
-        /* ANONYMOUS SIGN IN
-        auth = FirebaseAuth.getInstance()
-        auth.signInAnonymously()
-                .addOnCompleteListener(this, object : OnCompleteListener<AuthResult> {
-                    override fun onComplete(task: Task<AuthResult>) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInAnonymously:success")
-                            val user = auth.getCurrentUser()
-                            updateUI(user)
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInAnonymously:failure", task.getException())
-                            Toast.makeText(applicationContext, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                })
-
-              **/
-
         var vehicleList = mutableListOf<Vehicle>()
+        var adapter = HomeListRecyclerAdapter(applicationContext, vehicleList)
+        rvListingHome.layoutManager = LinearLayoutManager(this)
         dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snap: DataSnapshot?) {
                 snap?.let {
@@ -117,8 +100,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (vehicleList.isNotEmpty()) {
-                        var pagerAdapter = VehicleListPagerAdapter(applicationContext, vehicleList)
-                        viewPagerListingHome.adapter = pagerAdapter
+
+                        rvListingHome.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     }
                 }
 
