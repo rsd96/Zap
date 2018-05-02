@@ -14,5 +14,6 @@ class Global: Application() {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
+        JodaTimeAndroid.init(this)
     }
 }

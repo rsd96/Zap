@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -24,6 +25,8 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_vehicle_detail.*
+import org.joda.time.DateTime
+import org.joda.time.Hours
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,6 +36,7 @@ import java.util.*
  */
 class VehicleDetailActivity: AppCompatActivity() {
 
+    private val TAG = "VehicleDetailAcitvity"
     var dbRef = FirebaseDatabase.getInstance().reference
     lateinit var userName: String
     var vehicle = Vehicle()
@@ -44,6 +48,7 @@ class VehicleDetailActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vehicle_detail)
+
 
         vehicle = intent.getSerializableExtra("vehicle") as Vehicle
 
@@ -231,7 +236,45 @@ class VehicleDetailActivity: AppCompatActivity() {
         val view = layoutInflater?.inflate(R.layout.dialog_damage_breakdown, null)
         dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         dialog.setContentView(view)
+        var carName = dialog.findViewById<TextView>(R.id.tvCheckoutName)
+        var from = dialog.findViewById<TextView>(R.id.tvCheckoutFrom)
+        var to = dialog.findViewById<TextView>(R.id.tvCheckoutTo)
+        var rent = dialog.findViewById<TextView>(R.id.tvCheckoutRent)
+        var insurance = dialog.findViewById<TextView>(R.id.tvCheckoutInsurance)
+        var total = dialog.findViewById<TextView>(R.id.tvCheckoutTotal)
+        var insuranceAmount = dialog.findViewById<TextView>(R.id.tvCheckoutInsuranceAmount)
+        var btnPay = dialog.findViewById<Button>(R.id.btnCheckoutPay)
+
+        carName.text = "${vehicle.make}-${vehicle.model}"
+        from.text = SimpleDateFormat("dd:MM:yy - HH:mm:ss").format(fromDate)
+        to.text = SimpleDateFormat("dd:MM:yy - HH:mm:ss").format(toDate)
+        //var difference = Interval(DateTime(fromDate), DateTime(toDate))
+        var hObj = Hours.hoursBetween(DateTime(fromDate).withTimeAtStartOfDay(), DateTime(toDate).withTimeAtStartOfDay())
+        var hours = hObj.hours
+        var totalAmount = 0.00
+        Log.d(TAG, "hours between = $hours")
+        var calcedRent = hours*vehicle.rent
+        totalAmount += calcedRent
+        rent.text = "$hours x ${vehicle.rent} = $calcedRent"
+        if (!isInsurancePayDamage) {
+            insurance.visibility = View.GONE
+            insuranceAmount.visibility = View.GONE
+        } else {
+
+            totalAmount += 35
+        }
+
+        total.text = "$totalAmount"
+
+        btnPay.setOnClickListener({
+            // start credit card dialog
+            showPaymentDialog()
+        })
         dialog.show()
+    }
+
+    private fun showPaymentDialog() {
+
     }
 
     /**
