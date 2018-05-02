@@ -49,15 +49,19 @@ class MainActivity : AppCompatActivity() {
     // Get all vehicles from database and populate the list
     private fun populateVehicleListing() {
         var vehicleList = mutableListOf<Vehicle>()
-        var adapter = HomeListRecyclerAdapter(applicationContext, vehicleList)
+        var idList = mutableListOf<String>()
+        var adapter = HomeListRecyclerAdapter(applicationContext, vehicleList, idList)
         rvListingHome.layoutManager = LinearLayoutManager(this)
         dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snap: DataSnapshot?) {
                 snap?.let {
                     vehicleList.clear()
+                    idList.clear()
                     for (x in snap.children) {
-                        if (x.child("ownerId").value.toString() != (application as Global).currentUser.uid)
+                        if (x.child("ownerId").value.toString() != (application as Global).currentUser.uid) {
                             vehicleList.add(x.getValue(Vehicle::class.java)!!)
+                            idList.add(x.key)
+                        }
                     }
 
                     if (vehicleList.isNotEmpty()) {

@@ -4,18 +4,23 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.cooltechworks.creditcarddesign.CreditCardView
+import com.dx.dxloadingbutton.lib.LoadingButton
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,9 +45,12 @@ class VehicleDetailActivity: AppCompatActivity() {
     var dbRef = FirebaseDatabase.getInstance().reference
     lateinit var userName: String
     var vehicle = Vehicle()
+    var vehicleId = ""
     lateinit var fromDate: Date
     lateinit var toDate: Date
     var isInsurancePayDamage = false
+    var listOfCards = mutableListOf<CreditCard>()
+    var transaction = Transaction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +59,7 @@ class VehicleDetailActivity: AppCompatActivity() {
 
 
         vehicle = intent.getSerializableExtra("vehicle") as Vehicle
+        vehicleId = intent.getStringExtra("vehicleId")
 
         var imagePagerAdapter = VehicleDetailPagerAdapter(this, vehicle.imageList)
         viewPagerVehicleDetail.adapter = imagePagerAdapter
@@ -103,6 +112,9 @@ class VehicleDetailActivity: AppCompatActivity() {
      * Start booking process to rent a car
      */
     private fun startBooking() {
+        transaction.owner = vehicle.ownerId
+        transaction.renter = (application as Global).currentUser.uid
+        transaction.vehicleId = vehicleId
         showFromDatePicker()
     }
 
@@ -139,6 +151,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
                 fromDate = date
+                transaction.fromDate = fromDate.toString()
                 showToDatePicker()
 
             }
@@ -185,6 +198,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
                 toDate = date
+                transaction.toDate = toDate.toString()
                 showDamageDialog()
             }
 
@@ -212,12 +226,14 @@ class VehicleDetailActivity: AppCompatActivity() {
             viewPayMyself.setBackgroundColor(ContextCompat.getColor(this@VehicleDetailActivity, R.color.colorPrimaryAlpha))
             viewPayInsurance.setBackgroundColor(ContextCompat.getColor(this@VehicleDetailActivity, android.R.color.transparent))
             isInsurancePayDamage = false
+            transaction.isDamagePaidByInsurance = false
         })
 
         viewPayInsurance.setOnClickListener({
             viewPayInsurance.setBackgroundColor(ContextCompat.getColor(this@VehicleDetailActivity, R.color.colorPrimaryAlpha))
             viewPayMyself.setBackgroundColor(ContextCompat.getColor(this@VehicleDetailActivity, android.R.color.transparent))
             isInsurancePayDamage = true
+            transaction.isDamagePaidByInsurance = true
         })
         btnConfirm.setOnClickListener({
             // show money breakdown
@@ -234,8 +250,8 @@ class VehicleDetailActivity: AppCompatActivity() {
     private fun showBreakdownDialog() {
         var dialog = Dialog(this@VehicleDetailActivity)
         val view = layoutInflater?.inflate(R.layout.dialog_damage_breakdown, null)
-        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         dialog.setContentView(view)
+        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         var carName = dialog.findViewById<TextView>(R.id.tvCheckoutName)
         var from = dialog.findViewById<TextView>(R.id.tvCheckoutFrom)
         var to = dialog.findViewById<TextView>(R.id.tvCheckoutTo)
@@ -246,8 +262,8 @@ class VehicleDetailActivity: AppCompatActivity() {
         var btnPay = dialog.findViewById<Button>(R.id.btnCheckoutPay)
 
         carName.text = "${vehicle.make}-${vehicle.model}"
-        from.text = SimpleDateFormat("dd:MM:yy - HH:mm:ss").format(fromDate)
-        to.text = SimpleDateFormat("dd:MM:yy - HH:mm:ss").format(toDate)
+        from.text = SimpleDateFormat("dd/MM/yy - HH:mm").format(fromDate)
+        to.text = SimpleDateFormat("dd/MM/yy - HH:mm").format(toDate)
         //var difference = Interval(DateTime(fromDate), DateTime(toDate))
         var hObj = Hours.hoursBetween(DateTime(fromDate).withTimeAtStartOfDay(), DateTime(toDate).withTimeAtStartOfDay())
         var hours = hObj.hours
@@ -255,7 +271,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         Log.d(TAG, "hours between = $hours")
         var calcedRent = hours*vehicle.rent
         totalAmount += calcedRent
-        rent.text = "$hours x ${vehicle.rent} = $calcedRent"
+        rent.text = "$hours x ${vehicle.rent} = $$calcedRent"
         if (!isInsurancePayDamage) {
             insurance.visibility = View.GONE
             insuranceAmount.visibility = View.GONE
@@ -266,15 +282,58 @@ class VehicleDetailActivity: AppCompatActivity() {
 
         total.text = "$totalAmount"
 
+        transaction.amount = totalAmount
+
         btnPay.setOnClickListener({
             // start credit card dialog
+            dialog.dismiss()
             showPaymentDialog()
         })
         dialog.show()
     }
 
     private fun showPaymentDialog() {
+        var dialog = Dialog(this@VehicleDetailActivity)
+        val view = layoutInflater?.inflate(R.layout.dialog_transaction_pay, null)
+        dialog.setContentView(view)
+        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        var viewPager = dialog.findViewById<ViewPager>(R.id.viewPagerTransactionPay)
+        loadCreditCards(viewPager)
+        var selectCard = dialog.findViewById<LoadingButton>(R.id.btnTransactionPaySelect)
+        var addCard = dialog.findViewById<FloatingActionButton>(R.id.fabTransactionPay)
+        var selectedCard = dialog.findViewById<CreditCardView>(R.id.selectedCardTransactionPay)
+        var btnFinish = dialog.findViewById<LoadingButton>(R.id.btnTransactionPayFinish)
 
+        addCard.setOnClickListener({
+            AddCreditCardDialog.showDialog(this@VehicleDetailActivity)
+        })
+
+        selectCard.setOnClickListener({
+            var card = listOfCards[viewPager.currentItem]
+            selectedCard.visibility = View.VISIBLE
+            selectedCard.cardNumber = card.number
+            selectedCard.cardHolderName = card.name
+            selectedCard.setCardExpiry(card.exp)
+            selectedCard.setCVV(card.cvv)
+            viewPager.visibility = View.GONE
+            selectCard.visibility = View.GONE
+            addCard.visibility = View.GONE
+            btnFinish.visibility = View.VISIBLE
+            transaction.renterCard = card.number
+        })
+
+        btnFinish.setOnClickListener({
+            btnFinish.startLoading()
+            var map = hashMapOf<String, String>()
+            map.put("from", fromDate.toString())
+            map.put("to", toDate.toString())
+            FirebaseDatabase.getInstance().reference.child("Bookings").child(vehicleId).push().setValue(map)
+            FirebaseDatabase.getInstance().reference.child("Transactions").push().setValue(transaction).addOnCompleteListener {
+                btnFinish.loadingSuccessful()
+                dialog.dismiss()
+            }
+        })
+        dialog.show()
     }
 
     /**
@@ -334,7 +393,6 @@ class VehicleDetailActivity: AppCompatActivity() {
                 }
             })
             dialog.show()
-
     }
 
     /**
@@ -360,5 +418,33 @@ class VehicleDetailActivity: AppCompatActivity() {
             satText.text = vehicle.availability.saturday
             sunText.text = vehicle.availability.sunday
             dialog.show()
+    }
+
+
+    /**
+     * Load all credit cards belonging to this user
+     */
+    private fun loadCreditCards(viewPager: ViewPager) {
+        dbRef.child("Cards").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if (snap != null) {
+                    listOfCards.clear()
+                    for (x in snap.children) {
+                        var creditCard = x.getValue(CreditCard::class.java)
+                        if (creditCard?.cardHolder?.equals(FirebaseAuth.getInstance().currentUser?.uid)!!)
+                            creditCard?.let { listOfCards.add(it) }
+                        var adapter = CreditCardListAdapter(this@VehicleDetailActivity, listOfCards)
+                        viewPager.adapter = adapter
+                        viewPager.clipToPadding = false
+                        viewPager.setPadding(100, 0, 100, 0)
+                    }
+                }
+            }
+
+        })
     }
 }

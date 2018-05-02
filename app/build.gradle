@@ -63,6 +63,7 @@ dependencies {
     compile 'me.gujun.android.taggroup:library:1.4@aar'
     compile 'com.github.Kunzisoft:Android-SwitchDateTimePicker:1.9'
     implementation 'net.danlew:android.joda:2.9.9.3'
+    implementation 'com.github.skedgo:DateTimeRangePicker:v1.3'
 }
 
 

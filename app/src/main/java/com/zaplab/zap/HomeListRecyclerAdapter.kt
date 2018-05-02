@@ -17,11 +17,12 @@ import java.io.Serializable
 /**
  * Created by Ramshad on 4/22/18.
  */
-class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>) :
+class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, idList: MutableList<String>) :
         RecyclerView.Adapter<HomeListRecyclerAdapter.MyViewHolder>() {
 
     val myContext = _context
     var list = _list
+    var idList = idList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListRecyclerAdapter.MyViewHolder {
         var v = LayoutInflater.from(myContext).inflate(R.layout.vehicle_listing_content, parent, false)
@@ -66,6 +67,7 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>) :
         holder?.vehicleImage.setOnClickListener({
             var intent = Intent(myContext, VehicleDetailActivity::class.java)
             intent.putExtra("vehicle", list[position] as Serializable)
+            intent.putExtra("vehicleId", idList[position])
             myContext.startActivity(intent)
         })
 
