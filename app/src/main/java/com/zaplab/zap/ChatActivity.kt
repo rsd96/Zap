@@ -33,61 +33,50 @@ class ChatActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-
-
         // Get all data passed
         var data = intent.extras
         toUserId = data.getString("TO_USER")
         currentUserId = (this.application as Global).currentUser.uid
 
-        // Get channel id
-        dbRef.child("Channels").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-            }
+        getChannel()
 
-            override fun onDataChange(snap: DataSnapshot?) {
-                if (snap != null) {
-                    for (x in snap.children) {
-                        var user1 = x.child("user1").value.toString()
-                        var user2 = x.child("user2").value.toString()
-                        if ((user1 == toUserId || user1 == currentUserId) &&
-                                (user2 == toUserId || user2 == currentUserId)) {
-                            channelId = x.key.toString()
-                            Log.d(TAG, channelId)
-                            break
-                        }
-                    }
+        getUserData()
 
-                    if (channelId.isNullOrBlank()) {
+        // setup and initialize message board
+        rvChatMessageBoard?.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+        //mRecyclerView.setItemAnimator(new SlideInOutLeftItemAnimator(mRecyclerView));
+        mAdapter = ChatAdapter(applicationContext, messageList)
+        rvChatMessageBoard?.adapter = mAdapter
 
-                        dbRef.child("Channels").push().setValue(Channel(user1 = currentUserId, user2 = toUserId, lastMessage = ""))
 
-                    } else {
-                        // Get all messages related to channel
-                        dbRef.child("Messages").child(channelId).addValueEventListener(object : ValueEventListener {
-                            override fun onCancelled(p0: DatabaseError?) {
-                            }
-
-                            override fun onDataChange(snap: DataSnapshot?) {
-                                if (snap != null) {
-                                    messageList.clear()
-                                    for (x in snap.children) {
-                                        messageList.add(x.getValue(Message::class.java)!!)
-                                        rvChatMessageBoard.scrollToPosition(messageList.size - 1)
-                                        mAdapter?.notifyItemInserted(messageList.size - 1)
-                                        mAdapter?.refreshData(messageList)
-                                    }
-                                }
-                            }
-
-                        })
-                    }
-                }
-            }
+        btnChatSend.setOnClickListener( {
+            sendMessage()
         })
+    }
+
+    /**
+     * Get new message and add to database
+     */
+    private fun sendMessage() {
+        var message = etChat.text.toString().trim()
+
+        if (message.isNotEmpty()) {
+            var m = Message()
+            m.message = message
+            m.from = currentUserId
+
+            dbRef.child("Messages").child(channelId).push().setValue(m)
+            dbRef.child("Channels").child(channelId).child("lastMessage")
+                    .setValue(message)
+            etChat.text.clear()
+        }
+    }
 
 
-
+    /**
+     * Get user info (profile pic, name)
+     */
+    private fun getUserData() {
         // Get user data
         dbRef.child("Users").child(toUserId).addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
@@ -116,27 +105,62 @@ class ChatActivity: AppCompatActivity() {
                         })
             }
         })
+    }
 
-
-        rvChatMessageBoard?.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-        //mRecyclerView.setItemAnimator(new SlideInOutLeftItemAnimator(mRecyclerView));
-        mAdapter = ChatAdapter(applicationContext, messageList)
-        rvChatMessageBoard?.adapter = mAdapter
-
-
-        btnChatSend.setOnClickListener( {
-            var message = etChat.text.toString().trim()
-
-            if (message.isNotEmpty()) {
-                var m = Message()
-                m.message = message
-                m.from = currentUserId
-
-                dbRef.child("Messages").child(channelId).push().setValue(m)
-                dbRef.child("Channels").child(channelId).child("lastMessage")
-                        .setValue(message)
-                etChat.text.clear()
+    /**
+     * Get unique channel between two users
+     */
+    private fun getChannel() {
+        dbRef.child("Channels").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
             }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if (snap != null) {
+                    for (x in snap.children) {
+                        var user1 = x.child("user1").value.toString()
+                        var user2 = x.child("user2").value.toString()
+                        if ((user1 == toUserId || user1 == currentUserId) &&
+                                (user2 == toUserId || user2 == currentUserId)) {
+                            channelId = x.key.toString()
+                            Log.d(TAG, channelId)
+                            break
+                        }
+                    }
+
+                    if (channelId.isNullOrBlank()) {
+
+                        dbRef.child("Channels").push().setValue(Channel(user1 = currentUserId, user2 = toUserId, lastMessage = ""))
+
+                    } else {
+                        loadPreviousMessages()
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     * Load all messages for this unique channel
+     */
+    private fun loadPreviousMessages() {
+        // Get all messages related to channel
+        dbRef.child("Messages").child(channelId).addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if (snap != null) {
+                    messageList.clear()
+                    for (x in snap.children) {
+                        messageList.add(x.getValue(Message::class.java)!!)
+                        rvChatMessageBoard.scrollToPosition(messageList.size - 1)
+                        mAdapter?.notifyItemInserted(messageList.size - 1)
+                        mAdapter?.refreshData(messageList)
+                    }
+                }
+            }
+
         })
     }
 }

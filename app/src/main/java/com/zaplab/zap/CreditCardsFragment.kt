@@ -33,6 +33,16 @@ class CreditCardsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        loadCreditCards()
+        fabAddCreditCard.setOnClickListener({
+            addCreditCard()
+        })
+    }
+
+    /**
+     * Load all credit cards belonging to current user
+     */
+    private fun loadCreditCards() {
         dbRef.child("Cards").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
@@ -55,86 +65,87 @@ class CreditCardsFragment: Fragment() {
             }
 
         })
+    }
 
-
-        var isBack = false
-        fabAddCreditCard.setOnClickListener({
-            var dialog = Dialog(activity)
-            val view = activity?.layoutInflater?.inflate(R.layout.add_credit_card, null)
-            dialog.setContentView(view)
-            var etCardNum = dialog.findViewById<EditText>(R.id.etAddCardNum)
-            var etCardName = dialog.findViewById<EditText>(R.id.etAddCardName)
-            var etCardExp = dialog.findViewById<EditText>(R.id.etAddCardDate)
-            var etCardCVV = dialog.findViewById<EditText>(R.id.etAddCardCVV)
-            var creditCard = dialog.findViewById<CreditCardView>(R.id.creditCardAdd)
-            var btnAddCard = dialog.findViewById<Button>(R.id.btnAddCard)
-            etCardNum.addTextChangedListener(object: TextWatcher{
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                }
-
-                override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cardNumber = t.toString().trim()
-                }
-
-            })
-
-            etCardName.addTextChangedListener(object: TextWatcher{
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cardHolderName = t.toString().trim()
-                }
-
-            })
-
-            etCardExp.addTextChangedListener(object: TextWatcher{
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.setCardExpiry(t.toString().trim())
-                }
-
-            })
-
-            etCardCVV.addTextChangedListener(object: TextWatcher{
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    creditCard.cvv = t.toString().trim()
-                }
-
-            })
-
-            etCardCVV.onFocusChangeListener = View.OnFocusChangeListener { p0, hasFocus ->
-                if(hasFocus) {
-                    creditCard.showBack()
-                } else
-                    creditCard.showFront()
+    /**
+     * Create a dialog that asks for credit card info and add it to database
+     */
+    private fun addCreditCard() {
+        var dialog = Dialog(activity)
+        val view = activity?.layoutInflater?.inflate(R.layout.add_credit_card, null)
+        dialog.setContentView(view)
+        var etCardNum = dialog.findViewById<EditText>(R.id.etAddCardNum)
+        var etCardName = dialog.findViewById<EditText>(R.id.etAddCardName)
+        var etCardExp = dialog.findViewById<EditText>(R.id.etAddCardDate)
+        var etCardCVV = dialog.findViewById<EditText>(R.id.etAddCardCVV)
+        var creditCard = dialog.findViewById<CreditCardView>(R.id.creditCardAdd)
+        var btnAddCard = dialog.findViewById<Button>(R.id.btnAddCard)
+        etCardNum.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
             }
 
-            btnAddCard.setOnClickListener({
-                // Validation checks
-                var creditCard = FirebaseAuth.getInstance().currentUser?.uid?.toString()?.let { it1 -> CreditCard(it1,etCardNum.text.toString(), etCardName.text.toString(), etCardExp.text.toString(), etCardCVV.text.toString()) }
-                dbRef.child("Cards").push().setValue(creditCard).addOnCompleteListener { dialog.dismiss() }
-            })
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-            dialog.show()
+            }
+
+            override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                creditCard.cardNumber = t.toString().trim()
+            }
+
         })
+
+        etCardName.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                creditCard.cardHolderName = t.toString().trim()
+            }
+
+        })
+
+        etCardExp.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                creditCard.setCardExpiry(t.toString().trim())
+            }
+
+        })
+
+        etCardCVV.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(t: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                creditCard.cvv = t.toString().trim()
+            }
+
+        })
+
+        etCardCVV.onFocusChangeListener = View.OnFocusChangeListener { p0, hasFocus ->
+            if(hasFocus) {
+                creditCard.showBack()
+            } else
+                creditCard.showFront()
+        }
+
+        btnAddCard.setOnClickListener({
+            // Validation checks
+            var creditCard = FirebaseAuth.getInstance().currentUser?.uid?.toString()?.let { it1 -> CreditCard(it1,etCardNum.text.toString(), etCardName.text.toString(), etCardExp.text.toString(), etCardCVV.text.toString()) }
+            dbRef.child("Cards").push().setValue(creditCard).addOnCompleteListener { dialog.dismiss() }
+        })
+
+        dialog.show()
     }
 }

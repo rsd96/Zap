@@ -57,56 +57,29 @@ class LoginActivity: AppCompatActivity() {
                     .enableTransitionType(LayoutTransition.CHANGING);
         }
 
-        btnLoginEmail.setOnClickListener({
-            layoutLoginOptions.visibility = View.GONE
-            layoutEmailLogin.visibility = View.VISIBLE
-        })
 
-        btn_login_mail_back.setOnClickListener({
-            layoutLoginOptions.visibility = View.VISIBLE
-            layoutEmailLogin.visibility = View.GONE
-        })
+        fbLogin()
+        googleLogin()
+        mailLogin()
+    }
 
 
-        // Facebook login
-        callbackManager = CallbackManager.Factory.create()
-        btnLoginFB.setReadPermissions("email", "public_profile")
-        btnLoginFB.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(result: LoginResult?) {
-                result?.getAccessToken()?.let { handleFacebookAccessToken(it) }
-            }
-
-            override fun onCancel() {
-            }
-
-            override fun onError(error: FacebookException?) {
-            }
-
-        })
-
-        // Google login
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-        btnLoginGoogle.setOnClickListener({
-            val signInIntent = googleSignInClient.getSignInIntent()
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        })
-
-
-        /// Email login
+    /**
+     * Email login
+     * Handle signup, reset and login buttons
+     * */
+    private fun mailLogin() {
+        // Email login
         btn_login_signup.setOnClickListener({view ->
             startActivity(Intent(this, SignUpActivity::class.java))
         })
 
+        // ResetPassword
         btn_login_reset_password.setOnClickListener({view ->
             startActivity(Intent(this, ResetPassActivity::class.java))
         })
 
+        // Get email , pass and create user
         btn_login.setOnClickListener({view ->
             val email = et_email.getText().toString().trim()
             val password = et_password.getText().toString().trim()
@@ -124,7 +97,7 @@ class LoginActivity: AppCompatActivity() {
                                 pb_login.visibility = View.GONE
                                 if (!task.isSuccessful) {
                                     // error
-                                    if (password.length <= 6) {
+                                    if (password.length < 6) {
                                         et_password.setError(getString(R.string.minimum_password))
                                     } else {
                                         Toast.makeText(this, getString(R.string.auth_failed), Toast.LENGTH_SHORT).show()
@@ -138,9 +111,50 @@ class LoginActivity: AppCompatActivity() {
             }
         })
 
+        btnLoginEmail.setOnClickListener({
+            layoutLoginOptions.visibility = View.GONE
+            layoutEmailLogin.visibility = View.VISIBLE
+        })
+
+        btn_login_mail_back.setOnClickListener({
+            layoutLoginOptions.visibility = View.VISIBLE
+            layoutEmailLogin.visibility = View.GONE
+        })
     }
 
-    fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+    private fun googleLogin() {
+        // Google login
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        btnLoginGoogle.setOnClickListener({
+            val signInIntent = googleSignInClient.getSignInIntent()
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        })
+    }
+
+    // Facebook login
+    private fun fbLogin() {
+        callbackManager = CallbackManager.Factory.create()
+        btnLoginFB.setReadPermissions("email", "public_profile")
+        btnLoginFB.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {
+                result?.accessToken?.let { handleFacebookAccessToken(it) }
+            }
+
+            override fun onCancel() {
+            }
+
+            override fun onError(error: FacebookException?) {
+            }
+
+        })
+    }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
 
         var credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)

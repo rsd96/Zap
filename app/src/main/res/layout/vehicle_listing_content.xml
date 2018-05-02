@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="400dp"
     android:layout_margin="10dp"
     android:orientation="vertical">
 
@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
@@ -52,13 +53,10 @@
             android:id="@+id/tvVehicleCardDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardTitle"
-            app:layout_constraintVertical_bias="0.01999998" />
+            app:layout_constraintStart_toStartOf="@+id/tvVehicleCardLocation"
+            app:layout_constraintTop_toBottomOf="@id/tvVehicleCardLocation" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline2"
@@ -72,8 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:text="4.8"
             android:textColor="#76ff03"
             android:textSize="18sp"
@@ -81,13 +79,16 @@
             app:layout_constraintEnd_toStartOf="@+id/tvVehicleCardBond"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardDesc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardDesc" />
 
         <TextView
             android:id="@+id/tvVehicleCardBond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:text="Bond: $20"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -95,15 +96,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvVehicleCardRent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardRating" />
+            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardRating"
+            app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardDesc" />
 
         <TextView
             android:id="@+id/tvVehicleCardRent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
             android:text="Rent: $70"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -111,7 +113,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardBond" />
+            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardBond"
+            app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardDesc" />
 
         <com.varunest.sparkbutton.SparkButton
             android:id="@+id/btnVehicleCardStar"
@@ -127,6 +130,16 @@
             app:sparkbutton_inActiveImage="@drawable/ic_star"
             app:sparkbutton_primaryColor="@color/colorPrimary"
             app:sparkbutton_secondaryColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tvVehicleCardLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Wollongong, Australia"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintStart_toStartOf="@+id/tvVehicleCardTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardTitle" />
 
 
     </android.support.constraint.ConstraintLayout>

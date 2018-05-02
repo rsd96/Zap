@@ -22,6 +22,7 @@
         <activity android:name=".UserActivity"
             android:screenOrientation="portrait"/>
 
+
         <activity android:name=".VehicleDetailActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"/>

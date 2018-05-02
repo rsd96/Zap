@@ -14,8 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
  */
 class ChatAdapter(private var context: Context, private var chatList: MutableList<Message>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-
-
     private val CHAT_END = 1
     private val CHAT_START = 2
     var TAG = "CarsRecycleAdapter"

@@ -18,40 +18,20 @@ class MessageListActivity: AppCompatActivity() {
 
 
     var channelList = mutableListOf<Channel>()
+    var currentUser = ""
+    lateinit var adapter : MessageListRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_list)
 
-        var currentUser = (application as Global).currentUser.uid
 
-        var adapter = MessageListRecyclerAdapter(applicationContext, channelList, currentUser)
+        currentUser = (application as Global).currentUser.uid
+
+        adapter = MessageListRecyclerAdapter(applicationContext, channelList, currentUser)
         rvMessageList.layoutManager = LinearLayoutManager(this)
 
-        FirebaseDatabase.getInstance().reference.child("Channels").addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {
-                    }
-
-                    override fun onDataChange(snap: DataSnapshot?) {
-                        if ( snap != null) {
-                            for ( x in snap.children) {
-                                var user1 = x.child("user1").value.toString()
-                                var user2 = x.child("user2").value.toString()
-
-                                if ((user1 ==  currentUser || user2 == currentUser)) {
-                                    channelList.add(x.getValue(Channel::class.java)!!)
-                                }
-                            }
-
-                            if (channelList.isNotEmpty()) {
-                                rvMessageList.adapter = adapter
-                                adapter.notifyDataSetChanged()
-                            }
-                        }
-
-                    }
-
-                })
+        getMessageHistory()
 
         rvMessageList.addOnItemTouchListener(object : RecyclerItemClickListener(this,
                 OnItemClickListener { view, position ->
@@ -62,5 +42,32 @@ class MessageListActivity: AppCompatActivity() {
                     finish()
                 })
         {})
+    }
+
+    private fun getMessageHistory() {
+        FirebaseDatabase.getInstance().reference.child("Channels").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if ( snap != null) {
+                    for ( x in snap.children) {
+                        var user1 = x.child("user1").value.toString()
+                        var user2 = x.child("user2").value.toString()
+
+                        if ((user1 ==  currentUser || user2 == currentUser)) {
+                            channelList.add(x.getValue(Channel::class.java)!!)
+                        }
+                    }
+
+                    if (channelList.isNotEmpty()) {
+                        rvMessageList.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+
+            }
+
+        })
     }
 }

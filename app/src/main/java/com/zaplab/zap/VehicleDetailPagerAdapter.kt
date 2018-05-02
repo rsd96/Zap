@@ -28,9 +28,17 @@ class VehicleDetailPagerAdapter(_context: Context, _listOfImages: ArrayList<Stri
         var image = ImageView(context)
         var imageUri = listOfImages[position]
 
-        image.scaleType = ImageView.ScaleType.FIT_XY;
+        image.scaleType = ImageView.ScaleType.CENTER_CROP
         //image.setAdjustViewBounds(true);
 
+        loadCarImages(image, imageUri)
+
+
+        container.addView(image, 0)
+        return image
+    }
+
+    private fun loadCarImages(image: ImageView, imageUri: String) {
         Picasso.with(context)
                 .load(imageUri)
                 .networkPolicy(NetworkPolicy.OFFLINE)
@@ -54,9 +62,6 @@ class VehicleDetailPagerAdapter(_context: Context, _listOfImages: ArrayList<Stri
                                 })
                     }
                 })
-
-        container.addView(image, 0)
-        return image
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

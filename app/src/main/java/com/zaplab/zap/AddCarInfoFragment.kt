@@ -20,6 +20,7 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
 
 
     private var selectedColor: Int = 0
+    var tvList = mutableListOf<TextView>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_car_info, null)
@@ -27,7 +28,7 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         selectedColor = ContextCompat.getColor(activity?.applicationContext!!, R.color.white)
-        var tvList = mutableListOf<TextView>()
+
         tvList.add(etAddCarMake)
         tvList.add(etAddCarModel)
         tvList.add(etAddCarDesc)
@@ -40,55 +41,74 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
 
         loadingBtnInfo.setOnClickListener {
             loadingBtnInfo.startLoading()
-            var hasAllData = true
-            for (x in tvList) {
-                if (x.text.isEmpty()){
-                    x.error = "Field cannot be left blank !"
-                    loadingBtnInfo.loadingFailed()
-                    hasAllData = false
-                    break
-                }
-            }
-
-            // check if all fields are not empty
-            if (hasAllData) {
-                (activity as AddCarActivity).vehicle.make = etAddCarMake.text.toString()
-                (activity as AddCarActivity).vehicle.model = etAddCarModel.text.toString()
-                (activity as AddCarActivity).vehicle.desc = etAddCarDesc.text.toString()
-                (activity as AddCarActivity).vehicle.odometer = Integer.parseInt(etAddMileage.text.toString())
-                (activity as AddCarActivity).vehicle.plate = etAddCarPlate.text.toString()
-                (activity as AddCarActivity).vehicle.color = selectedColor
-                (activity as AddCarActivity).infoCheck = true
-                loadingBtnInfo.loadingSuccessful()
-                (activity as AddCarActivity).nextPager(1)
-
-            }
+            finishAddInfo()
         }
 
         viewAddColor.setOnClickListener {
-
-            val mColors = resources.getIntArray(R.array.rainbow)
-
-            val dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-                    mColors,
-                    selectedColor,
-                    5, // Number of columns
-                    ColorPickerDialog.SIZE_SMALL,
-                    true, // True or False to enable or disable the serpentine effect
-                    1, // stroke width
-                    Color.BLACK // stroke color
-            )
-
-            dialog.setOnColorSelectedListener { color ->
-                selectedColor = color
-
-                val bgShape = viewAddColor.background as GradientDrawable
-                bgShape.setColor(selectedColor)
-            }
-
-            dialog.show(activity?.fragmentManager, "color_dialog_test");
+            getVehicleColor()
         }
 
+    }
+
+    /**
+     * Add the values to vehicle object in AddCarActivity and go to next add car process
+     */
+    private fun finishAddInfo() {
+        if (isAllDataEntered()) {
+            (activity as AddCarActivity).vehicle.make = etAddCarMake.text.toString()
+            (activity as AddCarActivity).vehicle.model = etAddCarModel.text.toString()
+            (activity as AddCarActivity).vehicle.desc = etAddCarDesc.text.toString()
+            (activity as AddCarActivity).vehicle.odometer = Integer.parseInt(etAddMileage.text.toString())
+            (activity as AddCarActivity).vehicle.plate = etAddCarPlate.text.toString()
+            (activity as AddCarActivity).vehicle.color = selectedColor
+            (activity as AddCarActivity).infoCheck = true
+            loadingBtnInfo.loadingSuccessful()
+            (activity as AddCarActivity).nextPager(1)
+
+        }
+    }
+
+
+    /**
+     * Check if all field values are added
+     */
+    private fun isAllDataEntered(): Boolean {
+        var hasAllData = true
+        for (x in tvList) {
+            if (x.text.isEmpty()){
+                x.error = "Field cannot be left blank !"
+                loadingBtnInfo.loadingFailed()
+                hasAllData = false
+                break
+            }
+        }
+        return hasAllData
+    }
+
+    /**
+     * Show color selection dialog and get color of vehicle
+     */
+    private fun getVehicleColor() {
+        val mColors = resources.getIntArray(R.array.rainbow)
+
+        val dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
+                mColors,
+                selectedColor,
+                5, // Number of columns
+                ColorPickerDialog.SIZE_SMALL,
+                true, // True or False to enable or disable the serpentine effect
+                1, // stroke width
+                Color.BLACK // stroke color
+        )
+
+        dialog.setOnColorSelectedListener { color ->
+            selectedColor = color
+
+            val bgShape = viewAddColor.background as GradientDrawable
+            bgShape.setColor(selectedColor)
+        }
+
+        dialog.show(activity?.fragmentManager, "color_dialog_test")
     }
 
 

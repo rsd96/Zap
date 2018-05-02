@@ -95,8 +95,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="cursive"
                 android:text="asdfasdfasdfasdfasdfasdfasdfasdf"
-                android:textStyle="italic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toRightOf="@id/ivVehicleDetailProfile"
                 app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailUserName" />
 

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/licentText"
+                android:id="@+id/licenseText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Licence number"
@@ -41,7 +41,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/licentText" />
+                app:layout_constraintTop_toBottomOf="@id/licenseText" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
@@ -73,6 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_verification" />
+        android:src="@drawable/ic_verification"
+        android:layout_marginRight="8dp" />
 
 </android.support.constraint.ConstraintLayout>

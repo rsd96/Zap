@@ -45,32 +45,33 @@ class AddCarLocationFragment: Fragment() {
         btnAddCarLocationNext.setOnClickListener( {
             (activity as AddCarActivity).nextPager(4)
         })
-
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                val place = PlaceAutocomplete.getPlace(activity, data)
-                tvAddCarLocation.visibility = View.VISIBLE
-                tvAddCarLocation.text = "${place.name}\n${place.address}"
-                var geocoder = Geocoder(activity)
-                var lat = place.latLng.latitude
-                var long = place.latLng.longitude
-                var addresses = geocoder.getFromLocation(lat, long, 1)
-                val address = addresses[0].getAddressLine(0)
-                val city = addresses[0].locality
-                var country = addresses[0].countryName
-                (activity as AddCarActivity).vehicle.city = city
-                (activity as AddCarActivity).vehicle.country = country
-                (activity as AddCarActivity).vehicle.lat = lat
-                (activity as AddCarActivity).vehicle.long = long
+                setLocation(data)
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 val status = PlaceAutocomplete.getStatus(activity, data)
             } else if (resultCode == RESULT_CANCELED) {
             }
         }
+    }
+
+    private fun setLocation(data: Intent?) {
+        val place = PlaceAutocomplete.getPlace(activity, data)
+        tvAddCarLocation.visibility = View.VISIBLE
+        tvAddCarLocation.text = "${place.name}\n${place.address}"
+        var geocoder = Geocoder(activity)
+        var lat = place.latLng.latitude
+        var long = place.latLng.longitude
+        var addresses = geocoder.getFromLocation(lat, long, 1)
+        val address = addresses[0].getAddressLine(0)
+        val city = addresses[0].locality
+        var country = addresses[0].countryName
+        (activity as AddCarActivity).vehicle.city = city
+        (activity as AddCarActivity).vehicle.country = country
+        (activity as AddCarActivity).vehicle.lat = lat
+        (activity as AddCarActivity).vehicle.long = long
     }
 }

@@ -41,7 +41,6 @@ class AddCarActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
 
-
         fragmentAdapter.addFragment(AddCarInfoFragment())
         fragmentAdapter.addFragment(AddCarPicsFragment())
         fragmentAdapter.addFragment(AddCarAvailFragment())
@@ -69,7 +68,7 @@ class AddCarActivity: AppCompatActivity() {
         pagerAddCar.currentItem = pos
     }
 
-    fun finishAdding() {
+    fun addVehicleToDB() {
         vehicle.ownerId = (this.application as Global).currentUser.uid
 
         // Push vehicle to DB, get Unique id, create folder in storage and upload pics of car to it
@@ -111,8 +110,6 @@ class AddCarActivity: AppCompatActivity() {
 
         var key = dbRef.child("Vehicles").push().key
 
-
-
         // Upload images into folder created using unique id and get url list
         var imageUrlList = arrayListOf<String>() // list to store urls of added images
         for ( x in images ) {
@@ -145,8 +142,6 @@ class AddCarActivity: AppCompatActivity() {
                 })
             }
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

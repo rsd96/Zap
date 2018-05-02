@@ -16,6 +16,9 @@ import kotlinx.android.synthetic.main.activity_signup.*
 class SignUpActivity: AppCompatActivity() {
 
     lateinit var auth: FirebaseAuth
+    var userName = ""
+    var email = ""
+    var password = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,41 +35,44 @@ class SignUpActivity: AppCompatActivity() {
         })
 
         btn_sign_up.setOnClickListener({ view ->
-            val userName = et_signup_username.text.toString().trim()
-            val email = et_signup_email.text.toString().trim()
-            val password = et_signup_password.text.toString().trim()
-
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(applicationContext, "Enter email address !", Toast.LENGTH_SHORT).show()
-            } else if (TextUtils.isEmpty(password)) {
-                Toast.makeText(applicationContext, "Enter password !", Toast.LENGTH_SHORT).show()
-            } else if (password.length < 6) {
-                Toast.makeText(applicationContext, "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show()
-
-            } else {
-
-                signup_progressBar.visibility = View.GONE
-                //create user
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, { task ->
-                            Toast.makeText(this, "createUserWithEmail:" + task.isSuccessful, Toast.LENGTH_SHORT).show()
-                            signup_progressBar.setVisibility(View.GONE)
-
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (task.isSuccessful) {
-                                var ref = FirebaseDatabase.getInstance().getReference()
-                                //ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(userName)
-                                (this.application as Global).currentUser.userName = userName
-                                startActivity(Intent(this, MainActivity::class.java))
-                                finish()
-                            } else {
-                                Toast.makeText(this, "Authentication Failed : " + task.exception!!, Toast.LENGTH_SHORT).show()
-                            }
-                        })
-            }
+            signUp()
         })
 
+    }
+
+    private fun signUp() {
+        userName = et_signup_username.text.toString().trim()
+        email = et_signup_email.text.toString().trim()
+        password = et_signup_password.text.toString().trim()
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(applicationContext, "Enter email address !", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(applicationContext, "Enter password !", Toast.LENGTH_SHORT).show()
+        } else if (password.length < 6) {
+            Toast.makeText(applicationContext, "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show()
+
+        } else {
+
+            signup_progressBar.visibility = View.GONE
+            //create user
+            auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, { task ->
+                        Toast.makeText(this, "createUserWithEmail:" + task.isSuccessful, Toast.LENGTH_SHORT).show()
+                        signup_progressBar.setVisibility(View.GONE)
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (task.isSuccessful) {
+                            var ref = FirebaseDatabase.getInstance().getReference()
+                            //ref.child("Users").child(auth.currentUser?.uid).child("user_name").setValue(userName)
+                            (this.application as Global).currentUser.userName = userName
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Authentication Failed : " + task.exception!!, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+        }
     }
 }

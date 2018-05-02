@@ -26,26 +26,30 @@ class ResetPassActivity: AppCompatActivity() {
 
             val email = et_reset_email.getText().toString().trim()
 
-            if (TextUtils.isEmpty(email)) {
-                Toast.makeText(application, "Enter your registered email id", Toast.LENGTH_SHORT).show()
-            } else {
-
-                reset_progressBar.visibility = View.VISIBLE
-                auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(this, "Reset mail has been successfully sent !", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(this, "Error sending mail !", Toast.LENGTH_SHORT).show()
-                            }
-
-                            reset_progressBar.visibility = View.GONE
-                        }
-            }
+            sendResetMail(email)
         })
 
         btn_reset_back.setOnClickListener(View.OnClickListener { view ->
             finish()
         })
+    }
+
+    private fun sendResetMail(email: String) {
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(application, "Enter your registered email id", Toast.LENGTH_SHORT).show()
+        } else {
+
+            reset_progressBar.visibility = View.VISIBLE
+            auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Reset mail has been successfully sent !", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Error sending mail !", Toast.LENGTH_SHORT).show()
+                        }
+
+                        reset_progressBar.visibility = View.GONE
+                    }
+        }
     }
 }

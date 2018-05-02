@@ -23,9 +23,6 @@ import java.util.*
 
 
 
-
-
-
 /**
  * Created by Ramshad on 4/11/18.
  */
@@ -36,66 +33,85 @@ class AddCarPicsFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_add_car_pics, null)
     }
 
-
     var images = ArrayList<Image>()
     var imagePos = 0
+    lateinit var adapter: RestRecyclerAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var adapter = RestRecyclerAdapter(activity?.applicationContext!!, images)
+        adapter = RestRecyclerAdapter(activity?.applicationContext!!, images)
         val layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
         rvAddCarPicsList.layoutManager = layoutManager
         rvAddCarPicsList.adapter = adapter
         rvAddCarPicsList.setOnSnapListener(OnSnapListener {
             imagePos = it
-
         })
 
         btnAddCarRemovePic.setOnClickListener {
-            images.remove(images[imagePos])
-            if (imagePos == images.size)
-                imagePos--
-            if (images.size < 1)
-                btnAddCarRemovePic.visibility = View.GONE
-            adapter.notifyDataSetChanged()
+            removePic()
         }
 
         btnAddCarPicsNext.setOnClickListener({
-            if (images.size < 4) {
-                var dialog =  AlertDialog.Builder(activity)
-                dialog.setMessage("Please add at least 4 pictures consisting of all sides of vehicle")
-                        .setPositiveButton("Okay", null)
-                dialog.create().show()
-            } else {
-                (activity as AddCarActivity).images.addAll(images)
-                (activity as AddCarActivity).nextPager(2)
-            }
+            finishAddingPic()
         })
 
 
         btnAddCarPics.setOnClickListener({
-
-            ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
-                    .setToolbarColor("#212121")         //  Toolbar color
-                    .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
-                    .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
-                    .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
-                    .setProgressBarColor("#4CAF50")     //  ProgressBar color
-                    .setBackgroundColor("#212121")      //  Background color
-                    .setCameraOnly(false)               //  Camera mode
-                    .setMultipleMode(true)              //  Select multiple images or single image
-                    .setFolderMode(true)                //  Folder mode
-                    .setShowCamera(true)                //  Show camera button
-                    .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
-                    .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
-                    .setDoneTitle("Done")               //  Done button title
-                    .setLimitMessage("You have reached selection limit")    // Selection limit message
-                    .setMaxSize(10)                     //  Max images can be selected
-                    .setSavePath("ImagePicker")         //  Image capture folder name
-                    .setSelectedImages(images)          //  Selected images
-                    .setKeepScreenOn(true)              //  Keep screen on when selecting images
-                    .start()                         //  Start ImagePicker
+            startImagePicker()
         })
+    }
+
+    /**
+     * Check if atleast 4 pics added and then move to next process
+     */
+    private fun finishAddingPic() {
+        if (images.size < 4) {
+            var dialog =  AlertDialog.Builder(activity)
+            dialog.setMessage("Please add at least 4 pictures consisting of all sides of vehicle")
+                    .setPositiveButton("Okay", null)
+            dialog.create().show()
+        } else {
+            (activity as AddCarActivity).images.addAll(images)
+            (activity as AddCarActivity).nextPager(2)
+        }
+    }
+
+    /**
+     * Remove uploaded pic from list
+     */
+    private fun removePic() {
+        images.remove(images[imagePos])
+        if (imagePos == images.size)
+            imagePos--
+        if (images.size < 1)
+            btnAddCarRemovePic.visibility = View.GONE
+        adapter.notifyDataSetChanged()
+    }
+
+    /**
+     * Start image picker to upload images
+     */
+    private fun startImagePicker() {
+        ImagePicker.with(this)             //  Initialize ImagePicker with activity or fragment context
+                .setToolbarColor("#212121")         //  Toolbar color
+                .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
+                .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
+                .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
+                .setProgressBarColor("#4CAF50")     //  ProgressBar color
+                .setBackgroundColor("#212121")      //  Background color
+                .setCameraOnly(false)               //  Camera mode
+                .setMultipleMode(true)              //  Select multiple images or single image
+                .setFolderMode(true)                //  Folder mode
+                .setShowCamera(true)                //  Show camera button
+                .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
+                .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
+                .setDoneTitle("Done")               //  Done button title
+                .setLimitMessage("You have reached selection limit")    // Selection limit message
+                .setMaxSize(10)                     //  Max images can be selected
+                .setSavePath("ImagePicker")         //  Image capture folder name
+                .setSelectedImages(images)          //  Selected images
+                .setKeepScreenOn(true)              //  Keep screen on when selecting images
+                .start()                            //  Start ImagePicker
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -104,15 +120,10 @@ class AddCarPicsFragment: Fragment() {
             images.addAll(data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES))
             rvAddCarPicsList.adapter.notifyDataSetChanged()
             btnAddCarRemovePic.visibility = View.VISIBLE
-
         }
         super.onActivityResult(requestCode, resultCode, data)  // THIS METHOD SHOULD BE HERE so that ImagePicker works with fragment
     }
-
-
 }
-
-
 
 class RestRecyclerAdapter(_context: Context, _list: MutableList<Image> = mutableListOf()) :
         RecyclerView.Adapter<RestRecyclerAdapter.MyViewHolder>() {
@@ -133,7 +144,6 @@ class RestRecyclerAdapter(_context: Context, _list: MutableList<Image> = mutable
         if (imgFile.exists()) {
             val myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath())
             holder?.ivCarImage.setImageBitmap(myBitmap)
-
         }
     }
 

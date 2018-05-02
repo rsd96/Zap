@@ -71,16 +71,6 @@
                         android:text="Continue with Email"
                         android:textColor="@color/white"
                         android:background="#b71c1c"/>
-
-                    <Button
-                        android:id="@+id/btnLoginGuest"
-                        android:padding="10dp"
-                        android:drawableLeft="@drawable/ic_guest"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:text="Continue as Guest"
-                        android:textColor="@color/white"
-                        android:background="#212121"/>
                 </LinearLayout>
 
                 <LinearLayout

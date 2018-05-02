@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_add_car_avail.*
 class AddCarAvailFragment: Fragment() {
     var daysList = mutableListOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
     var availTimes = AvailableDates()
+    lateinit var adapter: CarAddAvailAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_add_car_avail, null)
@@ -22,28 +23,34 @@ class AddCarAvailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var adapter = activity?.applicationContext?.let { CarAddAvailAdapter(it, daysList, availTimes) }
+        adapter = activity?.applicationContext?.let { CarAddAvailAdapter(it, daysList, availTimes) }!!
         lvAddCarAvail.adapter = adapter
         btnAddCarAvailNext.setOnClickListener({
-
-
-            if(adapter?.availableDates?.sunday?.isEmpty()!! or
-                    adapter.availableDates.monday.isEmpty() or
-                    adapter.availableDates.tuesday.isEmpty() or
-                    adapter.availableDates.wednesday.isEmpty() or
-                    adapter.availableDates.thursday.isEmpty() or
-                    adapter.availableDates.friday.isEmpty() or
-                    adapter.availableDates.saturday.isEmpty()) {
-                var dialog =  AlertDialog.Builder(activity)
-                dialog.setMessage("Please provide available times for all the days.")
-                        .setPositiveButton("Okay", null)
-                dialog.create().show()
-
-            } else {
-                (activity as AddCarActivity).vehicle.availability = adapter.availableDates
-                (activity as AddCarActivity).nextPager(3)
-            }
-
+            getAvailableTimings()
         })
+    }
+
+    /**
+     * Check if user entered all timings
+     *  if not, show dialog with message
+     *  if yes, move to next add car process
+     */
+    private fun getAvailableTimings() {
+        if(adapter?.availableDates?.sunday?.isEmpty()!! or
+                adapter.availableDates.monday.isEmpty() or
+                adapter.availableDates.tuesday.isEmpty() or
+                adapter.availableDates.wednesday.isEmpty() or
+                adapter.availableDates.thursday.isEmpty() or
+                adapter.availableDates.friday.isEmpty() or
+                adapter.availableDates.saturday.isEmpty()) {
+            var dialog =  AlertDialog.Builder(activity)
+            dialog.setMessage("Please provide available times for all the days.")
+                    .setPositiveButton("Okay", null)
+            dialog.create().show()
+
+        } else {
+            (activity as AddCarActivity).vehicle.availability = adapter.availableDates
+            (activity as AddCarActivity).nextPager(3)
+        }
     }
 }

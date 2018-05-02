@@ -31,6 +31,17 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        loadProfile()
+        tvProfileMail.text = (activity?.application as Global).currentUser.email
+        btnLogout.setOnClickListener({
+            signout()
+        })
+    }
+
+    /**
+     * Load and populate user profile info.
+     */
+    private fun loadProfile() {
         var name = (activity?.application as Global).currentUser.userName
         var imageUrl = (activity?.application as Global).currentUser.photoUrl
         Log.d("Profile Fragment", name)
@@ -64,19 +75,22 @@ class ProfileFragment: Fragment() {
         }
 
         tvProfileName.text = name
+    }
 
 
-        btnLogout.setOnClickListener({
-            FirebaseAuth.getInstance().signOut()
-            LoginManager.getInstance().logOut()
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build()
+    /**
+     * Signout user
+     */
+    private fun signout() {
+        FirebaseAuth.getInstance().signOut()
+        LoginManager.getInstance().logOut()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
 
-            val googleSignInClient = GoogleSignIn.getClient(activity?.applicationContext!!, gso)
-            googleSignInClient.signOut()
-            startActivity(Intent(activity, LoginActivity::class.java))
-        })
+        val googleSignInClient = GoogleSignIn.getClient(activity?.applicationContext!!, gso)
+        googleSignInClient.signOut()
+        startActivity(Intent(activity, LoginActivity::class.java))
     }
 }
