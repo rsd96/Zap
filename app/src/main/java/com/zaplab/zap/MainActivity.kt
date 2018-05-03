@@ -164,6 +164,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, MessageListActivity::class.java))
         })
 
+        var tvHistory: TextView = dialog.findViewById(R.id.tvMenuHistory)
+        tvHistory.setOnClickListener({
+            dialog.dismiss()
+            startActivity(Intent(this, HistoryActivity::class.java))
+        })
+
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.getWindow().getAttributes())
         lp.width = WindowManager.LayoutParams.MATCH_PARENT

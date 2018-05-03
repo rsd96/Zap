@@ -52,6 +52,8 @@ class VehicleDetailActivity: AppCompatActivity() {
     var listOfCards = mutableListOf<CreditCard>()
     var transaction = Transaction()
 
+    val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,7 +153,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
                 fromDate = date
-                transaction.fromDate = fromDate.toString()
+                transaction.fromDate = dateTimeFormat.format(date)
                 showToDatePicker()
 
             }
@@ -198,7 +200,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
                 toDate = date
-                transaction.toDate = toDate.toString()
+                transaction.toDate = dateTimeFormat.format(date)
                 showDamageDialog()
             }
 
@@ -325,8 +327,8 @@ class VehicleDetailActivity: AppCompatActivity() {
         btnFinish.setOnClickListener({
             btnFinish.startLoading()
             var map = hashMapOf<String, String>()
-            map.put("from", fromDate.toString())
-            map.put("to", toDate.toString())
+            map.put("from", dateTimeFormat.format(fromDate))
+            map.put("to", dateTimeFormat.format(toDate))
             FirebaseDatabase.getInstance().reference.child("Bookings").child(vehicleId).push().setValue(map)
             FirebaseDatabase.getInstance().reference.child("Transactions").push().setValue(transaction).addOnCompleteListener {
                 btnFinish.loadingSuccessful()
@@ -436,7 +438,7 @@ class VehicleDetailActivity: AppCompatActivity() {
                     for (x in snap.children) {
                         var creditCard = x.getValue(CreditCard::class.java)
                         if (creditCard?.cardHolder?.equals(FirebaseAuth.getInstance().currentUser?.uid)!!)
-                            creditCard?.let { listOfCards.add(it) }
+                            creditCard.let { listOfCards.add(it) }
                         var adapter = CreditCardListAdapter(this@VehicleDetailActivity, listOfCards)
                         viewPager.adapter = adapter
                         viewPager.clipToPadding = false

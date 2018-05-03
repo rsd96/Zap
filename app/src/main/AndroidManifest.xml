@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".HistoryActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".UserActivity"
             android:screenOrientation="portrait"/>
 

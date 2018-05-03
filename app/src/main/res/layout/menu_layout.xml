@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/ic_star_menu"
+        android:background="@drawable/ic_history"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
@@ -78,18 +78,19 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
-        android:id="@+id/tvMenuFav"
+        android:id="@+id/tvMenuHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Favourites"
+        android:text="History"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        android:layout_marginLeft="8dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
