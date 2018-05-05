@@ -79,7 +79,6 @@
             android:textColor="#76ff03"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvVehicleCardBond"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent" />
@@ -111,8 +110,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvVehicleCardBond" />
+            app:layout_constraintHorizontal_bias="0.5"/>
 
         <com.varunest.sparkbutton.SparkButton
             android:id="@+id/btnVehicleCardStar"

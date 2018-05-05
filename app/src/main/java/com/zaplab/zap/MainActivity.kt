@@ -63,12 +63,8 @@ class MainActivity : AppCompatActivity() {
                             idList.add(x.key)
                         }
                     }
-
-                    if (vehicleList.isNotEmpty()) {
-
-                        rvListingHome.adapter = adapter
-                        adapter.notifyDataSetChanged()
-                    }
+                    rvListingHome.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 }
 
             }
@@ -104,6 +100,8 @@ class MainActivity : AppCompatActivity() {
                 override fun onDataChange(snap: DataSnapshot?) {
                     if ( snap != null && !snap.exists()) {
                         (application as Global).currentUser.addUserToDB()
+                    } else if (snap != null) {
+                        (application as Global).currentUser.userName = snap.child("userName").value.toString()
                     }
                 }
 

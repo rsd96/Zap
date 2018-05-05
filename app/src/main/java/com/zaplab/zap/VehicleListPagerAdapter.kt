@@ -77,8 +77,6 @@ class VehicleListPagerAdapter(_context: Context, _listOfVehicle: MutableList<Veh
 
         title.text = "${listOfVehicle.get(position).make} - ${listOfVehicle.get(position).model}"
         desc.text = listOfVehicle.get(position).desc
-        rating.text = listOfVehicle.get(position).rating.toString()
-        bond.text = "$ ${listOfVehicle.get(position).bond.toString()}"
         rent.text = "$ ${listOfVehicle.get(position).rent.toString()}"
         container.addView(vehicleCard, 0)
         return vehicleCard

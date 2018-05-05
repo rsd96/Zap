@@ -73,8 +73,6 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
 
         holder.title.text = "${list.get(position).make} - ${list.get(position).model}"
         holder.desc.text = list.get(position).desc
-        holder.rating.text = list.get(position).rating.toString()
-        holder.bond.text = "$ ${list.get(position).bond.toString()}"
         holder.rent.text = "$ ${list.get(position).rent.toString()}"
         holder.location.text = "${list[position].city},${list[position].country}"
     }
@@ -87,7 +85,6 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
         val desc: TextView = view.findViewById(R.id.tvVehicleCardDesc)
         val star: SparkButton = view.findViewById(R.id.btnVehicleCardStar)
         val rating: TextView = view.findViewById(R.id.tvVehicleCardRating)
-        val bond: TextView = view.findViewById(R.id.tvVehicleCardBond)
         val rent: TextView = view.findViewById(R.id.tvVehicleCardRent)
         val location: TextView = view.findViewById(R.id.tvVehicleCardLocation)
 

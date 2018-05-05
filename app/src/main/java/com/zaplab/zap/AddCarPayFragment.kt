@@ -36,11 +36,6 @@ class AddCarPayFragment: Fragment() {
         btnAddCarPayFinish.setOnClickListener({
             btnAddCarPayFinish.startLoading()
             var allGood = true
-            if (etAddCarPayBond.text.isBlank()) {
-                btnAddCarPayFinish.loadingFailed()
-                etAddCarPayBond.error = "Field cannot be left blank"
-                allGood = false
-            }
             if (etAddCarPayRent.text.isBlank()) {
                 btnAddCarPayFinish.loadingFailed()
                 etAddCarPayRent.error = "Field cannot be left blank"
@@ -48,7 +43,6 @@ class AddCarPayFragment: Fragment() {
             }
 
             if (allGood) {
-                (activity as AddCarActivity).vehicle.bond = etAddCarPayBond.text.toString().toDouble()
                 (activity as AddCarActivity).vehicle.rent = etAddCarPayRent.text.toString().toDouble()
                 (activity as AddCarActivity).vehicle.card = listOfCards[viewPagerAddCarPay.currentItem]
                 (activity as AddCarActivity).addVehicleToDB()

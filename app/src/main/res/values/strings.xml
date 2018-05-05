@@ -22,5 +22,6 @@
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="btn_back"><![CDATA[<< Back]]></string>
+    <string name="rent_breakdown">Hourly rent.\nBreakdown per transaction:\nService charge : 10%\nInsurance : 5%\nYour earnings : 85%</string>
 
 </resources>

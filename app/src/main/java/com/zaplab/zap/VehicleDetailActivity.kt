@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -51,6 +52,7 @@ class VehicleDetailActivity: AppCompatActivity() {
     var isInsurancePayDamage = false
     var listOfCards = mutableListOf<CreditCard>()
     var transaction = Transaction()
+    var reviewList = mutableListOf<RateReview>()
 
     val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
@@ -86,6 +88,8 @@ class VehicleDetailActivity: AppCompatActivity() {
 
         loadOwnerProfile()
 
+        loadReviews()
+
         btnVehicleDetailAvail.setOnClickListener({
             showVehicleAvailability()
         })
@@ -102,14 +106,36 @@ class VehicleDetailActivity: AppCompatActivity() {
         tvVehicleDetailDesc.text = "\"${vehicle.desc} \""
         tvVehicleDetailTrans.text = vehicle.transmission.toString()
         tvVehicleDetailMileage.text = vehicle.odometer.toString()
-        tvVehicleDetailBond.text = "$${vehicle.bond}"
         tvVehicleDetailRent.text = "$${vehicle.rent}"
 
 
 
     }
 
-    val RQC_PICK_DATE_TIME_RANGE = 111
+    private fun loadReviews() {
+        var adapter = ReviewsRecyclerAdapter(applicationContext, reviewList)
+        rvVehicleDetailReviews.layoutManager = LinearLayoutManager(this)
+        dbRef.child("Ratings").addValueEventListener(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
+
+                    override fun onDataChange(snap: DataSnapshot?) {
+                        if ( snap != null) {
+                            for ( x in snap.children) {
+                                var r = x.getValue(RateReview::class.java)
+                                Log.d(TAG, r.toString())
+                                if (r?.user == vehicle.ownerId)
+                                    reviewList.add(r)
+                            }
+                            rvVehicleDetailReviews.adapter = adapter
+                            adapter.notifyDataSetChanged()
+                        }
+
+                    }
+
+                })
+    }
+
     /**
      * Start booking process to rent a car
      */

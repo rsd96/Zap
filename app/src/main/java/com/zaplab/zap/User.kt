@@ -9,7 +9,7 @@ import com.google.firebase.database.ValueEventListener
  * Created by Ramshad on 4/13/18.
  */
 data class User (var uid: String = "", var userName: String = "", var email: String = "", var photoUrl: String = "",
-                 var verified:Boolean = false, var verificationId: String = "") {
+                 var verified:Boolean = false, var verificationId: String = "", var rating: Double = 0.00, var rateSum: Int = 0) {
 
 
     fun addUserToDB() {
@@ -20,6 +20,8 @@ data class User (var uid: String = "", var userName: String = "", var email: Str
         map.put("photoUrl", photoUrl)
         map.put("verified", verified)
         map.put("verificationId", verificationId)
+        map.put("rating", rating)
+        map.put("rateSum", rateSum)
         var ref = FirebaseDatabase.getInstance().reference
         ref.child("Users").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {

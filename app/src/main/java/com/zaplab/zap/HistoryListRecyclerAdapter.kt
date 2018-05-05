@@ -43,7 +43,6 @@ class HistoryListRecyclerAdapter(_context: Context, _list: MutableList<Transacti
 
         setMessage(position, holder)
 
-
     }
 
     private fun setMessage(position: Int, holder: MyViewHolder) {
