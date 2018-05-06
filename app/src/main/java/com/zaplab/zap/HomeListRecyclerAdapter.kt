@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import com.varunest.sparkbutton.SparkButton
 import java.io.Serializable
 
 /**
@@ -37,7 +36,7 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
 
         var imageUri = list[position].imageList[0]
 
-        holder?.vehicleImage.scaleType = ImageView.ScaleType.CENTER
+        holder.vehicleImage.scaleType = ImageView.ScaleType.CENTER
 //        photoView.setAdjustViewBounds(true);
 
         Picasso.with(myContext)
@@ -64,7 +63,7 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
                     }
                 })
 
-        holder?.vehicleImage.setOnClickListener({
+        holder.vehicleImage.setOnClickListener({
             var intent = Intent(myContext, VehicleDetailActivity::class.java)
             intent.putExtra("vehicle", list[position] as Serializable)
             intent.putExtra("vehicleId", idList[position])
@@ -83,8 +82,6 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
         val vehicleImage: ImageView = view.findViewById(R.id.ivVehicleCardImage)
         val title: TextView = view.findViewById(R.id.tvVehicleCardTitle)
         val desc: TextView = view.findViewById(R.id.tvVehicleCardDesc)
-        val star: SparkButton = view.findViewById(R.id.btnVehicleCardStar)
-        val rating: TextView = view.findViewById(R.id.tvVehicleCardRating)
         val rent: TextView = view.findViewById(R.id.tvVehicleCardRent)
         val location: TextView = view.findViewById(R.id.tvVehicleCardLocation)
 

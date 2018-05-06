@@ -36,6 +36,7 @@ class AddCarPayFragment: Fragment() {
         btnAddCarPayFinish.setOnClickListener({
             btnAddCarPayFinish.startLoading()
             var allGood = true
+
             if (etAddCarPayRent.text.isBlank()) {
                 btnAddCarPayFinish.loadingFailed()
                 etAddCarPayRent.error = "Field cannot be left blank"

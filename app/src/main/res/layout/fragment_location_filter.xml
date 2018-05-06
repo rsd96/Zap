@@ -2,18 +2,68 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
     <me.gujun.android.taggroup.TagGroup
-        android:id="@+id/tag_group"
+        android:id="@+id/tagGrpFilterCountries"
         style="@style/TagGroup"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        app:atg_backgroundColor="@color/colorPrimaryDark"
+        app:atg_borderColor="@color/white"
+        app:atg_isAppendMode="false"
+        app:atg_textColor="@color/white"
+        app:atg_textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterLocationCitiesSelected" />
+
+    <me.gujun.android.taggroup.TagGroup
+        android:id="@+id/tagGrpCities"
+        style="@style/TagGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="invisible"
+        app:atg_backgroundColor="@color/colorPrimaryDark"
+        app:atg_borderColor="@color/white"
+        app:atg_checkedBackgroundColor="@color/white"
+        app:atg_isAppendMode="false"
+        app:atg_textColor="@color/white"
+        app:atg_textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterLocationCitiesSelected" />
+
+    <TextView
+        android:id="@+id/tvFilterLocationCountrySelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Country : All"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFilterLocationCitiesSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Cities : All"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterLocationCountrySelected" />
 </android.support.constraint.ConstraintLayout>

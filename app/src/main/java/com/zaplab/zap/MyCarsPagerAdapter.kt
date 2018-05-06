@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import com.varunest.sparkbutton.SparkButton
 
 /**
  * Created by Ramshad on 4/6/18.
@@ -34,9 +33,6 @@ class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>
         val vehicleImage: ImageView = vehicleCard.findViewById(R.id.ivVehicleCardImage)
         val title: TextView = vehicleCard.findViewById(R.id.tvVehicleCardTitle)
         val desc: TextView = vehicleCard.findViewById(R.id.tvVehicleCardDesc)
-        val star: SparkButton = vehicleCard.findViewById(R.id.btnVehicleCardStar)
-        val rating: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRating)
-        val bond: TextView = vehicleCard.findViewById(R.id.tvVehicleCardBond)
         val rent: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRent)
         var imageUri = listOfVehicle[position].imageList[0]
 

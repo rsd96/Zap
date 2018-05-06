@@ -2,6 +2,7 @@ package com.zaplab.zap
 
 import android.app.Dialog
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TabLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -9,9 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import me.gujun.android.taggroup.TagGroup
 
 
 /**
@@ -28,6 +34,10 @@ class FilterFragment: AAH_FabulousFragment() {
 //    private lateinit var tabLayout: TabLayout
 //    private lateinit var viewPagerFilter: ViewPager
 
+    var countryFilter = ""
+    var citiesFilterList = mutableListOf<String>()
+    var dbRef = FirebaseDatabase.getInstance().reference
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
 
@@ -40,14 +50,21 @@ class FilterFragment: AAH_FabulousFragment() {
 
     lateinit var tabLayout: TabLayout
     lateinit var viewPagerFilter: ViewPager
+
     override fun setupDialog(dialog: Dialog?, style: Int) {
         val contentView = View.inflate(context, R.layout.fragment_filter, null)
         val rl_content = contentView.findViewById(R.id.rl_content) as RelativeLayout
-        val ll_buttons = contentView.findViewById(R.id.ll_buttons) as LinearLayout
+        val ll_buttons = contentView.findViewById(R.id.ll_buttons) as ConstraintLayout
         tabLayout = contentView.findViewById(R.id.tab_filter) as TabLayout
         viewPagerFilter= contentView.findViewById(R.id.viewPagerFilter) as ViewPager
-        contentView.findViewById<Button>(R.id.btn_close).setOnClickListener(View.OnClickListener {
+        contentView.findViewById<Button>(R.id.btnFilterClose).setOnClickListener(View.OnClickListener {
+            (activity as MainActivity).filter(countryFilter, citiesFilterList)
             closeFilter("closed")
+        })
+        contentView.findViewById<Button>(R.id.btnFilterReset).setOnClickListener( {
+            countryFilter = ""
+            citiesFilterList.clear()
+            setupTabs()
         })
 
         setupTabs()
@@ -81,8 +98,63 @@ class FilterFragment: AAH_FabulousFragment() {
             val inflater = LayoutInflater.from(context)
             var layout = inflater.inflate(R.layout.fragment_location_filter, collection, false) as ViewGroup
             when (position) {
-                0 ->  layout = inflater.inflate(R.layout.fragment_location_filter, collection, false) as ViewGroup
-                1 ->  layout = inflater.inflate(R.layout.fragment_avail_filter, collection, false) as ViewGroup
+                0 -> {}
+                1 -> {
+                    layout = inflater.inflate(R.layout.fragment_location_filter, collection, false) as ViewGroup
+                    var countryTags = layout.findViewById<TagGroup>(R.id.tagGrpFilterCountries)
+                    var cityTags = layout.findViewById<TagGroup>(R.id.tagGrpCities)
+                    var countrySelection = layout.findViewById<TextView>(R.id.tvFilterLocationCountrySelected)
+                    var citiesSelection = layout.findViewById<TextView>(R.id.tvFilterLocationCitiesSelected)
+
+                    countryTags.setOnTagClickListener {
+                        countryFilter = it
+                        countrySelection.text = "Country : $it"
+                        var cityList = mutableListOf<String>()
+                        dbRef.child("Locations").child(countryFilter).addValueEventListener(object : ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError?) {
+                            }
+
+                            override fun onDataChange(snap: DataSnapshot?) {
+                                if ( snap != null) {
+                                    for ( x in snap.children) {
+                                        cityList.add(x.value.toString())
+                                    }
+                                    cityTags.setTags(cityList)
+                                    cityTags.visibility = View.VISIBLE
+                                    countryTags.visibility = View.GONE
+                                }
+
+                            }
+
+                        })
+
+                    }
+
+                    cityTags.setOnTagClickListener {
+                        citiesFilterList.add(it)
+                        citiesSelection.text = "Cities : ${citiesFilterList}"
+                    }
+
+                    var countryList = mutableListOf<String>()
+
+                    dbRef.child("Locations").addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError?) {
+                        }
+
+                        override fun onDataChange(snap: DataSnapshot?) {
+                            if ( snap != null) {
+                                for ( x in snap.children) {
+                                    countryList.add(x.key)
+                                }
+                                countryTags.setTags(countryList)
+                            }
+
+                        }
+
+                    })
+                }
+
+                2 ->  layout = inflater.inflate(R.layout.fragment_avail_filter, collection, false) as ViewGroup
             }
             collection.addView(layout)
             return layout
@@ -101,7 +173,7 @@ class FilterFragment: AAH_FabulousFragment() {
             when (position) {
                 0 -> return "MAKE"
                 1 -> return "LOCATION"
-                2 -> return "AVAILABILITY"
+                2 -> return "RENT"
             }
             return ""
         }

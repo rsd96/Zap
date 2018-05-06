@@ -93,13 +93,17 @@
                 android:id="@+id/tvVehicleDetailDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="cursive"
                 android:text="asdfasdfasdfasdfasdfasdfasdfasdf"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="20sp"
-                app:layout_constraintLeft_toRightOf="@id/ivVehicleDetailProfile"
+                app:layout_constraintBottom_toTopOf="@+id/tvVehicleDetailTrans"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailUserName" />
 
             <TextView

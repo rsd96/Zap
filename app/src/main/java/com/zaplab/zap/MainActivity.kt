@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
     lateinit var auth: FirebaseAuth
     var dbRef = FirebaseDatabase.getInstance().reference
-
+    var vehicleList = mutableListOf<Vehicle>()
+    var idList = mutableListOf<String>()
+    lateinit var adapter: HomeListRecyclerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     // Get all vehicles from database and populate the list
     private fun populateVehicleListing() {
-        var vehicleList = mutableListOf<Vehicle>()
-        var idList = mutableListOf<String>()
-        var adapter = HomeListRecyclerAdapter(applicationContext, vehicleList, idList)
+
+
+        adapter = HomeListRecyclerAdapter(applicationContext, vehicleList, idList)
         rvListingHome.layoutManager = LinearLayoutManager(this)
         dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snap: DataSnapshot?) {
@@ -73,6 +75,22 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
+    public fun filter(country: String, cities: MutableList<String>) {
+        if (country.isNotBlank() && cities.isNotEmpty()) {
+
+            val it = vehicleList.iterator()
+            while (it.hasNext()) {
+                if (!cities.contains(it.next().city))
+                    it.remove()
+            }
+            adapter.notifyDataSetChanged()
+
+        } else {
+            populateVehicleListing()
+        }
+    }
+
 
     // Check if user is already logged in
     // if not - start loging activty

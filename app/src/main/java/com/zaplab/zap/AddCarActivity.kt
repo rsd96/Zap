@@ -75,7 +75,6 @@ class AddCarActivity: AppCompatActivity() {
         // update vehicle image url list
 
         // Add city and country to DB for filtering
-        //TODO fix new city updating old one
         dbRef.child("Locations").addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError?) {
                     }
@@ -83,15 +82,20 @@ class AddCarActivity: AppCompatActivity() {
                     override fun onDataChange(snap: DataSnapshot?) {
                         if ( snap != null) {
                             var countryFound = false
+                            var cityFound = false
                             for ( x in snap.children) {
                                 if ( x.key == vehicle.country) {
                                     countryFound = true
+                                    var newCity = hashMapOf<String, String>()
                                     for (y in x.children) {
+                                        newCity.put(y.key, y.value.toString())
                                         if (y.value == vehicle.city) {
-                                            break
+                                            cityFound = true
                                         }
+                                    }
+                                    if (!cityFound) {
                                         var key = dbRef.child("Locations").child(vehicle.country).push().key
-                                        var newCity = hashMapOf<String, String>()
+
                                         newCity.put(key, vehicle.city)
                                         dbRef.child("Locations").child(vehicle.country).setValue(newCity)
                                     }
@@ -101,7 +105,7 @@ class AddCarActivity: AppCompatActivity() {
                                 var key = dbRef.child("Locations").child(vehicle.country).push().key
                                 var newCity = hashMapOf<String, String>()
                                 newCity.put(key, vehicle.city)
-                                dbRef.child("Locations").child(vehicle.country).setValue(newCity)
+                                dbRef.child("Locations").child(vehicle.country).updateChildren(newCity as Map<String, Any>?)
                             }
                         }
                     }
