@@ -76,18 +76,55 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    public fun filter(country: String, cities: MutableList<String>) {
-        if (country.isNotBlank() && cities.isNotEmpty()) {
+    fun filter(country: String, cities: MutableList<String>, makeList: MutableList<String>, modelList: MutableList<String>,
+               minRent: Double, maxRent: Double) {
 
-            val it = vehicleList.iterator()
-            while (it.hasNext()) {
-                if (!cities.contains(it.next().city))
-                    it.remove()
-            }
-            adapter.notifyDataSetChanged()
-
-        } else {
+        if (country.isBlank() && cities.isEmpty() && makeList.isEmpty() && modelList.isEmpty() && minRent == 0.00 && maxRent == 0.00) {
             populateVehicleListing()
+        } else {
+
+            if (country.isNotBlank() && cities.isNotEmpty()) {
+
+                val it = vehicleList.iterator()
+                while (it.hasNext()) {
+                    if (!cities.contains(it.next().city))
+                        it.remove()
+                }
+            }
+
+            if (makeList.isNotEmpty()) {
+                val it = vehicleList.iterator()
+                while (it.hasNext()) {
+                    if (!makeList.contains(it.next().make))
+                        it.remove()
+                }
+            }
+
+            if (modelList.isNotEmpty()) {
+                val it = vehicleList.iterator()
+                while (it.hasNext()) {
+                    if (!modelList.contains(it.next().model))
+                        it.remove()
+                }
+            }
+
+            if (minRent != 0.00) {
+                val it = vehicleList.iterator()
+                while (it.hasNext()) {
+                    if (it.next().rent < minRent)
+                        it.remove()
+                }
+            }
+
+            if (maxRent != 0.00) {
+                val it = vehicleList.iterator()
+                while (it.hasNext()) {
+                    if (it.next().rent > minRent)
+                        it.remove()
+                }
+            }
+
+            adapter.notifyDataSetChanged()
         }
     }
 

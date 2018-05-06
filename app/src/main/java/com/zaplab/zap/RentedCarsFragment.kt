@@ -54,6 +54,9 @@ class RentedCarsFragment: Fragment() {
 
     }
 
+    /**
+     * Load name and profile pic of vehicle owner of the rented car
+     */
     private fun loadOwnerInfo(position: Int) {
         dbRef.child("Users").child(vehicleList[position].ownerId).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}

@@ -6,10 +6,14 @@ import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TabLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment
@@ -34,8 +38,13 @@ class FilterFragment: AAH_FabulousFragment() {
 //    private lateinit var tabLayout: TabLayout
 //    private lateinit var viewPagerFilter: ViewPager
 
-    var countryFilter = ""
-    var citiesFilterList = mutableListOf<String>()
+    private val TAG = "FilterFragment"
+    var countryFilter = "" // list to hold filtered countries data
+    var citiesFilterList = mutableListOf<String>() // list to hold fitered cities data
+    var selectedMakeList = mutableListOf<String>()
+    var selectedModelList = mutableListOf<String>()
+    var minFilter = 0.00
+    var maxFilter = 0.00
     var dbRef = FirebaseDatabase.getInstance().reference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,12 +67,17 @@ class FilterFragment: AAH_FabulousFragment() {
         tabLayout = contentView.findViewById(R.id.tab_filter) as TabLayout
         viewPagerFilter= contentView.findViewById(R.id.viewPagerFilter) as ViewPager
         contentView.findViewById<Button>(R.id.btnFilterClose).setOnClickListener(View.OnClickListener {
-            (activity as MainActivity).filter(countryFilter, citiesFilterList)
+            (activity as MainActivity).filter(countryFilter, citiesFilterList, selectedMakeList,
+                    selectedModelList, minFilter, maxFilter)
             closeFilter("closed")
         })
         contentView.findViewById<Button>(R.id.btnFilterReset).setOnClickListener( {
             countryFilter = ""
             citiesFilterList.clear()
+            selectedMakeList.clear()
+            selectedModelList.clear()
+            minFilter = 0.00
+            maxFilter = 0.00
             setupTabs()
         })
 
@@ -98,7 +112,55 @@ class FilterFragment: AAH_FabulousFragment() {
             val inflater = LayoutInflater.from(context)
             var layout = inflater.inflate(R.layout.fragment_location_filter, collection, false) as ViewGroup
             when (position) {
-                0 -> {}
+                0 -> {
+                    layout = inflater.inflate(R.layout.fragment_make_model_filter, collection, false) as ViewGroup
+
+                    var makeModelMap = hashMapOf<String, MutableList<String>>()
+
+                    var makeTags = layout.findViewById<TagGroup>(R.id.tagGrpMakeFilterMake)
+                    var modelTags = layout.findViewById<TagGroup>(R.id.tagGrpMakeFilterModel)
+                    var selectedMake = layout.findViewById<TextView>(R.id.tvMakeFilterMake)
+                    var selectedModel = layout.findViewById<TextView>(R.id.tvMakeFilterModel)
+
+                    makeTags.setOnTagClickListener {
+
+                        if (!selectedMakeList.contains(it)) {
+                            selectedMakeList.add(it)
+                            selectedMake.text = "Make : ${selectedMakeList}"
+                        }
+                        modelTags.setTags(makeModelMap[it])
+                    }
+
+                    modelTags.setOnTagClickListener {
+                        if (!selectedModelList.contains(it)) {
+                            selectedModelList.add(it)
+                            selectedModel.text = "Model : ${selectedModelList}"
+                        }
+                    }
+
+
+                    dbRef.child("Vehicles").addValueEventListener(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError?) {
+                        }
+
+                        override fun onDataChange(snap: DataSnapshot?) {
+                            if ( snap != null) {
+                                for ( x in snap.children) {
+                                    if (makeModelMap.containsKey(x.child("make").value.toString())) {
+                                        makeModelMap[x.child("make").value.toString()]?.add(x.child("model").value.toString())
+                                    } else {
+                                        makeModelMap.put(x.child("make").value.toString(), mutableListOf(x.child("model").value.toString()))
+                                    }
+                                }
+                                makeTags.setTags(makeModelMap.keys.toMutableList())
+                            }
+
+                        }
+
+                    })
+
+
+                }
                 1 -> {
                     layout = inflater.inflate(R.layout.fragment_location_filter, collection, false) as ViewGroup
                     var countryTags = layout.findViewById<TagGroup>(R.id.tagGrpFilterCountries)
@@ -154,7 +216,39 @@ class FilterFragment: AAH_FabulousFragment() {
                     })
                 }
 
-                2 ->  layout = inflater.inflate(R.layout.fragment_avail_filter, collection, false) as ViewGroup
+                2 -> {
+                    layout = inflater.inflate(R.layout.fragment_rent_filter, collection, false) as ViewGroup
+                    var etMin = layout.findViewById<EditText>(R.id.etRentFilterMin)
+                    var etMax = layout.findViewById<EditText>(R.id.etRentFilterMax)
+                    etMin.addTextChangedListener(object: TextWatcher{
+                        override fun afterTextChanged(s: Editable?) {
+                            minFilter = etMin.text.toString().toDouble()
+                            Log.d(TAG, minFilter.toString())
+                        }
+
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        }
+
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        }
+
+                    })
+
+                    etMax.addTextChangedListener(object: TextWatcher{
+                        override fun afterTextChanged(s: Editable?) {
+                            maxFilter = etMax.text.toString().toDouble()
+                            Log.d(TAG, maxFilter.toString())
+                        }
+
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        }
+
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        }
+
+                    })
+
+                }
             }
             collection.addView(layout)
             return layout
