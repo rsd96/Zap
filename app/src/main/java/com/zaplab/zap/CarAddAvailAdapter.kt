@@ -87,50 +87,50 @@ class CarAddAvailAdapter(internal var context: Context, internal var daysList : 
         when (day) {
             0-> {
                 when (type) {
-                    0-> { availableDates.sunday = "AllDay" }
-                    1-> { availableDates.sunday = "NotAvailable" }
+                    0-> { availableDates.sunday = "All Day" }
+                    1-> { availableDates.sunday = "Not Available" }
                     2-> { availableDates.sunday = "$from - $to" }
                 }
             }
             1-> {
                 when (type) {
-                    0-> { availableDates.monday = "AllDay" }
-                    1-> { availableDates.monday = "NotAvailable" }
+                    0-> { availableDates.monday = "All Day" }
+                    1-> { availableDates.monday = "Not Available" }
                     2-> { availableDates.monday = "$from - $to" }
                 }
             }
             2-> {
                 when (type) {
-                    0-> { availableDates.tuesday = "AllDay" }
-                    1-> { availableDates.tuesday = "NotAvailable" }
+                    0-> { availableDates.tuesday = "All Day" }
+                    1-> { availableDates.tuesday = "Not Available" }
                     2-> { availableDates.tuesday = "$from - $to" }
                 }
             }
             3-> {
                 when (type) {
-                    0-> { availableDates.wednesday = "AllDay" }
-                    1-> { availableDates.wednesday = "NotAvailable" }
+                    0-> { availableDates.wednesday = "All Day" }
+                    1-> { availableDates.wednesday = "Not Available" }
                     2-> { availableDates.wednesday = "$from - $to" }
                 }
             }
             4-> {
                 when (type) {
-                    0-> { availableDates.thursday = "AllDay" }
-                    1-> { availableDates.thursday = "NotAvailable" }
+                    0-> { availableDates.thursday = "All Day" }
+                    1-> { availableDates.thursday = "Not Available" }
                     2-> { availableDates.thursday = "$from - $to" }
                 }
             }
             5-> {
                 when (type) {
-                    0-> { availableDates.friday = "AllDay" }
-                    1-> { availableDates.friday = "NotAvailable" }
+                    0-> { availableDates.friday = "All Day" }
+                    1-> { availableDates.friday = "Not Available" }
                     2-> { availableDates.friday = "$from - $to" }
                 }
             }
             6-> {
                 when (type) {
-                    0-> { availableDates.saturday = "AllDay" }
-                    1-> { availableDates.saturday = "NotAvailable" }
+                    0-> { availableDates.saturday = "All Day" }
+                    1-> { availableDates.saturday = "Not Available" }
                     2-> { availableDates.saturday = "$from - $to" }
                 }
             }

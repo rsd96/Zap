@@ -210,14 +210,14 @@
                 app:layout_constraintGuide_begin="318dp" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/tvVehicleDetailReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Reviews"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
@@ -229,7 +229,7 @@
                 app:layout_constraintBottom_toTopOf="@id/btnVehicleDetailRent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView13" />
+                app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailReviews" />
 
             <Button
                 android:id="@+id/btnVehicleDetailLocation"

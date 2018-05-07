@@ -128,6 +128,15 @@ class RentedCarsFragment: Fragment() {
                                         }
                                     }
 
+                                    if(vehicleList.isEmpty()) {
+                                        ivRentedCarsProfile.visibility = View.GONE
+                                        tvRentedCarsName.visibility = View.GONE
+                                        btnRentedCarsChat.visibility = View.GONE
+                                    } else {
+                                        ivRentedCarsProfile.visibility = View.VISIBLE
+                                        tvRentedCarsName.visibility = View.VISIBLE
+                                        btnRentedCarsChat.visibility = View.VISIBLE
+                                    }
                                     rentedCarsPagerAdapter = MyCarsPagerAdapter(activity!!, vehicleList)
                                     viewPagerRentedCars.adapter = rentedCarsPagerAdapter
                                     viewPagerRentedCars.clipToPadding = false

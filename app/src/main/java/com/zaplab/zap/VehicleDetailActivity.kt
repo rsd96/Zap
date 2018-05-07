@@ -127,6 +127,11 @@ class VehicleDetailActivity: AppCompatActivity() {
                                 if (r?.user == vehicle.ownerId)
                                     reviewList.add(r)
                             }
+                            if (reviewList.isEmpty()) {
+                                tvVehicleDetailReviews.visibility = View.GONE
+                            } else {
+                                tvVehicleDetailReviews.visibility = View.VISIBLE
+                            }
                             rvVehicleDetailReviews.adapter = adapter
                             adapter.notifyDataSetChanged()
                         }
@@ -140,6 +145,7 @@ class VehicleDetailActivity: AppCompatActivity() {
      * Start booking process to rent a car
      */
     private fun startBooking() {
+        transaction.transactionDate = dateTimeFormat.format(Date())
         transaction.owner = vehicle.ownerId
         transaction.renter = (application as Global).currentUser.uid
         transaction.vehicleId = vehicleId
@@ -154,17 +160,17 @@ class VehicleDetailActivity: AppCompatActivity() {
                 "Cancel"
         )
 
-// Assign values
+        // Assign values
         dateTimeFragment.startAtCalendarView()
         dateTimeFragment.set24HoursMode(true)
         dateTimeFragment.setMinimumDateTime(GregorianCalendar(2018, Calendar.JANUARY, 1).getTime())
         dateTimeFragment.setMaximumDateTime(GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime())
         dateTimeFragment.setDefaultDateTime(GregorianCalendar(2018, Calendar.MAY, 4, 15, 20).getTime())
-// Or assign each element, default element is the current moment
-// dateTimeFragment.setDefaultHourOfDay(15);
-// dateTimeFragment.setDefaultMinute(20);
-// dateTimeFragment.setDefaultDay(4);
-// dateTimeFragment.setDefaultMonth(Calendar.MARCH);
+        // Or assign each element, default element is the current moment
+        // dateTimeFragment.setDefaultHourOfDay(15);
+        // dateTimeFragment.setDefaultMinute(20);
+        // dateTimeFragment.setDefaultDay(4);
+        // dateTimeFragment.setDefaultMonth(Calendar.MARCH);
         dateTimeFragment.setDefaultYear(2018)
 
 // Define new day and month format

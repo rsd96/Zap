@@ -1,6 +1,7 @@
 package com.zaplab.zap
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -54,7 +55,9 @@ class HistoryActivity: AppCompatActivity() {
                     var rate = dialog.findViewById<TextView>(R.id.tvHistoryDialogRate)
                     var report = dialog.findViewById<TextView>(R.id.tvHistoryDialogReport)
 
-                    report.setOnClickListener { }
+                    report.setOnClickListener {
+                        startActivity(Intent(this, ReportActivity::class.java))
+                    }
 
                     rate.setOnClickListener {
                         dialog.dismiss()

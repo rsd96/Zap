@@ -66,6 +66,7 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.github.skedgo:DateTimeRangePicker:v1.3'
     implementation 'com.android.support:multidex:1.0.3'
+    compile 'com.github.vipulasri:timelineview:1.0.6'
 
 }
 

@@ -36,7 +36,7 @@ class AddCarAvailFragment: Fragment() {
      *  if yes, move to next add car process
      */
     private fun getAvailableTimings() {
-        if(adapter?.availableDates?.sunday?.isEmpty()!! or
+        if(adapter.availableDates.sunday.isEmpty() or
                 adapter.availableDates.monday.isEmpty() or
                 adapter.availableDates.tuesday.isEmpty() or
                 adapter.availableDates.wednesday.isEmpty() or
@@ -48,7 +48,19 @@ class AddCarAvailFragment: Fragment() {
                     .setPositiveButton("Okay", null)
             dialog.create().show()
 
-        } else {
+        } else if (adapter.availableDates.sunday == "Not Available" &&
+                adapter.availableDates.monday == "Not Available" &&
+                adapter.availableDates.tuesday == "Not Available" &&
+                adapter.availableDates.wednesday == "Not Available" &&
+                adapter.availableDates.thursday == "Not Available" &&
+                adapter.availableDates.friday == "Not Available" &&
+                adapter.availableDates.saturday == "Not Available") {
+            var dialog =  AlertDialog.Builder(activity)
+            dialog.setMessage("Please set the vehicle as available for at least one of the days.")
+                    .setPositiveButton("Okay", null)
+            dialog.create().show()
+
+        }else {
             (activity as AddCarActivity).vehicle.availability = adapter.availableDates
             (activity as AddCarActivity).nextPager(3)
         }

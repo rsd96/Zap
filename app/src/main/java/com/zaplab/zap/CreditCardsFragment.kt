@@ -3,6 +3,8 @@ package com.zaplab.zap
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -27,6 +29,8 @@ class CreditCardsFragment: Fragment() {
 
     var dbRef = FirebaseDatabase.getInstance().reference
     var listOfCards = mutableListOf<CreditCard>()
+    var transactionList = mutableListOf<Transaction>()
+    lateinit var adapter: CreditCardTransactionsRecyclerAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_credit_card, null)
     }
@@ -34,9 +38,50 @@ class CreditCardsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         loadCreditCards()
+
+        adapter = activity?.let { CreditCardTransactionsRecyclerAdapter(it, transactionList) }!!
+
+        rvTransactions.layoutManager = LinearLayoutManager(activity)
+
         fabAddCreditCard.setOnClickListener({
             addCreditCard()
         })
+
+        loadTransactions(0)
+        viewPagerCreditCard.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                loadTransactions(position)
+            }
+
+        })
+    }
+
+    private fun loadTransactions(position: Int) {
+        dbRef.child("Transactions").addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
+
+                    override fun onDataChange(snap: DataSnapshot?) {
+                        if ( snap != null) {
+                            transactionList.clear()
+                            for ( x in snap.children) {
+                                if (x.child("renterCard").value.toString() == listOfCards[position].number)
+                                    transactionList.add(x.getValue(Transaction::class.java)!!)
+                            }
+
+                            rvTransactions.adapter = adapter
+                            adapter?.notifyDataSetChanged()
+                        }
+
+                    }
+
+                })
     }
 
     /**
@@ -55,7 +100,7 @@ class CreditCardsFragment: Fragment() {
                         var creditCard = x.getValue(CreditCard::class.java)
                         if (creditCard?.cardHolder?.equals(FirebaseAuth.getInstance().currentUser?.uid)!!)
                             creditCard?.let { listOfCards.add(it) }
-                        var adapter = CreditCardListAdapter(activity?.applicationContext!!, listOfCards)
+                        var adapter = activity?.let { CreditCardListAdapter(it, listOfCards) }
                         viewPagerCreditCard.adapter = adapter
                         viewPagerCreditCard.clipToPadding = false
                         viewPagerCreditCard.setPadding(100, 0, 100, 0)

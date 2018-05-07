@@ -157,6 +157,7 @@ class MainActivity : AppCompatActivity() {
                         (application as Global).currentUser.addUserToDB()
                     } else if (snap != null) {
                         (application as Global).currentUser.userName = snap.child("userName").value.toString()
+                        (application as Global).currentUser.photoUrl = snap.child("photoUrl").value.toString()
                     }
                 }
 

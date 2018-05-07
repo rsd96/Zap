@@ -18,7 +18,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/etRentFilterMin"
         app:layout_constraintEnd_toStartOf="@+id/etRentFilterMin"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="8dp" />
 
     <EditText
         android:id="@+id/etRentFilterMin"
@@ -61,6 +62,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/etRentFilterMax"
         app:layout_constraintEnd_toStartOf="@+id/etRentFilterMax"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="8dp" />
 
 </android.support.constraint.ConstraintLayout>
