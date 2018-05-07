@@ -64,39 +64,42 @@ class RentedCarsFragment: Fragment() {
             override fun onDataChange(snap: DataSnapshot?) {
                 if ( snap != null) {
 
-                        var imageUri = snap.child("photoUrl").value.toString()
-                        if (imageUri != "null") {
-                            Picasso.with(context)
-                                    .load(imageUri)
-                                    .networkPolicy(NetworkPolicy.OFFLINE)
-                                    .into(ivRentedCarsProfile, object : Callback {
-                                        override fun onSuccess() {}
+                    var imageUri = snap.child("photoUrl").value.toString()
+                    if (imageUri != "null") {
+                        Picasso.with(context)
+                                .load(imageUri)
+                                .networkPolicy(NetworkPolicy.OFFLINE)
+                                .into(ivRentedCarsProfile, object : Callback {
+                                    override fun onSuccess() {}
 
-                                        override fun onError() {
-                                            // Try again online if cache failed
-                                            Picasso.with(context)
-                                                    .load(imageUri)
-                                                    .into(ivRentedCarsProfile, object : Callback {
-                                                        override fun onSuccess() {}
+                                    override fun onError() {
+                                        // Try again online if cache failed
+                                        Picasso.with(context)
+                                                .load(imageUri)
+                                                .into(ivRentedCarsProfile, object : Callback {
+                                                    override fun onSuccess() {}
 
-                                                        override fun onError() {}
-                                                    })
-                                        }
-                                    })
-                        }
+                                                    override fun onError() {}
+                                                })
+                                    }
+                                })
+                    }
 
-                        tvRentedCarsName.text = snap.child("userName").value.toString()
-                        btnRentedCarsChat.setOnClickListener {
-                            var intent = Intent(activity, ChatActivity::class.java)
-                            // Pass id of vehicle owner
-                            intent.putExtra("TO_USER", snap.key.toString())
-                            startActivity(intent)
-
+                    tvRentedCarsName.text = snap.child("userName").value.toString()
+                    btnRentedCarsChat.setOnClickListener {
+                        chatWithOwner(snap.key.toString())
                     }
                 }
             }
 
         })
+    }
+
+    private fun chatWithOwner(ownerId: String) {
+        var intent = Intent(activity, ChatActivity::class.java)
+        // Pass id of vehicle owner
+        intent.putExtra("TO_USER", ownerId)
+        startActivity(intent)
     }
 
     /**
@@ -151,7 +154,6 @@ class RentedCarsFragment: Fragment() {
                     }
 
                 })
-
     }
 
 }

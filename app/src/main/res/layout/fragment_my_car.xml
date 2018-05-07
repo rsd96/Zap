@@ -58,14 +58,13 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_info"
         app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.606"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintVertical_bias="0.606" />
 
     <Button
         android:id="@+id/btnMyCarsEdit"
@@ -73,9 +72,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:textColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/transparent"
         android:text="Edit"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvMyCarsStatus"
         app:layout_constraintEnd_toStartOf="@+id/btnMyCarsRemove"
         app:layout_constraintStart_toEndOf="@+id/tvMyCarsStatus" />
@@ -84,12 +83,11 @@
         android:id="@+id/btnMyCarsRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
         android:text="Remove"
-        android:textColor="@color/white"
-        android:background="@android:color/holo_red_dark"
+        android:textColor="@android:color/holo_red_dark"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnMyCarsEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

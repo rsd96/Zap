@@ -45,6 +45,9 @@ class HistoryListRecyclerAdapter(_context: Context, _list: MutableList<Transacti
 
     }
 
+    /**
+     * Set message in list according status of each transaction
+     */
     private fun setMessage(position: Int, holder: MyViewHolder) {
         if (list[position].owner == currentUser && toDate.after(currentDate)) {
             holder.message.text = "Your car ${vehicleList.get(list[position].vehicleId)} is booked from ${dateTimeFormat.format(fromDate)}to ${dateTimeFormat.format(toDate)}"

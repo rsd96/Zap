@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
     // Get all vehicles from database and populate the list
     private fun populateVehicleListing() {
 
-
         adapter = HomeListRecyclerAdapter(applicationContext, vehicleList, idList)
         rvListingHome.layoutManager = LinearLayoutManager(this)
         dbRef.child("Vehicles").addValueEventListener(object: ValueEventListener{

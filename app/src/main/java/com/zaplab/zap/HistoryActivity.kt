@@ -29,8 +29,8 @@ class HistoryActivity: AppCompatActivity() {
     var rater = ""
     var ratedUser = ""
     var dbRef = FirebaseDatabase.getInstance().reference
-
     lateinit var adapter: HistoryListRecyclerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_list)
@@ -52,14 +52,14 @@ class HistoryActivity: AppCompatActivity() {
 
                     var dialog = Dialog(this)
                     dialog.setContentView(R.layout.dialog_rate_report)
-                    var rate = dialog.findViewById<TextView>(R.id.tvHistoryDialogRate)
-                    var report = dialog.findViewById<TextView>(R.id.tvHistoryDialogReport)
+                    var btnRate = dialog.findViewById<TextView>(R.id.tvHistoryDialogRate)
+                    var btnReport = dialog.findViewById<TextView>(R.id.tvHistoryDialogReport)
 
-                    report.setOnClickListener {
-                        startActivity(Intent(this, ReportActivity::class.java))
+                    btnReport.setOnClickListener {
+                        reportUser()
                     }
 
-                    rate.setOnClickListener {
+                    btnRate.setOnClickListener {
                         dialog.dismiss()
                         showRatingDialog(position, ratedUser, rater)
                     }
@@ -78,6 +78,16 @@ class HistoryActivity: AppCompatActivity() {
         {})
     }
 
+    /**
+     * start report user activity
+     */
+    private fun reportUser() {
+        startActivity(Intent(this, ReportActivity::class.java))
+    }
+
+    /**
+     * Create and show rating dialog that asks user to rate and review on the user they dealt with
+     */
     private fun showRatingDialog(position: Int, user: String, rater: String) {
         var dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_rate_review)
@@ -161,6 +171,10 @@ class HistoryActivity: AppCompatActivity() {
         dialog.show()
     }
 
+    /**
+     * Get all transactions that involved current user
+     */
+
     private fun getTransactions() {
         FirebaseDatabase.getInstance().reference.child("Transactions").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -183,6 +197,9 @@ class HistoryActivity: AppCompatActivity() {
     }
 
 
+    /**
+     * Get vehicles from database that were part of transactions
+     */
     private fun getVehicleList() {
 
         FirebaseDatabase.getInstance().reference.child("Vehicles").addValueEventListener(object : ValueEventListener{

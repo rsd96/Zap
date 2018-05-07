@@ -17,13 +17,17 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.IOException
+import java.text.DecimalFormat
 
 /**
  * Created by Ramshad on 4/8/18.
@@ -35,6 +39,7 @@ class ProfileFragment: Fragment() {
 
     private var filePath: Uri? = null
     private val PICK_IMAGE_REQUEST = 1
+    lateinit var currentUser: User
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,8 +49,9 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        currentUser = (activity?.application as Global).currentUser
         loadProfile()
-        tvProfileMail.text = (activity?.application as Global).currentUser.email
+        tvProfileMail.text = currentUser.email
         btnLogout.setOnClickListener({
             signout()
         })
@@ -62,6 +68,9 @@ class ProfileFragment: Fragment() {
         }
     }
 
+    /**
+     * Start image picker to upload profile picture
+     */
     private fun chooseImage() {
         val intent = Intent()
         intent.type = "image/*"
@@ -69,6 +78,9 @@ class ProfileFragment: Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
 
+    /**
+     * Receive image selected by user
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
@@ -100,10 +112,29 @@ class ProfileFragment: Fragment() {
      * Load and populate user profile info.
      */
     private fun loadProfile() {
-        var name = (activity?.application as Global).currentUser.userName
-        var imageUrl = (activity?.application as Global).currentUser.photoUrl
+        var name = currentUser.userName
+        var imageUrl = currentUser.photoUrl
         Log.d("Profile Fragment", name)
 
+        FirebaseDatabase.getInstance().reference.child("Users").child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
+
+                    override fun onDataChange(snap: DataSnapshot?) {
+                        if ( snap != null) {
+                            var totalRating = snap.child("rating").value.toString().toDouble()
+                            var raterSum = snap.child("rateSum").value.toString().toDouble()
+                            if (raterSum != 0.0) {
+                                var d2f = DecimalFormat(".##")
+
+                                tvProfileRating.text = "${d2f.format(totalRating/raterSum)}/5"
+                            } else {
+                                tvProfileRating.text = "-"
+                            }
+                        }
+                    }
+
+                })
 
         if (imageUrl != "null") {
             // Load user profile image

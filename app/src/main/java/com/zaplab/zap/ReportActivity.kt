@@ -23,24 +23,32 @@ class ReportActivity: AppCompatActivity(),  View.OnClickListener{
         when (v.id) {
             R.id.btnReportSend ->
 
-                if (etEmailSubject!!.text.toString().trim().equals("", ignoreCase = true))
-                    etEmailSubject.error = "Enter a subject !"
-                else if (etEmailBody!!.text.toString().trim().equals("", ignoreCase = true))
-                    etEmailBody.error = "Enter a message !"
-                else {
-                    val subject = etEmailSubject.text.toString()
-                    val body = etEmailBody.text.toString()
-                    val emailIntent = Intent(Intent.ACTION_SENDTO)
-                    emailIntent.data = Uri.parse("mailto:")
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("rmshdbasheer@gmail.com"))
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, body)
-                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(emailIntent)
-                    }
-                }
+                sendEmail()
 
             R.id.btnReportCancel -> finish()
+        }
+    }
+
+    /**
+     * Get subect and message from user and launch default email app to send a mail to admin
+     */
+    private fun sendEmail() {
+        if (etEmailSubject!!.text.toString().trim().equals("", ignoreCase = true))
+            etEmailSubject.error = "Enter a subject !"
+        else if (etEmailBody!!.text.toString().trim().equals("", ignoreCase = true))
+            etEmailBody.error = "Enter a message !"
+        else {
+            val subject = etEmailSubject.text.toString()
+            val body = etEmailBody.text.toString()
+            val emailIntent = Intent(Intent.ACTION_SENDTO)
+            emailIntent.data = Uri.parse("mailto:")
+            // admin mail, change later
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("rmshdbasheer@gmail.com"))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+            emailIntent.putExtra(Intent.EXTRA_TEXT, body)
+            if (emailIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(emailIntent)
+            }
         }
     }
 }

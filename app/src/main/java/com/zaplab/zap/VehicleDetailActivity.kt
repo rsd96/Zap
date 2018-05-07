@@ -3,6 +3,7 @@ package com.zaplab.zap
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
@@ -10,10 +11,9 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.InflateException
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.cooltechworks.creditcarddesign.CreditCardView
 import com.dx.dxloadingbutton.lib.LoadingButton
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -47,8 +47,8 @@ class VehicleDetailActivity: AppCompatActivity() {
     lateinit var userName: String
     var vehicle = Vehicle()
     var vehicleId = ""
-    lateinit var fromDate: Date
-    lateinit var toDate: Date
+    lateinit var fromDate: DateTime
+    lateinit var toDate: DateTime
     var isInsurancePayDamage = false
     var listOfCards = mutableListOf<CreditCard>()
     var transaction = Transaction()
@@ -107,9 +107,6 @@ class VehicleDetailActivity: AppCompatActivity() {
         tvVehicleDetailTrans.text = vehicle.transmission.toString()
         tvVehicleDetailMileage.text = vehicle.odometer.toString()
         tvVehicleDetailRent.text = "$${vehicle.rent}"
-
-
-
     }
 
     private fun loadReviews() {
@@ -160,6 +157,7 @@ class VehicleDetailActivity: AppCompatActivity() {
                 "Cancel"
         )
 
+
         // Assign values
         dateTimeFragment.startAtCalendarView()
         dateTimeFragment.set24HoursMode(true)
@@ -184,7 +182,7 @@ class VehicleDetailActivity: AppCompatActivity() {
 // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
-                fromDate = date
+                fromDate = DateTime(date)
                 transaction.fromDate = dateTimeFormat.format(date)
                 showToDatePicker()
 
@@ -231,7 +229,7 @@ class VehicleDetailActivity: AppCompatActivity() {
 // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
-                toDate = date
+                toDate = DateTime(date)
                 transaction.toDate = dateTimeFormat.format(date)
                 showDamageDialog()
             }
@@ -409,24 +407,31 @@ class VehicleDetailActivity: AppCompatActivity() {
      * */
     private fun showVehicleLocation() {
 
-            var dialog = Dialog(this)
-            val view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_location, null)
-            dialog.setContentView(view)
-            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            OnMapAndViewReadyListener(mapFragment, object : OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener{
-                override fun onMapReady(googleMap: GoogleMap?) {
-                    if (googleMap != null) {
+        lateinit var view: View
+        var dialog = Dialog(this)
+        try {
+            view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_location, null)!!
+        } catch (e: InflateException) {
+            /* map is already there, just return view as it is */
+        }
 
-                        var mMap: GoogleMap = googleMap
-                        val vehicleLocation = LatLng(vehicle.lat, vehicle.long)
-                        mMap.addMarker(MarkerOptions()
-                                .position(vehicleLocation)
-                                .title(vehicle.city))
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vehicleLocation, 10f))
-                    }
+        dialog.setContentView(view)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+
+        OnMapAndViewReadyListener(mapFragment, object : OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener{
+            override fun onMapReady(googleMap: GoogleMap?) {
+                if (googleMap != null) {
+
+                    var mMap: GoogleMap = googleMap
+                    val vehicleLocation = LatLng(vehicle.lat, vehicle.long)
+                    mMap.addMarker(MarkerOptions()
+                            .position(vehicleLocation)
+                            .title(vehicle.city))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vehicleLocation, 10f))
                 }
-            })
-            dialog.show()
+            }
+        })
+        dialog.show()
     }
 
     /**
@@ -434,24 +439,67 @@ class VehicleDetailActivity: AppCompatActivity() {
      * */
     private fun showVehicleAvailability() {
 
-            var dialog = Dialog(this)
-            val view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_availability, null)
-            dialog.setContentView(view)
-            var mondayText = dialog.findViewById<TextView>(R.id.mondayText)
-            var tuesText = dialog.findViewById<TextView>(R.id.tuesdayText)
-            var wedText = dialog.findViewById<TextView>(R.id.wednesdayText)
-            var thursText = dialog.findViewById<TextView>(R.id.thursdayText)
-            var friText = dialog.findViewById<TextView>(R.id.fridayText)
-            var satText = dialog.findViewById<TextView>(R.id.saturdayText)
-            var sunText = dialog.findViewById<TextView>(R.id.sundayText)
-            mondayText.text = vehicle.availability.monday
-            tuesText.text = vehicle.availability.tuesday
-            wedText.text = vehicle.availability.wednesday
-            thursText.text = vehicle.availability.thursday
-            friText.text = vehicle.availability.friday
-            satText.text = vehicle.availability.saturday
-            sunText.text = vehicle.availability.sunday
-            dialog.show()
+        var dialog = Dialog(this)
+        val view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_availability, null)
+        dialog.setContentView(view)
+        var mondayText = dialog.findViewById<TextView>(R.id.mondayText)
+        var tuesText = dialog.findViewById<TextView>(R.id.tuesdayText)
+        var wedText = dialog.findViewById<TextView>(R.id.wednesdayText)
+        var thursText = dialog.findViewById<TextView>(R.id.thursdayText)
+        var friText = dialog.findViewById<TextView>(R.id.fridayText)
+        var satText = dialog.findViewById<TextView>(R.id.saturdayText)
+        var sunText = dialog.findViewById<TextView>(R.id.sundayText)
+        var bookingList = dialog.findViewById<ListView>(R.id.lvCurrentBookings)
+        var currentBookingList = mutableListOf<String>()
+        var transactionList = mutableListOf<Transaction>()
+        if (vehicle.availability.monday == "Not Available")
+            mondayText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.tuesday == "Not Available")
+            tuesText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.wednesday == "Not Available")
+            wedText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.thursday == "Not Available")
+            thursText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.friday == "Not Available")
+            friText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.saturday == "Not Available")
+            satText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+        if (vehicle.availability.sunday == "Not Available")
+            sunText.background.mutate().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN)
+
+        dbRef.child("Transactions").addValueEventListener(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                    }
+
+                    override fun onDataChange(snap: DataSnapshot?) {
+                        if ( snap != null) {
+                            for ( x in snap.children) {
+                                if(x.child("vehicleId").value.toString() == vehicleId) {
+                                    transactionList.add(x.getValue(Transaction::class.java)!!)
+                                }
+                            }
+
+                            var currentDate = DateTime()
+                            var toDate = DateTime()
+                            var it = transactionList.iterator()
+                            while (it.hasNext()) {
+                                var t = it.next()
+                                toDate = DateTime(dateTimeFormat.parse(t.toDate))
+                                if (toDate.isBeforeNow) {
+                                    it.remove()
+                                } else {
+                                    currentBookingList.add("${t.fromDate} -> ${t.toDate}")
+                                }
+                            }
+
+                            bookingList.adapter = ArrayAdapter<String>(this@VehicleDetailActivity, android.R.layout.simple_list_item_1, currentBookingList)
+
+                        }
+
+                    }
+
+                })
+        dialog.show()
     }
 
 

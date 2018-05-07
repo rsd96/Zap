@@ -27,8 +27,6 @@ import java.io.File
  */
 class AddCarActivity: AppCompatActivity() {
 
-
-
     var infoCheck = false
     var images: ArrayList<Image> = ArrayList()
 

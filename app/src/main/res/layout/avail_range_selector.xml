@@ -14,7 +14,8 @@
         android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <com.appyvet.materialrangebar.RangeBar
         android:id="@+id/rangeAddCarAvail"
@@ -41,14 +42,15 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/rangeAddCarAvail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddCarAvailDay">
+        app:layout_constraintTop_toBottomOf="@+id/tvAddCarAvailDay"
+        android:layout_marginLeft="8dp">
 
         <RadioButton
             android:id="@+id/rbAddCarAvailAllDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="All Day"
+            android:text="Available"
             android:textColor="@android:color/holo_green_dark" />
 
         <RadioButton
@@ -64,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             android:text="Custom"
             android:textColor="@color/blue" />
     </RadioGroup>
