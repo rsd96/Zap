@@ -1,5 +1,7 @@
 package com.zaplab.zap
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,6 +16,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_my_car.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -25,6 +29,9 @@ class MyCarFragment: Fragment() {
     var vehicleList = mutableListOf<Vehicle>()
     var vehicleIdList = mutableListOf<String>()
     var dbRef = FirebaseDatabase.getInstance().reference
+    val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
+
+
     lateinit var myCarsPagerAdapter: MyCarsPagerAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,26 +51,67 @@ class MyCarFragment: Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                // TODO CHANGE STATUS
+                setVehicleStatus(position)
             }
 
         })
 
         // Add new vehicle
         btnMyCarsAddCar.setOnClickListener({
-           startActivityForResult(Intent(activity, AddCarActivity::class.java ), RES_OK)
+            var intent = Intent(activity, AddCarActivity::class.java)
+            intent.putExtra("EDIT_MODE", false)
+           startActivityForResult(intent, RES_OK)
         })
 
 
         // Remove vehicle
         btnMyCarsRemove.setOnClickListener({
-            removeCar()
+            var alertDialog = AlertDialog.Builder(activity)
+            alertDialog.setMessage("Are you sure you want to remove this vehicle ?")
+            alertDialog.setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
+                removeCar()
+            })
+            alertDialog.setNegativeButton("Cancel", null)
+            alertDialog.show()
+
         })
 
 
         // Edit vehicle info
         btnMyCarsEdit.setOnClickListener({
-            editCar()
+            editCar(viewPagerMyCars.currentItem)
+        })
+    }
+
+    private fun setVehicleStatus(position: Int) {
+        dbRef.child("Bookings").child(vehicleIdList[position]).addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+            override fun onDataChange(snap: DataSnapshot?) {
+                if ( snap != null && snap.value != null) {
+                    for ( x in snap.children) {
+                        var toDate = dateTimeFormat.parse(x.child("to").value.toString())
+                        if (toDate.after(Date())) {
+                            tvMyCarsStatus.text = "Booked"
+                            break
+                        }
+                    }
+
+                    if (tvMyCarsStatus.text != "Booked") {
+                        tvMyCarsStatus.text = "Listed"
+                        btnMyCarsEdit.visibility = View.VISIBLE
+                        btnMyCarsRemove.visibility = View.VISIBLE
+                    } else {
+                        btnMyCarsEdit.visibility = View.GONE
+                        btnMyCarsRemove.visibility = View.GONE
+                    }
+                } else {
+                    tvMyCarsStatus.text = "Listed"
+                    btnMyCarsEdit.visibility = View.VISIBLE
+                    btnMyCarsRemove.visibility = View.VISIBLE
+                }
+            }
+
         })
     }
 
@@ -87,6 +135,7 @@ class MyCarFragment: Fragment() {
                         btnMyCarsRemove.visibility = View.VISIBLE
                         ivMyCarsStatus.visibility = View.VISIBLE
                         tvMyCarsStatus.visibility = View.VISIBLE
+                        setVehicleStatus(0)
                     } else {
                         btnMyCarsEdit.visibility = View.GONE
                         btnMyCarsRemove.visibility = View.GONE
@@ -111,8 +160,13 @@ class MyCarFragment: Fragment() {
     /**
      * Edit current vehicle with new info
      */
-    private fun editCar() {
-        TODO("create edit car functionality") //To change body of created functions use File | Settings | File Templates.
+    private fun editCar(position: Int) {
+        Log.d("MY_CAR", position.toString())
+        var intent = Intent(activity, AddCarActivity::class.java)
+        intent.putExtra("EDIT_MODE", true)
+        intent.putExtra("EDIT_VEHICLE", vehicleList[position])
+        intent.putExtra("EDIT_VEHICLE_ID", vehicleIdList[position])
+        startActivityForResult(intent, RES_OK)
     }
 
     /**

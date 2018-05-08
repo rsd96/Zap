@@ -13,5 +13,6 @@ data class Vehicle (var ownerId: String = "", var make: String = "", var model: 
                     var transmission: Transmission = Transmission.Auto, var card: CreditCard = CreditCard(),
                     var odometer: Int = 0, var availability: AvailableDates = AvailableDates(), var lat: Double = 0.00,
                     var long: Double = 0.00, var city: String = "wollongong", var country: String = "Australia",
-                    var rent: Double = 0.00, var imageList: ArrayList<String> = arrayListOf()) : Serializable {
+                    var rent: Double = 0.00, var imageList: ArrayList<String> = arrayListOf(),
+                    var amenities: List<String> = listOf()) : Serializable {
 }

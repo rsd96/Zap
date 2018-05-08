@@ -62,6 +62,7 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
             (activity as AddCarActivity).vehicle.plate = etAddCarPlate.text.toString()
             (activity as AddCarActivity).vehicle.color = selectedColor
             (activity as AddCarActivity).infoCheck = true
+            (activity as AddCarActivity).vehicle.amenities = tagGrpAddCarAmenities.tags.toList()
             loadingBtnInfo.loadingSuccessful()
             (activity as AddCarActivity).nextPager(1)
 

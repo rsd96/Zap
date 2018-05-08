@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -27,6 +28,10 @@ import java.io.File
  */
 class AddCarActivity: AppCompatActivity() {
 
+    // If edit
+    var editMode = false
+    var vehicleId = ""
+
     var infoCheck = false
     var images: ArrayList<Image> = ArrayList()
 
@@ -39,6 +44,13 @@ class AddCarActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
 
+        editMode = intent.extras.getBoolean("EDIT_MODE")
+        if ( editMode) {
+            vehicle = intent.extras.getSerializable("EDIT_VEHICLE") as Vehicle
+            vehicleId = intent.extras.getString("EDIT_VEHICLE_ID")
+        }
+
+        Log.d("ADD_CAR",  " ${editMode.toString()} | ${vehicle.toString()} | $vehicleId")
         fragmentAdapter.addFragment(AddCarInfoFragment())
         fragmentAdapter.addFragment(AddCarPicsFragment())
         fragmentAdapter.addFragment(AddCarAvailFragment())
@@ -110,7 +122,9 @@ class AddCarActivity: AppCompatActivity() {
 
                 })
 
-        var key = dbRef.child("Vehicles").push().key
+        var key: String
+        key = if (editMode)  vehicleId  else  dbRef.child("Vehicles").push().key
+
 
         // Upload images into folder created using unique id and get url list
         var imageUrlList = arrayListOf<String>() // list to store urls of added images

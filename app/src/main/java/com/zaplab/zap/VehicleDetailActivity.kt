@@ -1,5 +1,6 @@
 package com.zaplab.zap
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -53,6 +54,7 @@ class VehicleDetailActivity: AppCompatActivity() {
     var listOfCards = mutableListOf<CreditCard>()
     var transaction = Transaction()
     var reviewList = mutableListOf<RateReview>()
+    var avail = mutableListOf<String>()
 
     val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
@@ -64,6 +66,17 @@ class VehicleDetailActivity: AppCompatActivity() {
 
         vehicle = intent.getSerializableExtra("vehicle") as Vehicle
         vehicleId = intent.getStringExtra("vehicleId")
+
+
+        // Availability of car per each day
+        avail.add("")
+        avail.add(vehicle.availability.monday)
+        avail.add(vehicle.availability.tuesday)
+        avail.add(vehicle.availability.wednesday)
+        avail.add(vehicle.availability.thursday)
+        avail.add(vehicle.availability.friday)
+        avail.add(vehicle.availability.saturday)
+        avail.add(vehicle.availability.sunday)
 
         var imagePagerAdapter = VehicleDetailPagerAdapter(this, vehicle.imageList)
         viewPagerVehicleDetail.adapter = imagePagerAdapter
@@ -107,8 +120,14 @@ class VehicleDetailActivity: AppCompatActivity() {
         tvVehicleDetailTrans.text = vehicle.transmission.toString()
         tvVehicleDetailMileage.text = vehicle.odometer.toString()
         tvVehicleDetailRent.text = "$${vehicle.rent}"
+        if (vehicle.amenities.isNotEmpty())
+            tagGrpVehicleDetailAmenities.setTags(vehicle.amenities)
     }
 
+
+    /**
+     * Load reviews for the owner of this vehicle
+     */
     private fun loadReviews() {
         var adapter = ReviewsRecyclerAdapter(applicationContext, reviewList)
         rvVehicleDetailReviews.layoutManager = LinearLayoutManager(this)
@@ -149,6 +168,9 @@ class VehicleDetailActivity: AppCompatActivity() {
         showFromDatePicker()
     }
 
+    /**
+     * Show dialog to get the start date of booking
+     */
     private fun showFromDatePicker() {
         // Initialize
         val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
@@ -171,20 +193,32 @@ class VehicleDetailActivity: AppCompatActivity() {
         // dateTimeFragment.setDefaultMonth(Calendar.MARCH);
         dateTimeFragment.setDefaultYear(2018)
 
-// Define new day and month format
+        // Define new day and month format
         try {
             dateTimeFragment.setSimpleDateMonthAndDayFormat(SimpleDateFormat("dd MMMM", Locale.getDefault()))
         } catch (e: SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException) {
 
         }
 
-
-// Set listener
+        // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
+                var canProceed = false
+
+                var errorAlert = AlertDialog.Builder(this@VehicleDetailActivity)
+                errorAlert.setMessage("This vehicle is not available at the date specified! Please choose a different date.")
+                errorAlert.setPositiveButton("OK", null)
                 fromDate = DateTime(date)
-                transaction.fromDate = dateTimeFormat.format(date)
-                showToDatePicker()
+                if (avail[fromDate.dayOfWeek] == "Not Available") {
+                    errorAlert.show()
+                } else {
+                    canProceed = true
+                }
+
+                if (canProceed) {
+                    transaction.fromDate = dateTimeFormat.format(date)
+                    showToDatePicker()
+                }
 
             }
 
@@ -193,10 +227,12 @@ class VehicleDetailActivity: AppCompatActivity() {
             }
         })
 
-// Show
         dateTimeFragment.show(supportFragmentManager, "dialog_time")
     }
 
+    /**
+     * Show dialog to get the end date of booking
+     */
     private fun showToDatePicker() {
         // Initialize
         val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
@@ -205,20 +241,20 @@ class VehicleDetailActivity: AppCompatActivity() {
                 "Cancel"
         )
 
-// Assign values
+    // Assign values
         dateTimeFragment.startAtCalendarView()
         dateTimeFragment.set24HoursMode(true)
         dateTimeFragment.setMinimumDateTime(GregorianCalendar(2018, Calendar.JANUARY, 1).getTime())
         dateTimeFragment.setMaximumDateTime(GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime())
         dateTimeFragment.setDefaultDateTime(GregorianCalendar(2018, Calendar.MAY, 4, 15, 20).getTime())
-// Or assign each element, default element is the current moment
-// dateTimeFragment.setDefaultHourOfDay(15);
-// dateTimeFragment.setDefaultMinute(20);
-// dateTimeFragment.setDefaultDay(4);
-// dateTimeFragment.setDefaultMonth(Calendar.MARCH);
+        // Or assign each element, default element is the current moment
+        // dateTimeFragment.setDefaultHourOfDay(15);
+        // dateTimeFragment.setDefaultMinute(20);
+        // dateTimeFragment.setDefaultDay(4);
+        // dateTimeFragment.setDefaultMonth(Calendar.MARCH);
         dateTimeFragment.setDefaultYear(2018)
 
-// Define new day and month format
+    // Define new day and month format
         try {
             dateTimeFragment.setSimpleDateMonthAndDayFormat(SimpleDateFormat("dd MMMM", Locale.getDefault()))
         } catch (e: SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException) {
@@ -226,10 +262,11 @@ class VehicleDetailActivity: AppCompatActivity() {
         }
 
 
-// Set listener
+        // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date) {
                 toDate = DateTime(date)
+
                 transaction.toDate = dateTimeFormat.format(date)
                 showDamageDialog()
             }
@@ -239,7 +276,7 @@ class VehicleDetailActivity: AppCompatActivity() {
             }
         })
 
-// Show
+        // Show
         dateTimeFragment.show(supportFragmentManager, "dialog_time")
     }
 
@@ -277,7 +314,7 @@ class VehicleDetailActivity: AppCompatActivity() {
 
 
     /**
-     * Show dialog that shows user the amount they will have to pay
+     * Show dialog that shows user the breakdown of the amount they will have to pay
      */
     private fun showBreakdownDialog() {
         var dialog = Dialog(this@VehicleDetailActivity)
@@ -324,6 +361,9 @@ class VehicleDetailActivity: AppCompatActivity() {
         dialog.show()
     }
 
+    /**
+     * Show dialog to get the credit card info to pay for the booking
+     */
     private fun showPaymentDialog() {
         var dialog = Dialog(this@VehicleDetailActivity)
         val view = layoutInflater?.inflate(R.layout.dialog_transaction_pay, null)
@@ -427,7 +467,7 @@ class VehicleDetailActivity: AppCompatActivity() {
                     mMap.addMarker(MarkerOptions()
                             .position(vehicleLocation)
                             .title(vehicle.city))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vehicleLocation, 10f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(vehicleLocation, 15f))
                 }
             }
         })
@@ -442,6 +482,7 @@ class VehicleDetailActivity: AppCompatActivity() {
         var dialog = Dialog(this)
         val view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_availability, null)
         dialog.setContentView(view)
+        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         var mondayText = dialog.findViewById<TextView>(R.id.mondayText)
         var tuesText = dialog.findViewById<TextView>(R.id.tuesdayText)
         var wedText = dialog.findViewById<TextView>(R.id.wednesdayText)
