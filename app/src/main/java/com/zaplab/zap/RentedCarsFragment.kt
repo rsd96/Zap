@@ -64,6 +64,8 @@ class RentedCarsFragment: Fragment() {
             override fun onDataChange(snap: DataSnapshot?) {
                 if ( snap != null) {
 
+                    
+
                     var imageUri = snap.child("photoUrl").value.toString()
                     if (imageUri != "null") {
                         Picasso.with(context)

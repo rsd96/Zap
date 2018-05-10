@@ -34,6 +34,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_vehicle_detail.*
 import org.joda.time.DateTime
 import org.joda.time.Hours
+import org.joda.time.format.DateTimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -330,9 +331,10 @@ class VehicleDetailActivity: AppCompatActivity() {
         var insuranceAmount = dialog.findViewById<TextView>(R.id.tvCheckoutInsuranceAmount)
         var btnPay = dialog.findViewById<Button>(R.id.btnCheckoutPay)
 
+        var dtf = DateTimeFormat.forPattern("dd/MM/yy - HH:mm");
         carName.text = "${vehicle.make}-${vehicle.model}"
-        from.text = SimpleDateFormat("dd/MM/yy - HH:mm").format(fromDate)
-        to.text = SimpleDateFormat("dd/MM/yy - HH:mm").format(toDate)
+        from.text = dtf.print(fromDate)
+        to.text = dtf.print(toDate)
         //var difference = Interval(DateTime(fromDate), DateTime(toDate))
         var hObj = Hours.hoursBetween(DateTime(fromDate).withTimeAtStartOfDay(), DateTime(toDate).withTimeAtStartOfDay())
         var hours = hObj.hours

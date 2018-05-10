@@ -29,15 +29,6 @@ import me.gujun.android.taggroup.TagGroup
  */
 class FilterFragment: AAH_FabulousFragment() {
 
-//    companion object {
-//        fun newInstance(): FilterFragment {
-//            return FilterFragment()
-//        }
-//    }
-
-//    private lateinit var tabLayout: TabLayout
-//    private lateinit var viewPagerFilter: ViewPager
-
     private val TAG = "FilterFragment"
     var countryFilter = "" // list to hold filtered countries data
     var citiesFilterList = mutableListOf<String>() // list to hold fitered cities data
@@ -60,6 +51,10 @@ class FilterFragment: AAH_FabulousFragment() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPagerFilter: ViewPager
 
+
+    /**
+     * Initialize and populate filter dialog box
+     */
     override fun setupDialog(dialog: Dialog?, style: Int) {
         val contentView = View.inflate(context, R.layout.fragment_filter, null)
         val rl_content = contentView.findViewById(R.id.rl_content) as RelativeLayout
@@ -94,6 +89,9 @@ class FilterFragment: AAH_FabulousFragment() {
         super.setupDialog(dialog, style)
     }
 
+    /**
+     * Setup adapter with fragments with different filter options
+     */
     private fun setupTabs() {
         var tabsAdapter = SectionsPagerAdapter()
 //        tabsAdapter.addFragment(FilterLocationFragment(), "Location")
@@ -215,7 +213,6 @@ class FilterFragment: AAH_FabulousFragment() {
 
                     })
                 }
-
                 2 -> {
                     layout = inflater.inflate(R.layout.fragment_rent_filter, collection, false) as ViewGroup
                     var etMin = layout.findViewById<EditText>(R.id.etRentFilterMin)
@@ -254,6 +251,7 @@ class FilterFragment: AAH_FabulousFragment() {
             return layout
 
         }
+
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
             collection.removeView(view as View)

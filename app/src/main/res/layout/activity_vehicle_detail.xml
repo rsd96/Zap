@@ -180,7 +180,9 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans" />
+                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp" />
 
             <TextView
                 android:id="@+id/textView10"

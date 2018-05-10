@@ -45,6 +45,7 @@
                 android:layout_marginStart="8dp"
                 android:ems="16"
                 android:maxEms="16"
+                android:maxLength="16"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -83,9 +84,7 @@
                 android:ems="16"
                 android:inputType="text" />
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
-
 
     <android.support.v7.widget.CardView
         android:id="@+id/dateCard"

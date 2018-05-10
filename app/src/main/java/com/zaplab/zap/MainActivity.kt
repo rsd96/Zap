@@ -32,23 +32,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
-        if(checkIfUserExists()) {
-            if(checkIfUserIsVerified()) {
-                populateVehicleListing()
-                fabHomeFilter.setOnClickListener({
-                    startFilterFragment()
-                })
-            }
-        }
+        checkIfUserExists()
     }
 
+
+    /**
+     * Open filter options when user clicks the floating action button
+     */
     private fun startFilterFragment() {
         val dialogFrag = FilterFragment()
         dialogFrag.setParentFab(fabHomeFilter)
         dialogFrag.show(supportFragmentManager, dialogFrag.tag)
     }
 
-    // Get all vehicles from database and populate the list
+    /**
+     * Get all vehicles from database and populate the list
+     */
+
     private fun populateVehicleListing() {
 
         adapter = HomeListRecyclerAdapter(applicationContext, vehicleList, idList)
@@ -75,6 +75,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Filter the listing with passed criterias that are not null
+     */
     fun filter(country: String, cities: MutableList<String>, makeList: MutableList<String>, modelList: MutableList<String>,
                minRent: Double, maxRent: Double) {
 
@@ -128,15 +131,17 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // Check if user is already logged in
-    // if not - start loging activty
-    // if yes - get user info
-    private fun checkIfUserExists() : Boolean {
+    /**
+     * Check if user is already logged in
+     * if not - start loging activty
+     * if yes - get user info
+     */
+    private fun checkIfUserExists() {
+        Log.d(TAG, "checkIfUserExists()")
         var user = auth.currentUser
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-            return false
         } else {
             (this.application as Global).currentUser.email = user.email.toString()
             (this.application as Global).currentUser.uid = user.uid
@@ -152,21 +157,64 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancelled(p0: DatabaseError?) {}
 
                 override fun onDataChange(snap: DataSnapshot?) {
-                    if ( snap != null && !snap.exists()) {
-                        (application as Global).currentUser.addUserToDB()
+                    Log.d(TAG, snap?.toString())
+                    if ( snap?.value == null) {
+                        Log.d("MainActivity", "User EXists!!!")
+                        addUserToDB((application as Global).currentUser)
                     } else if (snap != null) {
                         (application as Global).currentUser.userName = snap.child("userName").value.toString()
                         (application as Global).currentUser.photoUrl = snap.child("photoUrl").value.toString()
                     }
+                    checkIfUserIsVerified()
                 }
-
             })
-            return true
         }
     }
 
-    // Check if user has already done their credit check
-    private fun checkIfUserIsVerified() : Boolean {
+
+    /**
+     * If user logs in for the first time, add their details to database
+     */
+    private fun addUserToDB(currentUser: User) {
+
+        var userExists = false
+        var map = hashMapOf<String, Any>()
+        map.put("userName", currentUser.userName)
+        map.put("email", currentUser.email)
+        map.put("photoUrl", currentUser.photoUrl)
+        map.put("verified", currentUser.verified)
+        map.put("verificationId", currentUser.verificationId)
+        map.put("rating", currentUser.rating)
+        map.put("rateSum", currentUser.rateSum)
+        var ref = FirebaseDatabase.getInstance().reference
+        ref.child("Users").addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+
+            override fun onDataChange(snap: DataSnapshot?) {
+                if (snap != null) {
+                    for ( x in snap.children) {
+                        if(x.value == currentUser.uid) {
+                            userExists = true
+                            break
+                        }
+                    }
+                    if (!userExists) {
+                        FirebaseDatabase.getInstance().reference.child("Users").child(currentUser.uid).setValue(map).addOnCompleteListener {
+                            checkIfUserIsVerified()
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
+    /**
+     * Check if user has already done their credit check
+     * If not start credit check activity
+     */
+    private fun checkIfUserIsVerified() {
         var isCool = true
         dbRef.child("Users").child((this.application as Global).currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {}
@@ -174,7 +222,9 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(snap: DataSnapshot?) {
                 for ( x in snap?.children!!) {
                     if ( x.key == "verified") {
+                        Log.d(TAG, x.key)
                         isCool = x.value as Boolean
+                        Log.d(TAG, isCool.toString())
                     }
                 }
 
@@ -182,26 +232,37 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(applicationContext, VerificationActivity::class.java))
                     finish()
                     return
+                } else {
+                    populateVehicleListing()
+                    fabHomeFilter.setOnClickListener({
+                        startFilterFragment()
+                    })
                 }
 
             }
 
         })
-
-        return isCool
     }
 
+    /**
+     * Populate Menu options
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
+    /**
+     * handle menu option clicks (profile, messages and history)
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         createMenuDialog()
         return true
     }
 
-    // Create dialog to show user profile, messaging menu option
+    /**
+     * Create dialog to show user profile, messaging menu option
+     */
     fun createMenuDialog() {
         var dialog = Dialog(this)
         dialog.setContentView(R.layout.menu_layout)
