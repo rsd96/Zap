@@ -45,16 +45,19 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/tvVehicleCardDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/tvVehicleCardRent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tvVehicleCardTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvVehicleCardTitle" />
 
         <TextView
@@ -68,7 +71,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:layout_marginRight="16dp" />
 
 
     </android.support.constraint.ConstraintLayout>

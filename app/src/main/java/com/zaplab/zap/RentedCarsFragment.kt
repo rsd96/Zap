@@ -67,7 +67,7 @@ class RentedCarsFragment: Fragment() {
                     
 
                     var imageUri = snap.child("photoUrl").value.toString()
-                    if (imageUri != "null") {
+                    if (imageUri != "null" && ivRentedCarsProfile != null) {
                         Picasso.with(context)
                                 .load(imageUri)
                                 .networkPolicy(NetworkPolicy.OFFLINE)
@@ -87,8 +87,10 @@ class RentedCarsFragment: Fragment() {
                                 })
                     }
 
-                    tvRentedCarsName.text = snap.child("userName").value.toString()
-                    btnRentedCarsChat.setOnClickListener {
+                    if (tvRentedCarsName != null)
+                        tvRentedCarsName.text = snap.child("userName").value.toString()
+
+                    btnRentedCarsChat?.setOnClickListener {
                         chatWithOwner(snap.key.toString())
                     }
                 }

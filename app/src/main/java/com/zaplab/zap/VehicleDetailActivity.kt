@@ -399,8 +399,8 @@ class VehicleDetailActivity: AppCompatActivity() {
         btnFinish.setOnClickListener({
             btnFinish.startLoading()
             var map = hashMapOf<String, String>()
-            map.put("from", dateTimeFormat.format(fromDate))
-            map.put("to", dateTimeFormat.format(toDate))
+            map.put("from", dateTimeFormat.format(fromDate.toDate()))
+            map.put("to", dateTimeFormat.format(toDate.toDate()))
             FirebaseDatabase.getInstance().reference.child("Bookings").child(vehicleId).push().setValue(map)
             FirebaseDatabase.getInstance().reference.child("Transactions").push().setValue(transaction).addOnCompleteListener {
                 btnFinish.loadingSuccessful()
