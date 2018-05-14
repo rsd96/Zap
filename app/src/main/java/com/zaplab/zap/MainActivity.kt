@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         auth = FirebaseAuth.getInstance()
         checkIfUserExists()
+
+        //startActivity(Intent(this, DummyData::class.java))
     }
 
 
@@ -71,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(p0: DatabaseError?) {}
-
         })
     }
 

@@ -36,7 +36,7 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
 
         var imageUri = list[position].imageList[0]
 
-        holder.vehicleImage.scaleType = ImageView.ScaleType.CENTER
+        //holder.vehicleImage.scaleType = ImageView.ScaleType.CENTER_CROP
 //        photoView.setAdjustViewBounds(true);
 
         Picasso.with(myContext)

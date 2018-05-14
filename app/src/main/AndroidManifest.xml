@@ -24,6 +24,9 @@
         <activity android:name=".HistoryActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".DummyData"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ReportActivity"
             android:screenOrientation="portrait"/>
 

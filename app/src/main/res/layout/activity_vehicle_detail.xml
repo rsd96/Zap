@@ -266,15 +266,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/colorPrimary"
                 android:text="Rent!"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/btnVehicleDetailAvail"
+                app:layout_constraintStart_toStartOf="@+id/btnVehicleDetailLocation"
                 app:layout_constraintTop_toBottomOf="@id/rvVehicleDetailReviews" />
 
         </android.support.constraint.ConstraintLayout>
