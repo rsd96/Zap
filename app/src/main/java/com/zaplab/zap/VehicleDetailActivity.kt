@@ -131,7 +131,9 @@ class VehicleDetailActivity: AppCompatActivity() {
      */
     private fun loadReviews() {
         var adapter = ReviewsRecyclerAdapter(applicationContext, reviewList)
-        rvVehicleDetailReviews.layoutManager = LinearLayoutManager(this)
+        var layoutManager = LinearLayoutManager(this)
+        layoutManager.isAutoMeasureEnabled = true
+        rvVehicleDetailReviews.layoutManager = layoutManager
         dbRef.child("Ratings").addValueEventListener(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
                     }
@@ -484,7 +486,6 @@ class VehicleDetailActivity: AppCompatActivity() {
         var dialog = Dialog(this)
         val view = this.layoutInflater?.inflate(R.layout.dialog_car_detail_availability, null)
         dialog.setContentView(view)
-        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         var mondayText = dialog.findViewById<TextView>(R.id.mondayText)
         var tuesText = dialog.findViewById<TextView>(R.id.tuesdayText)
         var wedText = dialog.findViewById<TextView>(R.id.wednesdayText)
@@ -536,13 +537,13 @@ class VehicleDetailActivity: AppCompatActivity() {
                             }
 
                             bookingList.adapter = ArrayAdapter<String>(this@VehicleDetailActivity, android.R.layout.simple_list_item_1, currentBookingList)
-
                         }
-
                     }
-
                 })
+        dialog.window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         dialog.show()
+
+
     }
 
 

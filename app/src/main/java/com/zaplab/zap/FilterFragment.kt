@@ -145,7 +145,9 @@ class FilterFragment: AAH_FabulousFragment() {
                             if ( snap != null) {
                                 for ( x in snap.children) {
                                     if (makeModelMap.containsKey(x.child("make").value.toString())) {
-                                        makeModelMap[x.child("make").value.toString()]?.add(x.child("model").value.toString())
+                                        if (!makeModelMap[x.child("make").value.toString()]?.contains(x.child("model").value.toString())!!) {
+                                            makeModelMap[x.child("make").value.toString()]?.add(x.child("model").value.toString())
+                                        }
                                     } else {
                                         makeModelMap.put(x.child("make").value.toString(), mutableListOf(x.child("model").value.toString()))
                                     }
@@ -176,8 +178,10 @@ class FilterFragment: AAH_FabulousFragment() {
 
                             override fun onDataChange(snap: DataSnapshot?) {
                                 if ( snap != null) {
+                                    cityList.clear()
                                     for ( x in snap.children) {
-                                        cityList.add(x.value.toString())
+                                        if (!cityList.contains(x.value.toString()))
+                                            cityList.add(x.value.toString())
                                     }
                                     cityTags.setTags(cityList)
                                     cityTags.visibility = View.VISIBLE

@@ -131,16 +131,16 @@ class MyCarFragment: Fragment() {
                     }
 
                     if (vehicleList.isNotEmpty()) {
-                        btnMyCarsEdit.visibility = View.VISIBLE
-                        btnMyCarsRemove.visibility = View.VISIBLE
-                        ivMyCarsStatus.visibility = View.VISIBLE
-                        tvMyCarsStatus.visibility = View.VISIBLE
+                        btnMyCarsEdit?.visibility = View.VISIBLE
+                        btnMyCarsRemove?.visibility = View.VISIBLE
+                        ivMyCarsStatus?.visibility = View.VISIBLE
+                        tvMyCarsStatus?.visibility = View.VISIBLE
                         setVehicleStatus(0)
                     } else {
-                        btnMyCarsEdit.visibility = View.GONE
-                        btnMyCarsRemove.visibility = View.GONE
-                        ivMyCarsStatus.visibility = View.GONE
-                        tvMyCarsStatus.visibility = View.GONE
+                        btnMyCarsEdit?.visibility = View.GONE
+                        btnMyCarsRemove?.visibility = View.GONE
+                        ivMyCarsStatus?.visibility = View.GONE
+                        tvMyCarsStatus?.visibility = View.GONE
                     }
 
                     myCarsPagerAdapter = MyCarsPagerAdapter(activity!!, vehicleList)

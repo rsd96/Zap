@@ -71,11 +71,13 @@ class CreditCardsFragment: Fragment() {
                         if ( snap != null) {
                             transactionList.clear()
                             for ( x in snap.children) {
-                                if (x.child("renterCard").value.toString() == listOfCards[position].number)
-                                    transactionList.add(x.getValue(Transaction::class.java)!!)
+                                if (listOfCards.isNotEmpty()) {
+                                    if (x.child("renterCard").value.toString() == listOfCards[position].number)
+                                        transactionList.add(x.getValue(Transaction::class.java)!!)
+                                }
                             }
 
-                            rvTransactions.adapter = adapter
+                            rvTransactions?.adapter = adapter
                             adapter?.notifyDataSetChanged()
                         }
 

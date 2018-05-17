@@ -72,7 +72,7 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
 
         holder.title.text = "${list.get(position).make} - ${list.get(position).model}"
         holder.desc.text = list.get(position).desc
-        holder.rent.text = "$ ${list.get(position).rent.toString()}"
+        holder.rent.text = "$ ${list.get(position).rent.toString()}p/hr"
         holder.location.text = "${list[position].city},${list[position].country}"
     }
 

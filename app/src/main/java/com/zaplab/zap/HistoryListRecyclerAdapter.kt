@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -51,18 +52,23 @@ class HistoryListRecyclerAdapter(_context: Context, _list: MutableList<Transacti
     private fun setMessage(position: Int, holder: MyViewHolder) {
         if (list[position].owner == currentUser && toDate.after(currentDate)) {
             holder.message.text = "Your car ${vehicleList.get(list[position].vehicleId)} is booked from ${dateTimeFormat.format(fromDate)}to ${dateTimeFormat.format(toDate)}"
+            holder.button.visibility = View.GONE
         } else if (list[position].owner == currentUser && toDate.before(currentDate)) {
             holder.message.text = "Your car ${vehicleList.get(list[position].vehicleId)} was rented from ${dateTimeFormat.format(fromDate)} to ${dateTimeFormat.format(toDate)}"
+            holder.button.visibility = View.VISIBLE
         } else if (list[position].renter == currentUser && toDate.after(currentDate)) {
             holder.message.text = "You booked ${vehicleList.get(list[position].vehicleId)} from ${dateTimeFormat.format(fromDate)} to ${dateTimeFormat.format(toDate)}"
+            holder.button.visibility = View.GONE
         } else {
             holder.message.text = "You rented ${vehicleList.get(list[position].vehicleId)} from ${dateTimeFormat.format(fromDate)} to ${dateTimeFormat.format(toDate)}"
+            holder.button.visibility = View.VISIBLE
         }
     }
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val message: TextView = view.findViewById(R.id.tvHistoryMessage)
+        var button: Button = view.findViewById(R.id.btnHistoryEdit)
         val listItem: ConstraintLayout = view.findViewById(R.id.clHistoryContent)
     }
 }

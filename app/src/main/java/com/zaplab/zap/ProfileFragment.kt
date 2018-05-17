@@ -127,9 +127,9 @@ class ProfileFragment: Fragment() {
                             if (raterSum != 0.0) {
                                 var d2f = DecimalFormat(".##")
 
-                                tvProfileRating.text = "${d2f.format(totalRating/raterSum)}/5"
+                                tvProfileRating?.text = "${d2f.format(totalRating/raterSum)}/5"
                             } else {
-                                tvProfileRating.text = "-"
+                                tvProfileRating?.text = "-"
                             }
                         }
                     }
@@ -148,22 +148,24 @@ class ProfileFragment: Fragment() {
 
                         override fun onError() {
                             // Try again online if cache failed
-                            Picasso.with(activity)
-                                    .load(imageUrl)
-                                    .into(ivProfileImage, object : Callback {
-                                        override fun onSuccess() {
+                            if (ivProfileImage != null) {
+                                Picasso.with(activity)
+                                        .load(imageUrl)
+                                        .into(ivProfileImage, object : Callback {
+                                            override fun onSuccess() {
 
-                                        }
+                                            }
 
-                                        override fun onError() {
+                                            override fun onError() {
 
-                                        }
-                                    })
+                                            }
+                                        })
+                            }
                         }
                     })
         }
 
-        tvProfileName.text = name
+        tvProfileName?.text = name
     }
 
 

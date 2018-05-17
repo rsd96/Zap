@@ -36,7 +36,7 @@ class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>
         val rent: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRent)
         var imageUri = listOfVehicle[position].imageList[0]
 
-        vehicleImage.setScaleType(ImageView.ScaleType.CENTER);
+ //       vehicleImage.setScaleType(ImageView.ScaleType.CENTER);
 //        photoView.setAdjustViewBounds(true);
 
         Picasso.with(context)
@@ -59,7 +59,7 @@ class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>
 
         title.text = "${listOfVehicle.get(position).make} - ${listOfVehicle.get(position).model}"
         desc.text = listOfVehicle.get(position).desc
-        rent.text = "$ ${listOfVehicle.get(position).rent.toString()}"
+        rent.text = "$ ${listOfVehicle.get(position).rent.toString()}p/hr"
         container.addView(vehicleCard, 0)
         return vehicleCard
     }

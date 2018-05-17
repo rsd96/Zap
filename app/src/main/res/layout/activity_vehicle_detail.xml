@@ -6,7 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -57,15 +59,16 @@
     </android.support.design.widget.AppBarLayout>
 
 
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivVehicleDetailProfile"
@@ -117,7 +120,9 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailDesc" />
+                app:layout_constraintTop_toBottomOf="@id/tvVehicleDetailDesc"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp" />
 
             <TextView
                 android:id="@+id/tvVehicleDetailRent"
@@ -173,6 +178,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Transmission"
@@ -180,9 +187,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans"
-                android:layout_marginRight="16dp"
-                android:layout_marginLeft="8dp" />
+                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailTrans" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -194,7 +199,9 @@
                 android:text="Mileage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView9"
-                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailMileage" />
+                app:layout_constraintTop_toBottomOf="@+id/tvVehicleDetailMileage"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -218,13 +225,15 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnVehicleDetailLocation" />
+                app:layout_constraintTop_toBottomOf="@+id/btnVehicleDetailLocation"
+                android:layout_marginLeft="8dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvVehicleDetailReviews"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@id/btnVehicleDetailRent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -273,12 +282,13 @@
                 android:text="Rent!"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btnVehicleDetailAvail"
-                app:layout_constraintStart_toStartOf="@+id/btnVehicleDetailLocation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvVehicleDetailReviews" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
+
 
 
     <android.support.design.widget.FloatingActionButton
