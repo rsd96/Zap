@@ -52,13 +52,9 @@ class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, id
                         Picasso.with(myContext)
                                 .load(imageUri)
                                 .into(holder?.vehicleImage, object : Callback {
-                                    override fun onSuccess() {
+                                    override fun onSuccess() {}
 
-                                    }
-
-                                    override fun onError() {
-
-                                    }
+                                    override fun onError() {}
                                 })
                     }
                 })
