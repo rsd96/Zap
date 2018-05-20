@@ -13,6 +13,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 5/3/18.
+ *
+ * Adapter class to show list of activities by user
  */
 class HistoryListRecyclerAdapter(_context: Context, _list: MutableList<Transaction>, _vehicleList: HashMap<String, String>, _currentUser: String) :
         RecyclerView.Adapter<HistoryListRecyclerAdapter.MyViewHolder>() {

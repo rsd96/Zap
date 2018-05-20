@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.activity_chat.*
 
 /**
  * Created by Ramshad on 4/22/18.
+ *
+ * Page to let two users chat
  */
 class ChatActivity: AppCompatActivity() {
 

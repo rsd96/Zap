@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_add_car_location.*
 
 /**
  * Created by Ramshad on 4/15/18.
+ *
+ * Fragment to get locatoin of vehicle in add car process
  */
 class AddCarLocationFragment: Fragment() {
 
@@ -30,6 +32,7 @@ class AddCarLocationFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        // Handle add location button
         btnAddCarLocation.setOnClickListener({
             try {
                 val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
@@ -42,11 +45,13 @@ class AddCarLocationFragment: Fragment() {
             }
         })
 
+        // Go to next process
         btnAddCarLocationNext.setOnClickListener( {
             (activity as AddCarActivity).nextPager(4)
         })
     }
 
+    // Get location result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -58,6 +63,7 @@ class AddCarLocationFragment: Fragment() {
         }
     }
 
+    // Set received location
     private fun setLocation(data: Intent?) {
         val place = PlaceAutocomplete.getPlace(activity, data)
         tvAddCarLocation.visibility = View.VISIBLE

@@ -25,6 +25,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 4/11/18.
+ *
+ * Fragment to get pictures of vehicle in the add vehicle process
  */
 class AddCarPicsFragment: Fragment() {
 
@@ -33,13 +35,13 @@ class AddCarPicsFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_add_car_pics, null)
     }
 
-    var images = ArrayList<Image>()
+    var images = ArrayList<Image>() // List of images of vehicle
     var imagePos = 0
-    lateinit var adapter: RestRecyclerAdapter
+    lateinit var adapter: PicsRecyclerAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = RestRecyclerAdapter(activity?.applicationContext!!, images)
+        adapter = PicsRecyclerAdapter(activity?.applicationContext!!, images)
         val layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayoutManager.HORIZONTAL, false)
         rvAddCarPicsList.layoutManager = layoutManager
         rvAddCarPicsList.adapter = adapter
@@ -114,6 +116,9 @@ class AddCarPicsFragment: Fragment() {
                 .start()                            //  Start ImagePicker
     }
 
+    /**
+     * Get images from device after user selects them
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Config.RC_PICK_IMAGES && resultCode == RESULT_OK && data != null) {
             images.clear()
@@ -125,8 +130,11 @@ class AddCarPicsFragment: Fragment() {
     }
 }
 
-class RestRecyclerAdapter(_context: Context, _list: MutableList<Image> = mutableListOf()) :
-        RecyclerView.Adapter<RestRecyclerAdapter.MyViewHolder>() {
+/**
+ * Adapter class to handle list of vehicle images selected by user
+ */
+class PicsRecyclerAdapter(_context: Context, _list: MutableList<Image> = mutableListOf()) :
+        RecyclerView.Adapter<PicsRecyclerAdapter.MyViewHolder>() {
 
     val myContext = _context
     var list = _list

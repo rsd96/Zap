@@ -31,6 +31,8 @@ import java.text.DecimalFormat
 
 /**
  * Created by Ramshad on 4/8/18.
+ *
+ * User profile fragment
  */
 class ProfileFragment: Fragment() {
 

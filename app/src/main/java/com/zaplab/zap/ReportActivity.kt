@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.activity_report.*
 
 /**
  * Created by Ramshad on 5/7/18.
+ *
+ * Page to let user report another user
  */
 class ReportActivity: AppCompatActivity(),  View.OnClickListener{
 
@@ -21,9 +23,7 @@ class ReportActivity: AppCompatActivity(),  View.OnClickListener{
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btnReportSend ->
-
-                sendEmail()
+            R.id.btnReportSend -> sendEmail()
 
             R.id.btnReportCancel -> finish()
         }

@@ -22,6 +22,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 4/8/18.
+ *
+ * Fragment in profile to show all vehicles owned by current user
  */
 class MyCarFragment: Fragment() {
 
@@ -83,6 +85,9 @@ class MyCarFragment: Fragment() {
         })
     }
 
+    /**
+     * Change the status of the vehicle as it goes from listing to booked
+     */
     private fun setVehicleStatus(position: Int) {
         dbRef.child("Bookings").child(vehicleIdList[position]).addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {

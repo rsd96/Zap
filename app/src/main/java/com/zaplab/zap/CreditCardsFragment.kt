@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.fragment_credit_card.*
 
 /**
  * Created by Ramshad on 4/12/18.
+ *
+ * Fragment
  */
 class CreditCardsFragment: Fragment() {
 
@@ -62,6 +64,9 @@ class CreditCardsFragment: Fragment() {
         })
     }
 
+    /**
+     * Load all transaction made using using currently selected credit card
+     */
     private fun loadTransactions(position: Int) {
         dbRef.child("Transactions").addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {

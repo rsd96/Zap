@@ -15,6 +15,8 @@ import org.xdty.preference.colorpicker.ColorPickerDialog
 
 /**
  * Created by Ramshad on 4/11/18.
+ *
+ * Fragment to get information about vehicle
  */
 class AddCarInfoFragment: Fragment(), View.OnClickListener {
 
@@ -34,7 +36,6 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
         tvList.add(etAddCarDesc)
         tvList.add(etAddMileage)
         tvList.add(etAddCarPlate)
-
 
         rbAuto.setOnClickListener(this)
         rbManual.setOnClickListener(this)
@@ -113,6 +114,9 @@ class AddCarInfoFragment: Fragment(), View.OnClickListener {
     }
 
 
+    /**
+     * Handle radio auto or manual radio button clicks
+     */
     override fun onClick(view: View?) {
         // Is the button now checked?
         val checked = (view as RadioButton).isChecked

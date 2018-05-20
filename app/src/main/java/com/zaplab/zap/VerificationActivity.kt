@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_credit_check.*
 
 /**
  * Created by Ramshad on 4/16/18.
+ *
+ * Page to perform credit check of user befoer they are given access to the app
  */
 class VerificationActivity: AppCompatActivity() {
 

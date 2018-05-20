@@ -30,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 /**
  * Created by Ramshad on 11/9/17.
+ *
+ * Login page
  */
 class LoginActivity: AppCompatActivity() {
 
@@ -136,7 +138,10 @@ class LoginActivity: AppCompatActivity() {
         })
     }
 
-    // Facebook login
+    /**
+     * Facebook login
+     */
+
     private fun fbLogin() {
         callbackManager = CallbackManager.Factory.create()
         btnLoginFB.setReadPermissions("email", "public_profile")

@@ -15,6 +15,8 @@ import com.google.firebase.database.ValueEventListener
 
 /**
  * Created by Ramshad on 5/7/18.
+ *
+ * Adapter class to handle credit card transaction list
  */
 class CreditCardTransactionsRecyclerAdapter  (_context: Context, _list: MutableList<Transaction>) :
         RecyclerView.Adapter<CreditCardTransactionsRecyclerAdapter.MyViewHolder>() {
@@ -54,8 +56,6 @@ class CreditCardTransactionsRecyclerAdapter  (_context: Context, _list: MutableL
 
         holder.time?.text = list[position].transactionDate
         holder.amount?.text = list[position].amount.toString()
-
-
 
     }
 

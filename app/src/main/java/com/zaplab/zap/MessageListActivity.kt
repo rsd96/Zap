@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_message_list.*
 
 /**
  * Created by Ramshad on 4/24/18.
+ *
+ * Page to show all chat history of user
  */
 class MessageListActivity: AppCompatActivity() {
 
@@ -33,6 +35,7 @@ class MessageListActivity: AppCompatActivity() {
 
         getMessageHistory()
 
+        // Handle when user clicks on a message history instance
         rvMessageList.addOnItemTouchListener(object : RecyclerItemClickListener(this,
                 OnItemClickListener { view, position ->
                     var intent = Intent(this, ChatActivity::class.java)
@@ -44,6 +47,9 @@ class MessageListActivity: AppCompatActivity() {
         {})
     }
 
+    /**
+     * Get message history of current user
+     */
     private fun getMessageHistory() {
         FirebaseDatabase.getInstance().reference.child("Channels").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {

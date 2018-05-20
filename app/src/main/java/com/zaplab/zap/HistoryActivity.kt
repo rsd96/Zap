@@ -18,6 +18,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 5/3/18.
+ *
+ * Page to show all the activities of the user
  */
 class HistoryActivity: AppCompatActivity() {
 
@@ -174,7 +176,6 @@ class HistoryActivity: AppCompatActivity() {
     /**
      * Get all transactions that involved current user
      */
-
     private fun getTransactions() {
         FirebaseDatabase.getInstance().reference.child("Transactions").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {

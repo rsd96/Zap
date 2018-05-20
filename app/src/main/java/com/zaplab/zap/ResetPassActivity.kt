@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_reset_password.*
 
 /**
  * Created by Ramshad on 11/11/17.
+ *
+ * Page to let user reset their password
  */
 
 class ResetPassActivity: AppCompatActivity() {
@@ -34,6 +36,9 @@ class ResetPassActivity: AppCompatActivity() {
         })
     }
 
+    /**
+     * Send link to reset password through their mail
+     */
     private fun sendResetMail(email: String) {
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(application, "Enter your registered email id", Toast.LENGTH_SHORT).show()

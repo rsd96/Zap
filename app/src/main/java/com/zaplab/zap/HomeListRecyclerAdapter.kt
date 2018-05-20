@@ -15,6 +15,8 @@ import java.io.Serializable
 
 /**
  * Created by Ramshad on 4/22/18.
+ *
+ * Adapter class to show vehicle listing in home page
  */
 class HomeListRecyclerAdapter(_context: Context, _list: MutableList<Vehicle>, idList: MutableList<String>) :
         RecyclerView.Adapter<HomeListRecyclerAdapter.MyViewHolder>() {

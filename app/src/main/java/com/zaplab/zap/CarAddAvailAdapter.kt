@@ -12,6 +12,8 @@ import com.appyvet.materialrangebar.RangeBar
 
 /**
  * Created by Ramshad on 4/14/18.
+ *
+ * Adapter class to handle vehicle availability list in add vehicle process
  */
 class CarAddAvailAdapter(internal var context: Context, internal var daysList : MutableList<String>, internal var availableDates: AvailableDates) : BaseAdapter() {
 
@@ -21,7 +23,6 @@ class CarAddAvailAdapter(internal var context: Context, internal var daysList : 
 
     override fun getView(pos: Int, convertView: View?, viewGroup: ViewGroup): View? {
 
-        var TAG = "AlertFeedAdapter"
         var v: View? = convertView
         var viewHolder = ViewHolder()
 
@@ -42,9 +43,6 @@ class CarAddAvailAdapter(internal var context: Context, internal var daysList : 
             viewHolder = v.tag as ViewHolder
         }
 
-        val startValue = 1000
-        val endValue = 100000
-        val factor = 500
 
         viewHolder.tvFrom?.text = "${viewHolder.slider?.leftPinValue.toString()}:00"
         viewHolder.tvTo?.text = "${viewHolder.slider?.rightPinValue.toString()}:00"
@@ -55,8 +53,6 @@ class CarAddAvailAdapter(internal var context: Context, internal var daysList : 
                 viewHolder.tvTo?.text = "${rightPinIndex.toString()}:00"
             }
         })
-
-
 
         viewHolder.tvDay?.text = daysList[pos]
 
@@ -83,6 +79,9 @@ class CarAddAvailAdapter(internal var context: Context, internal var daysList : 
     }
 
 
+    /**
+     * Get vehicle availabilty for each day
+     */
     fun setTime(type: Int, day: Int, from: String = "", to: String = "") {
         when (day) {
             0-> {

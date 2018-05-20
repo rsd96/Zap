@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_add_car_pay.*
 
 /**
  * Created by Ramshad on 4/11/18.
+ *
+ * Fragment to get payment info in add vehicle process
  */
 class AddCarPayFragment: Fragment() {
 
@@ -50,6 +52,7 @@ class AddCarPayFragment: Fragment() {
             }
         })
 
+        // Handle select credit card button
         btnAddCarPaySelectCredit.setOnClickListener({
             var selectedCard = listOfCards[viewPagerAddCarPay.currentItem]
             selectedCreditCard.visibility = View.VISIBLE

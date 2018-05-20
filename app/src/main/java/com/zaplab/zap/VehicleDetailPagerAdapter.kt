@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso
 
 /**
  * Created by Ramshad on 4/6/18.
+ *
+ * Adapter class to show the images related to the selected vehicle in details page
  */
 
 class VehicleDetailPagerAdapter(_context: Context, _listOfImages: ArrayList<String>): PagerAdapter() {

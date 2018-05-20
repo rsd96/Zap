@@ -1,12 +1,10 @@
 package com.zaplab.zap
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -25,11 +23,13 @@ import java.io.File
 
 /**
  * Created by Ramshad on 4/6/18.
+ *
+ * Page to add a new vehicle
  */
 class AddCarActivity: AppCompatActivity() {
 
-    // If edit
-    var editMode = false
+
+    var editMode = false // IF edit
     var vehicleId = ""
 
     var infoCheck = false
@@ -37,26 +37,32 @@ class AddCarActivity: AppCompatActivity() {
 
     var fragmentAdapter = FragmentAdapter(supportFragmentManager)
     var vehicle: Vehicle = Vehicle()
+
+    // Titles of each fragment of adding vehicle process
     var titleList = arrayListOf("INFO", "PICTURES", "AVAILABILITY", "LOCATION", "PAYMENT")
 
     var dbRef = FirebaseDatabase.getInstance().reference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_car)
 
+        // If user clicked edit
         editMode = intent.extras.getBoolean("EDIT_MODE")
         if ( editMode) {
             vehicle = intent.extras.getSerializable("EDIT_VEHICLE") as Vehicle
             vehicleId = intent.extras.getString("EDIT_VEHICLE_ID")
         }
 
-        Log.d("ADD_CAR",  " ${editMode.toString()} | ${vehicle.toString()} | $vehicleId")
+        // Add different fragments for each step of adding cars
         fragmentAdapter.addFragment(AddCarInfoFragment())
         fragmentAdapter.addFragment(AddCarPicsFragment())
         fragmentAdapter.addFragment(AddCarAvailFragment())
         fragmentAdapter.addFragment(AddCarLocationFragment())
         fragmentAdapter.addFragment(AddCarPayFragment())
 
+
+        // Setup fragment pager adapter
         pagerAddCar.adapter = fragmentAdapter
         indicatorAddCar.setViewPager(pagerAddCar)
 
@@ -74,10 +80,12 @@ class AddCarActivity: AppCompatActivity() {
         })
     }
 
+    // Change pager to the next one
     fun nextPager(pos: Int) {
         pagerAddCar.currentItem = pos
     }
 
+    // Push vehicle to the database
     fun addVehicleToDB() {
         vehicle.ownerId = (this.application as Global).currentUser.uid
 
@@ -159,11 +167,5 @@ class AddCarActivity: AppCompatActivity() {
             }
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //fragmentAdapter.getItem(1).onActivityResult(requestCode, resultCode, data)
-    }
-
 
 }

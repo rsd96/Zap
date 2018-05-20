@@ -4,6 +4,8 @@ import java.io.Serializable
 
 /**
  * Created by Ramshad on 4/6/18.
+ *
+ * Model class to hold vehicle information
  */
 
 enum class Transmission{ Auto, Manual }

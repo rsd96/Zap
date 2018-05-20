@@ -4,6 +4,8 @@ import java.io.Serializable
 
 /**
  * Created by Ramshad on 5/2/18.
+ *
+ * Model class to hold transaction data
  */
 data class Transaction(var transactionDate: String = "",
                        var owner: String = "",

@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso
 
 /**
  * Created by Ramshad on 4/6/18.
+ *
+ * Adapter class to handle list of cars owned by user
  */
 
 class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>): PagerAdapter() {
@@ -36,9 +38,8 @@ class MyCarsPagerAdapter(_context: Context, _listOfVehicle: MutableList<Vehicle>
         val rent: TextView = vehicleCard.findViewById(R.id.tvVehicleCardRent)
         var imageUri = listOfVehicle[position].imageList[0]
 
- //       vehicleImage.setScaleType(ImageView.ScaleType.CENTER);
-//        photoView.setAdjustViewBounds(true);
 
+        // Load image from url
         Picasso.with(context)
                 .load(imageUri)
                 .networkPolicy(NetworkPolicy.OFFLINE)

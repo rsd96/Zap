@@ -26,6 +26,8 @@ import me.gujun.android.taggroup.TagGroup
 
 /**
  * Created by Ramshad on 4/30/18.
+ *
+ * Fragment to show filter options
  */
 class FilterFragment: AAH_FabulousFragment() {
 
@@ -104,6 +106,9 @@ class FilterFragment: AAH_FabulousFragment() {
     }
 
 
+    /**
+     * Adapter class to populate and show different filter layouts
+     */
     inner class SectionsPagerAdapter : PagerAdapter() {
 
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {

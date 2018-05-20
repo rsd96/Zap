@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_user.*
 
 /**
  * Created by Ramshad on 4/5/18.
+ *
+ * Page to show profile informations
  */
 class UserActivity: AppCompatActivity() {
 

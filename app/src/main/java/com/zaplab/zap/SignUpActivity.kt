@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_signup.*
 
 /**
  * Created by Ramshad on 11/11/17.
+ *
+ * Page to let user sign up to create a new account with Zap using mail and pass
  */
 class SignUpActivity: AppCompatActivity() {
 

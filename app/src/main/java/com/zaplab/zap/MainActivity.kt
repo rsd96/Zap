@@ -17,6 +17,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Created by Ramshad on 11/9/17.
+ *
+ * Home page
+ */
+
 class MainActivity : AppCompatActivity() {
 
     val TAG = "MainActivity"
@@ -122,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             if (maxRent != 0.00) {
                 val it = vehicleList.iterator()
                 while (it.hasNext()) {
-                    if (it.next().rent > minRent)
+                    if (it.next().rent > maxRent)
                         it.remove()
                 }
             }
@@ -262,7 +268,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Create dialog to show user profile, messaging menu option
+     * Create dialog to show user profile, messaging and history menu option
      */
     fun createMenuDialog() {
         var dialog = Dialog(this)

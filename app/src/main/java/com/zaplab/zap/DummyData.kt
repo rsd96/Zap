@@ -13,6 +13,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 5/14/18.
+ *
+ * Class to generate dummy data
  */
 class DummyData : AppCompatActivity() {
 

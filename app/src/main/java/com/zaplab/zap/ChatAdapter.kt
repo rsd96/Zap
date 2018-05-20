@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Created by Ramshad on 4/23/18.
+ *
+ * Adapter class to show the list of chat messages
  */
 class ChatAdapter(private var context: Context, private var chatList: MutableList<Message>) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 

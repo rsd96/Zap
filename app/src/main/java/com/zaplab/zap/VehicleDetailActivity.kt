@@ -41,6 +41,8 @@ import java.util.*
 
 /**
  * Created by Ramshad on 4/21/18.
+ *
+ * Page to show details of vehicle selected from home listing
  */
 class VehicleDetailActivity: AppCompatActivity() {
 

@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter
 
 /**
  * Created by Ramshad on 4/8/18.
+ *
+ * Adapter to manage list of fragments
  */
 class FragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 

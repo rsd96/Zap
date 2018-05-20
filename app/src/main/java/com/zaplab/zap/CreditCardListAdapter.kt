@@ -8,6 +8,8 @@ import com.cooltechworks.creditcarddesign.CreditCardView
 
 /**
  * Created by Ramshad on 4/13/18.
+ *
+ * Adapter class to show list of credit cards
  */
 class CreditCardListAdapter(_context: Context, _listOfCards: MutableList<CreditCard>): PagerAdapter() {
 
